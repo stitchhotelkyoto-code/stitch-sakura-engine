@@ -6,13 +6,21 @@
 <title>STITCH HOTEL KYOTO Sakura Smart Guide</title>
 <style>
   :root{
-    --bg:#fbf6f7;
+    /* soft pink, not loud */
+    --bg:#fbf4f6;
     --card:#ffffff;
     --ink:#171717;
     --muted:#6b6b6b;
-    --line:#eee6e8;
-    --soft:#f6eff1;
-    --accent:#e7b8c2;
+
+    /* pink-tinted borders */
+    --line:#f0dde3;
+
+    /* icon / tag soft pink */
+    --soft:#f7e9ee;
+
+    /* accent pink (subtle) */
+    --accent: rgba(231,184,194,.85);
+
     --shadow:0 14px 34px rgba(10,10,10,.08);
     --radius:22px;
     --radius-sm:14px;
@@ -25,7 +33,7 @@
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
   body{font-family:var(--sans); overflow-x:hidden;}
 
-  /* Prevent mobile cut-off */
+  /* prevent mobile cut-off */
   .wrap{
     width:100%;
     max-width:760px;
@@ -35,7 +43,6 @@
   }
 
   .pageTitle{
-    font-family:var(--sans);
     font-weight:800;
     letter-spacing:.06em;
     font-size:14px;
@@ -45,7 +52,7 @@
   .shell{
     background:
       linear-gradient(180deg,#fff,#fff) padding-box,
-      linear-gradient(180deg,rgba(231,184,194,.85),rgba(231,184,194,0)) border-box;
+      linear-gradient(180deg,rgba(231,184,194,.55),rgba(231,184,194,0)) border-box;
     border:1px solid transparent;
     border-radius:var(--radius);
     box-shadow:var(--shadow);
@@ -54,7 +61,7 @@
 
   .hero{
     padding:18px 18px 16px;
-    background:linear-gradient(180deg,rgba(246,239,241,.65),rgba(255,255,255,0));
+    background:linear-gradient(180deg,rgba(247,233,238,.55),rgba(255,255,255,0));
   }
 
   .heroTop{
@@ -66,7 +73,6 @@
   }
 
   .brand{
-    font-family:var(--sans);
     font-weight:800;
     letter-spacing:.12em;
     font-size:12px;
@@ -99,24 +105,22 @@
     padding:10px 12px;
     border-radius:999px;
     border:1px solid var(--line);
-    background:rgba(255,255,255,.8);
+    background:rgba(255,255,255,.86);
     max-width:100%;
   }
+
+  /* crowd indicator - change color if you want */
   .dot{
     width:10px;height:10px;border-radius:999px;background:#57b06a;
     box-shadow:0 0 0 4px rgba(87,176,106,.12);
     flex:0 0 auto;
   }
+
   .status b{
-    font-size:14px;
-    line-height:1.1;
-    white-space:nowrap;
+    font-size:14px; line-height:1.1; white-space:nowrap;
   }
   .status span{
-    display:block;
-    font-size:12px;
-    color:var(--muted);
-    white-space:nowrap;
+    display:block; font-size:12px; color:var(--muted); white-space:nowrap;
   }
 
   .grid{
@@ -140,13 +144,21 @@
     letter-spacing:.12em;
     font-size:12px;
     color:var(--muted);
-    margin-bottom:10px;
+    margin-bottom:6px;
+  }
+
+  .accentLine{
+    height:3px;
+    width:46px;
+    border-radius:999px;
+    background: var(--accent);
+    margin: 8px 0 12px;
   }
 
   .big{
     font-family:var(--serif);
-    font-size:36px;
-    line-height:1.05;
+    font-size:34px;
+    line-height:1.06;
     margin:0 0 6px;
     letter-spacing:-.01em;
     word-break:break-word;
@@ -243,7 +255,7 @@
     padding:9px 12px;
     border-radius:999px;
     border:1px solid var(--line);
-    background:rgba(246,239,241,.55);
+    background:rgba(247,233,238,.65);
     font-size:13px;
     color:var(--ink);
     max-width:100%;
@@ -255,6 +267,7 @@
     grid-template-columns:1fr 1fr;
     gap:10px;
   }
+
   .btn{
     display:flex;
     align-items:center;
@@ -280,14 +293,14 @@
     line-height:1.45;
   }
 
-  /* Desktop enhancement */
+  /* desktop enhancement */
   @media (min-width: 860px){
     .grid{ grid-template-columns: 1fr 1fr; }
     .hero{ padding:22px 22px 18px; }
     .grid{ padding:0 22px 22px; }
   }
 
-  /* Mobile tuning */
+  /* mobile tuning */
   @media (max-width: 480px){
     .wrap{ padding:14px 10px 22px; }
     .hero{ padding:16px 14px 14px; }
@@ -295,7 +308,7 @@
     .h1{ font-size:36px; }
     .big{ font-size:30px; }
     .status b, .status span{ white-space:normal; }
-    .cta{ grid-template-columns:1fr; } /* buttons become 1 column */
+    .cta{ grid-template-columns:1fr; } /* buttons 1 col */
   }
 </style>
 </head>
@@ -305,42 +318,45 @@
     <div class="pageTitle">STITCH HOTEL KYOTO Live Guide</div>
 
     <div class="shell">
+      <!-- HEADER -->
       <div class="hero">
         <div class="heroTop">
           <div style="flex:1 1 320px; min-width:240px;">
             <div class="brand">STITCH HOTEL KYOTO</div>
             <h1 class="h1">Sakura Smart Guide</h1>
             <div class="meta">
-              <!-- ✅ 너가 쓰는 날짜/시간으로 변경 -->
+              <!-- ✅ update these -->
               Tuesday, Mar 03 · 19:39 (JST)<br/>
-              Good timing. Nearby areas first.
+              Good timing. Kyoto icon spot first, then nearby stroll.
             </div>
           </div>
 
-          <!-- ✅ 혼잡도에 따라 dot 색만 바꿔도 됨 -->
+          <!-- ✅ crowd status -->
           <div class="status">
             <div class="dot"></div>
             <div>
               <b>Crowd: Low</b>
-              <span>Nearby areas first</span>
+              <span>Recommended: start earlier</span>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="grid">
-        <!-- LEFT / TOP CARD -->
+
+        <!-- LEFT: BEST TIME -->
         <div class="card">
           <div class="label">BEST TIME TODAY</div>
-          <!-- ✅ 시간만 바꿔 -->
+          <div class="accentLine"></div>
+
           <p class="big">Late afternoon (15:30–17:30)</p>
-          <p class="sub">Good for riverside light and short walks.</p>
+          <p class="sub">Good for riverside light and short walks. If crowded, shift to morning.</p>
 
           <div class="pillRow">
-            <!-- ✅ 값만 바꿔 -->
-            <div class="pill">🌇 <b>Sunset in Kyoto:</b> 17:53</div>
-            <div class="pill">📸 <b>Best photo light:</b> 16:30</div>
-            <div class="pill">📅 <b>Peak Window (Seasonal Avg.):</b> 2026-03-28 → 2026-04-06</div>
+            <div class="pill">🌇 <b>Sunset:</b> 17:53</div>
+            <div class="pill">📸 <b>Best light:</b> 16:30</div>
+            <div class="pill">📅 <b>Peak window (avg.):</b> 2026-03-28 → 2026-04-06</div>
           </div>
 
           <div class="section">
@@ -349,7 +365,7 @@
                 <div class="ico">🌦️</div>
                 <div class="txt">
                   <b>Weather Strategy</b>
-                  <span>Rain likely → prioritize covered spots and short routes.</span>
+                  <span>Rain likely → prioritize covered spots and short routes. Check live weather before departure.</span>
                 </div>
               </div>
 
@@ -357,40 +373,43 @@
                 <div class="ico">🧭</div>
                 <div class="txt">
                   <b>Suggested Flow</b>
-                  <span>Near STITCH first → riverside → icon spot → finish with quiet backstreets.</span>
+                  <span>Kyoto icon spot → riverside stroll → return via quiet backstreets.</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT / TOP CARD -->
+        <!-- RIGHT: SPOTS (Icon first, Nearby second) -->
         <div class="card">
-          <div class="label">CURATED SUGGESTION</div>
+          <div class="label">CURATED SPOTS</div>
+          <div class="accentLine"></div>
 
           <div class="rows">
+            <!-- ICON FIRST -->
             <div class="row">
-              <div class="ico">🌊</div>
+              <div class="ico">🏯</div>
               <div class="txt">
-                <b>Near STITCH: Kamo / Takasegawa</b>
-                <span>5–12 min walk · Best: sunset · Riverside calm</span>
+                <b>Kyoto Icon: Nijō Castle</b>
+                <span>~15 min by subway · Best: weekday mid-morning for calmer entry.</span>
                 <div class="tags">
-                  <div class="tag">🌊 Riverside</div>
-                  <div class="tag">🌿 Quiet</div>
+                  <div class="tag">🏯 Icon</div>
+                  <div class="tag">🌿 Balanced</div>
                   <div class="tag">📸 Photo Spot</div>
                 </div>
               </div>
             </div>
 
+            <!-- NEARBY SECOND -->
             <div class="row">
-              <div class="ico">🏯</div>
+              <div class="ico">🌊</div>
               <div class="txt">
-                <b>Kyoto Icon: Nijō Castle</b>
-                <span>~15 min by subway · Best: weekday mid-morning</span>
+                <b>Near STITCH: Takasegawa / Kamogawa</b>
+                <span>5–12 min walk · Best: sunset · Riverside calm, easy stroll.</span>
                 <div class="tags">
-                  <div class="tag">🏯 Icon</div>
-                  <div class="tag">🌿 Balanced</div>
-                  <div class="tag">🌳 Gardens</div>
+                  <div class="tag">🌊 Riverside</div>
+                  <div class="tag">🌿 Quiet</div>
+                  <div class="tag">🚶 Easy walk</div>
                 </div>
               </div>
             </div>
@@ -401,8 +420,8 @@
               <div class="row">
                 <div class="ico">🚶</div>
                 <div class="txt">
-                  <b>Walkability</b>
-                  <span>★★★★★ (very easy)</span>
+                  <b>Walkability (on-site walking)</b>
+                  <span>★★★★★ Easy. Flat routes and short walking distance from hotel / stations.</span>
                 </div>
               </div>
 
@@ -410,29 +429,29 @@
                 <div class="ico">⚠️</div>
                 <div class="txt">
                   <b>Peak Risk</b>
-                  <span>Near: Moderate (16:00–18:00). Avoid main gates and narrow bridges.</span>
+                  <span>Near: Moderate (16:00–18:00). Avoid main gates and narrow bridges during peak.</span>
                 </div>
               </div>
 
               <div class="row">
                 <div class="ico">📍</div>
                 <div class="txt">
-                  <b>Best angle</b>
-                  <span>Covered viewpoints → avoid long queues. Stay on the riverside edges.</span>
+                  <b>Best Angle</b>
+                  <span>Use riverside edges and wider viewpoints. If queues form, shift to backstreets for smoother photos.</span>
                 </div>
               </div>
             </div>
 
             <div class="cta">
-              <!-- ✅ 너 링크로 교체 -->
-              <a class="btn" href="https://www.google.com/search?q=Kyoto+weather" target="_blank" rel="noreferrer">🌦️ Open Weather</a>
-              <a class="btn" href="https://www.google.com/maps" target="_blank" rel="noreferrer">🌸 Open Sakura Map</a>
-              <a class="btn" href="https://platinumaps.jp/" target="_blank" rel="noreferrer">👥 Open Crowd Map</a>
-              <a class="btn" href="https://www.instagram.com/" target="_blank" rel="noreferrer">📷 Open Instagram</a>
+              <!-- ✅ replace links -->
+              <a class="btn" href="https://www.google.com/search?q=Kyoto+weather" target="_blank" rel="noreferrer">🌦️ Weather</a>
+              <a class="btn" href="https://www.google.com/maps" target="_blank" rel="noreferrer">🌸 Sakura Map</a>
+              <a class="btn" href="https://platinumaps.jp/" target="_blank" rel="noreferrer">👥 Crowd Map</a>
+              <a class="btn" href="https://www.instagram.com/" target="_blank" rel="noreferrer">📷 Instagram</a>
             </div>
 
             <div class="foot">
-              Estimated guidance based on typical crowd patterns. Please check the live crowd map before heading out.
+              Tip: Check the crowd map before you go. If crowded, start earlier or choose nearby calm routes first.
             </div>
           </div>
         </div>
