@@ -4,6 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>STITCH Sakura Smart Guide</title>
+html, body { 
+  width: 100%; 
+  overflow-x: hidden; 
+}
+
+.wrap { 
+  max-width: 980px; 
+  width: min(980px, 100%); 
+}
+
+.card { 
+  width: 100%; 
+}
+
+@media (max-width: 1100px){
+  .wrap{ 
+    max-width: 100%; 
+  }
+}
   <style>
     :root{
       --bg: #fbf3f6;
