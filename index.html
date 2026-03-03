@@ -10,7 +10,6 @@
     --card:#ffffff;
     --ink:#1f1f1f;
     --muted:#6b6b6b;
-    --sakura:#e7b6c7;
     --sakura-deep:#d989a6;
     --chip:#f3e4ea;
     --shadow: 0 10px 35px rgba(0,0,0,0.10);
@@ -46,9 +45,7 @@
     justify-content:space-between;
     gap: 12px;
   }
-  .brand{
-    display:flex; flex-direction:column; gap:6px;
-  }
+  .brand{ display:flex; flex-direction:column; gap:6px; }
   .brand .kicker{
     font-size: 12px;
     letter-spacing: .06em;
@@ -60,10 +57,7 @@
     font-weight: 700;
     line-height: 1.15;
   }
-  .datetime{
-    font-size: 13px;
-    color: var(--muted);
-  }
+  .datetime{ font-size: 13px; color: var(--muted); }
 
   .meta{
     display:flex; flex-direction:column; align-items:flex-end; gap:8px;
@@ -136,10 +130,7 @@
     border-top: 1px solid rgba(0,0,0,0.06);
     background: linear-gradient(to right, rgba(231,182,199,0.18), transparent 55%);
   }
-  .note{
-    font-size: 12.5px;
-    color: rgba(31,31,31,0.75);
-  }
+  .note{ font-size: 12.5px; color: rgba(31,31,31,0.75); }
   .btns{ display:flex; gap:10px; flex-wrap:wrap; }
   .btn{
     appearance:none;
@@ -171,7 +162,7 @@
     .brand .title{ font-size: 20px; }
   }
 
-  /* ===== Mobile Compact Mode (핵심: 폰마다 덜 흔들리게) ===== */
+  /* ===== Mobile Compact Mode (폰마다 덜 흔들리게) ===== */
   @media (max-width: 600px){
     .wrap{ margin: 10px auto; padding: 0 10px; }
     .top{ padding: 14px 14px 8px; }
@@ -179,14 +170,20 @@
     .panel{ padding: 12px; }
     .brand .title{ font-size: 18px; }
     .big{ font-size: 18px; }
-    #legalNote{ display:none; }     /* 하단 긴 문구 숨김 */
-    #iconNote{ display:none; }      /* 아이콘 긴 설명 숨김 */
-    /* photoTip은 유지(자동 일몰이라 보여주는 가치 큼) — 너무 길면 숨기고 싶으면 아래 줄 주석 해제 */
-    /* #photoTip{ display:none; } */
+
+    /* 너무 길어질 수 있는 요소들만 축소 */
+    #legalNote{ display:none; }
+    #iconNote{ display:none; }
+
+    /* Bloom 3줄은 유지(데이터 느낌이라 가치 큼). 너무 길면 아래 1~2줄만 주석해제해서 숨겨도 됨 */
+    /* #bloomWindow{ display:none; } */
+    /* #bloomProgress{ display:none; } */
+
     .footer{ padding: 10px 14px 12px; }
   }
 </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="card">
@@ -211,8 +208,17 @@
           <h3>Best time today</h3>
           <div class="big" id="bestTime">--</div>
           <p class="small" id="bestTimeNote">--</p>
+
           <div style="height:10px"></div>
+          <div class="pill" id="sunsetTime">🌇 Sunset in Kyoto: --</div>
+
+          <div style="height:8px"></div>
           <div class="pill" id="photoTip">📷 Best photo light: --</div>
+
+          <div style="height:10px"></div>
+          <div class="pill" id="bloomProgress">🌸 Estimated Bloom Progress: --%</div>
+          <div class="pill" id="bloomWindow">📅 Peak Window (Seasonal Avg.): --</div>
+          <div class="pill" id="bloomCountdown">⏳ Peak Countdown (midpoint): D--</div>
         </div>
 
         <div class="panel">
@@ -293,6 +299,23 @@
   document.getElementById("bestTimeNote").textContent = bestTimeNote;
 
   // ------------------------------
+  // Helpers
+  // ------------------------------
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const toDateUTC = (yyyy_mm_dd) => {
+    const [y,m,d] = yyyy_mm_dd.split("-").map(Number);
+    return new Date(Date.UTC(y, m-1, d, 0, 0, 0));
+  };
+
+  // Use UTC midnight for stable day-based calculations
+  const todayMidnightUTC = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    0,0,0
+  ));
+
+  // ------------------------------
   // Sunset calculation (NO API) — NOAA algorithm (approx.)
   // ------------------------------
   function calcSunset(dateUTC, lat, lon) {
@@ -302,6 +325,7 @@
     const month = dateUTC.getUTCMonth() + 1;
     const day = dateUTC.getUTCDate();
 
+    // Day of year (N)
     const N1 = Math.floor(275 * month / 9);
     const N2 = Math.floor((month + 9) / 12);
     const N3 = (1 + Math.floor((year - 4 * Math.floor(year / 4) + 2) / 3));
@@ -326,7 +350,7 @@
     const sinDec = 0.39782 * Math.sin(L * rad);
     const cosDec = Math.cos(Math.asin(sinDec));
 
-    const zenith = 90.833;
+    const zenith = 90.833; // official
     const cosH = (Math.cos(zenith * rad) - (sinDec * Math.sin(lat * rad))) / (cosDec * Math.cos(lat * rad));
     if (cosH > 1) return null;
 
@@ -343,19 +367,19 @@
     return sunsetUTC;
   }
 
-  // ------------------------------
-  // Photo tip: Sunset-based (auto seasonal, today-based)
-  // ------------------------------
+  // Kyoto coordinates
   const KYOTO_LAT = 35.0116;
   const KYOTO_LON = 135.7681;
 
-  // "today" for sunrise/sunset algorithm uses UTC date components
-  const todayUTC = new Date(); // now in local, but we use its UTC components internally
-  const sunsetUTC = calcSunset(todayUTC, KYOTO_LAT, KYOTO_LON);
+  const sunsetUTC = calcSunset(todayMidnightUTC, KYOTO_LAT, KYOTO_LON);
 
   const fmtHM = (d) => fmt({ hour:"2-digit", minute:"2-digit", hour12:false }, d);
 
   if (sunsetUTC) {
+    const sunsetLocal = fmtHM(sunsetUTC);
+    document.getElementById("sunsetTime").textContent = `🌇 Sunset in Kyoto: ${sunsetLocal}`;
+
+    // Photo window: 35 min before ~ 20 min after sunset
     const beforeMin = 35;
     const afterMin = 20;
     const start = new Date(sunsetUTC.getTime() - beforeMin * 60000);
@@ -364,11 +388,44 @@
     document.getElementById("photoTip").textContent =
       `📷 Best photo light: ${fmtHM(start)}–${fmtHM(end)} (around sunset)`;
   } else {
+    document.getElementById("sunsetTime").textContent = "🌇 Sunset in Kyoto: --";
     document.getElementById("photoTip").textContent = "📷 Best photo light: around sunset";
   }
 
   // ------------------------------
-  // Comfort Index (light heuristic; no weather API)
+  // Bloom Status (NO API)
+  // Peak Window midpoint used for D-day
+  // ------------------------------
+  // ✅ Change only these two dates each year if you want
+  const PEAK_START = "2026-03-28";
+  const PEAK_END   = "2026-04-05";
+
+  const peakStartUTC = toDateUTC(PEAK_START);
+  const peakEndUTC   = toDateUTC(PEAK_END);
+
+  const midMs = peakStartUTC.getTime() + (peakEndUTC.getTime() - peakStartUTC.getTime()) / 2;
+  const peakMidUTC = new Date(midMs);
+
+  const diffDays = Math.ceil((peakMidUTC.getTime() - todayMidnightUTC.getTime()) / 86400000);
+  const dText = (diffDays >= 0) ? `D-${diffDays}` : `D+${Math.abs(diffDays)}`;
+
+  // Smooth "estimated progress"
+  // 0% at (peakStart - 10 days), 100% at (peakEnd + 3 days)
+  const progressStartUTC = new Date(peakStartUTC.getTime() - 10 * 86400000);
+  const progressEndUTC   = new Date(peakEndUTC.getTime() + 3 * 86400000);
+
+  const progress = clamp01(
+    (todayMidnightUTC.getTime() - progressStartUTC.getTime()) /
+    (progressEndUTC.getTime() - progressStartUTC.getTime())
+  );
+  const pct = Math.round(progress * 100);
+
+  document.getElementById("bloomProgress").textContent = `🌸 Estimated Bloom Progress: ${pct}%`;
+  document.getElementById("bloomWindow").textContent   = `📅 Peak Window (Seasonal Avg.): ${PEAK_START} – ${PEAK_END}`;
+  document.getElementById("bloomCountdown").textContent= `⏳ Peak Countdown (midpoint): ${dText}`;
+
+  // ------------------------------
+  // Comfort Index (simple heuristic; no weather API)
   // ------------------------------
   let comfort = "Comfortable";
   if (hour < 8) comfort = "Cool morning";
@@ -395,8 +452,8 @@
     { name:"Arashiyama", dist:"~35–45 min by train", best:"before 9 AM", tip:"Very busy later — start early." }
   ];
 
-  // Deterministic pick per day+hour (feels "smart", not random spam)
-  const seed = (todayUTC.getDate() * 31) + hour;
+  // Deterministic pick per day+hour
+  const seed = (todayMidnightUTC.getUTCDate() * 31) + hour;
   const pick = (arr, s) => arr[s % arr.length];
 
   const near = pick(nearStitch, seed);
