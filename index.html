@@ -1,108 +1,331 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>STITCH Sakura Smart Engine</title>
 <style>
-body{
-  margin:0;
-  font-family:Georgia, serif;
-  background:#f9f6f7;
-}
-.card{
-  max-width:800px;
-  margin:30px auto;
-  background:white;
-  border-radius:14px;
-  box-shadow:0 8px 30px rgba(0,0,0,0.08);
-  padding:25px;
-}
-.title{
-  font-size:22px;
-  font-weight:bold;
-}
-.index{
-  float:right;
-  font-size:18px;
-}
-.highlight{
-  background:#f3e4ea;
-  padding:15px;
-  border-radius:12px;
-  margin-top:15px;
-}
+  :root{
+    --bg:#fbf7f9;
+    --card:#ffffff;
+    --ink:#1f1f1f;
+    --muted:#6b6b6b;
+    --sakura:#e7b6c7;
+    --sakura-deep:#d989a6;
+    --chip:#f3e4ea;
+    --shadow: 0 10px 35px rgba(0,0,0,0.10);
+    --radius: 16px;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family: Georgia, "Times New Roman", serif;
+    background: radial-gradient(1200px 500px at 50% -10%, rgba(231,182,199,0.45), transparent 55%),
+                radial-gradient(900px 400px at 10% 10%, rgba(217,137,166,0.18), transparent 60%),
+                var(--bg);
+    color:var(--ink);
+  }
+  .wrap{
+    max-width: 980px;
+    margin: 22px auto;
+    padding: 0 14px;
+  }
+  .card{
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+  .top{
+    padding: 18px 18px 10px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 14px;
+  }
+  .brand{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .brand .kicker{
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .brand .title{
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .meta{
+    display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+    min-width: 190px;
+  }
+  .datetime{
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .crowd{
+    display:flex; align-items:center; gap:8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.03);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .dot{
+    width: 10px; height:10px; border-radius:50%;
+    box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 0 18px 18px;
+  }
+  .panel{
+    background: var(--chip);
+    border-radius: 14px;
+    padding: 14px 14px 12px;
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+  .panel h3{
+    margin:0 0 8px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: rgba(31,31,31,0.75);
+  }
+  .big{
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 6px;
+  }
+  .small{
+    margin:0;
+    font-size: 13px;
+    color: rgba(31,31,31,0.78);
+  }
+
+  .subgrid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .pill{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(0,0,0,0.06);
+    font-size: 13px;
+    color: rgba(31,31,31,0.85);
+    width: fit-content;
+  }
+
+  .footer{
+    padding: 12px 18px 18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    background: linear-gradient(to right, rgba(231,182,199,0.18), transparent 55%);
+  }
+  .note{
+    font-size: 12.5px;
+    color: rgba(31,31,31,0.75);
+  }
+  .btns{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .btn{
+    appearance:none;
+    border:none;
+    border-radius: 999px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    background: var(--sakura-deep);
+    color: white;
+    box-shadow: 0 8px 18px rgba(217,137,166,0.30);
+    text-decoration:none;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+  .btn.secondary{
+    background: rgba(0,0,0,0.06);
+    color: rgba(31,31,31,0.85);
+    box-shadow: none;
+  }
+
+  /* Mobile */
+  @media (max-width: 720px){
+    .meta{ min-width:auto; align-items:flex-start; }
+    .top{ flex-direction:column; }
+    .grid{ grid-template-columns: 1fr; }
+    .brand .title{ font-size: 20px; }
+  }
 </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="brand">
+          <div class="kicker">STITCH HOTEL KYOTO</div>
+          <div class="title">Sakura Smart Guide</div>
+          <div class="datetime" id="datetime"></div>
+        </div>
 
-<div class="card">
-  <div class="title">
-    STITCH Sakura Smart Guide
-    <span class="index" id="crowdIndex"></span>
+        <div class="meta">
+          <div class="crowd">
+            <span class="dot" id="crowdDot"></span>
+            <span id="crowdLabel">Crowd: --</span>
+          </div>
+          <div class="datetime" id="crowdNote"></div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <h3>Best time today</h3>
+          <div class="big" id="bestTime">--</div>
+          <p class="small" id="bestTimeNote">--</p>
+          <div style="height:10px"></div>
+          <div class="pill" id="photoTip">📷 Best photo light: --</div>
+        </div>
+
+        <div class="panel">
+          <h3>Curated suggestion</h3>
+          <div class="subgrid">
+            <div>
+              <div class="big" id="nearSuggest">Near STITCH: --</div>
+              <p class="small" id="nearNote">--</p>
+            </div>
+            <div>
+              <div class="big" id="iconSuggest">Kyoto Icon: --</div>
+              <p class="small" id="iconNote">--</p>
+            </div>
+            <div class="pill" id="comfortIndex">🌡 Comfort Index: --</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="note" id="legalNote">
+          Estimated guidance based on typical crowd patterns. Please check the live crowd map before heading out.
+        </div>
+        <div class="btns">
+          <!-- 너의 실제 링크로 바꿔도 됨 -->
+          <a class="btn secondary" href="#" onclick="location.reload(); return false;">↻ Refresh</a>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div id="datetime"></div>
-
-  <div class="highlight">
-    <div><strong>Best Time Today</strong></div>
-    <div id="bestTime"></div>
-  </div>
-
-  <div class="highlight">
-    <div><strong>Today's Suggestion</strong></div>
-    <div id="suggestion"></div>
-  </div>
-
-</div>
 
 <script>
-const now = new Date();
-const hour = now.getHours();
-const dateString = now.toLocaleString("en-US",{ timeZone:"Asia/Tokyo" });
+(function(){
+  // ---- Time (Asia/Tokyo) ----
+  const now = new Date();
+  const tz = "Asia/Tokyo";
+  const fmt = (opt) => new Intl.DateTimeFormat("en-US", { timeZone: tz, ...opt }).format(now);
+  const hour = Number(fmt({ hour: "2-digit", hour12: false }));
+  const minute = Number(fmt({ minute: "2-digit" }));
+  const weekday = fmt({ weekday:"long" });
+  const month = fmt({ month:"short" });
+  const day = fmt({ day:"2-digit" });
+  const time = fmt({ hour:"2-digit", minute:"2-digit", hour12:false });
 
-document.getElementById("datetime").innerText = dateString;
+  document.getElementById("datetime").textContent = `${weekday}, ${month} ${day} · ${time}`;
 
-// Crowd logic
-let crowd = "Low";
-if(hour >= 11 && hour < 16){ crowd = "High"; }
-if(hour >= 9 && hour < 11){ crowd = "Moderate"; }
-if(hour >= 16 && hour < 19){ crowd = "Moderate"; }
+  // ---- Crowd heuristic (simple, safe wording) ----
+  // You can tune these windows later.
+  let crowd = { level:"Low", dot:"#2ecc71", note:"Good time for popular spots." };
 
-document.getElementById("crowdIndex").innerText = "Crowd: " + crowd;
+  if (hour >= 9 && hour < 11) crowd = { level:"Moderate", dot:"#f1c40f", note:"Crowds building — start with nearby areas." };
+  if (hour >= 11 && hour < 16) crowd = { level:"High", dot:"#e74c3c", note:"Peak hours — expect queues at major icons." };
+  if (hour >= 16 && hour < 19) crowd = { level:"Moderate", dot:"#f1c40f", note:"Nice for riverside walk & sunset photos." };
+  if (hour >= 22 || hour < 6) crowd = { level:"Very Low", dot:"#3498db", note:"Quiet hours (check transport / opening times)." };
 
-// Best time logic
-let best = "";
-if(hour < 9){ best = "Now (calm & fresh air)"; }
-else if(hour < 16){ best = "After 6:30 PM (cooler & calmer)"; }
-else{ best = "Early Morning Tomorrow (7–9 AM)"; }
+  document.getElementById("crowdDot").style.background = crowd.dot;
+  document.getElementById("crowdLabel").textContent = `Crowd: ${crowd.level}`;
+  document.getElementById("crowdNote").textContent = crowd.note;
 
-document.getElementById("bestTime").innerText = best;
+  // ---- Best time suggestion ----
+  const bestTime =
+    (hour < 7) ? "7:00–9:00 AM (best light & fewer crowds)" :
+    (hour < 11) ? "Now → good time before peak crowds" :
+    (hour < 16) ? "After 6:30 PM (cooler & calmer)" :
+    (hour < 19) ? "Now → perfect for riverside walk" :
+    "Early morning tomorrow (7:00–9:00 AM)";
 
-// Curated Spots
-const nearStitch = [
-"Takasegawa Riverside",
-"Kamo River",
-"Gion Shirakawa",
-"Maruyama Park",
-"Yasaka Shrine"
-];
+  const bestTimeNote =
+    (hour >= 11 && hour < 16)
+      ? "Peak time now — choose nearby sakura spots first, then icons later."
+      : "Tip: Icon spots are calmest at opening time.";
 
-const kyotoIcons = [
-"Fushimi Inari Taisha",
-"Kiyomizu-dera",
-"Kinkaku-ji",
-"Nijo Castle",
-"Arashiyama"
-];
+  document.getElementById("bestTime").textContent = bestTime;
+  document.getElementById("bestTimeNote").textContent = bestTimeNote;
 
-const pick = (arr) => arr[Math.floor(Math.random()*arr.length)];
+  // ---- Photo tip (simple golden hour heuristic; no external API) ----
+  // Spring: sunset tends to be around 17:40~18:20. We'll show a helpful range.
+  document.getElementById("photoTip").textContent = "📷 Best photo light: 17:45–18:20 (soft sakura colors)";
 
-let suggestionText =
-"Near STITCH: " + pick(nearStitch) +
-" | Kyoto Icon: " + pick(kyotoIcons);
+  // ---- Comfort Index (simple; based on season guess, no API) ----
+  // If you later want real temperature, we can connect to a weather API.
+  let comfort = "Comfortable";
+  if (hour < 8) comfort = "Cool morning";
+  if (hour >= 11 && hour < 16) comfort = "Mild daytime";
+  if (hour >= 19) comfort = "Cool evening";
+  document.getElementById("comfortIndex").textContent = `🌡 Comfort Index: ${comfort}`;
 
-document.getElementById("suggestion").innerText = suggestionText;
+  // ---- Curated spots (edit names + times + distance) ----
+  // ✅ Near STITCH: your sakura map list
+  const nearStitch = [
+    { name:"Takasegawa Riverside", dist:"2–5 min walk", best:"sunrise / after 6 PM", tip:"Closest sakura stroll. Great for quick photos." },
+    { name:"Kamo River", dist:"5–10 min walk", best:"sunset walk", tip:"Open space — feels calm even on busy days." },
+    { name:"Gion Shirakawa", dist:"15–20 min walk / short taxi", best:"before 9 AM", tip:"Classic Kyoto scenery. Go early for photos." },
+    { name:"Maruyama Park", dist:"20–25 min walk", best:"late afternoon", tip:"Lively atmosphere. Expect more people at night." },
+    { name:"Yasaka Shrine", dist:"18–22 min walk", best:"dusk", tip:"Beautiful at dusk. Pair with Gion walk." }
+  ];
+
+  // ✅ Kyoto Icons: famous spots list
+  const kyotoIcons = [
+    { name:"Fushimi Inari Taisha", dist:"~25 min by train", best:"7–9 AM", tip:"Go at opening time to avoid crowds." },
+    { name:"Kiyomizu-dera", dist:"~20 min by bus/taxi", best:"early morning", tip:"Avoid 12:00–16:00 during peak season." },
+    { name:"Kinkaku-ji", dist:"~35 min by bus/taxi", best:"opening time", tip:"Best light in the morning. Crowds rise quickly." },
+    { name:"Nijo Castle", dist:"~15–20 min by subway", best:"weekday late afternoon", tip:"Good balance of space & history." },
+    { name:"Arashiyama", dist:"~35–45 min by train", best:"before 9 AM", tip:"Very busy later — start early." }
+  ];
+
+  // ---- Smart picking (time-based, not random-feeling) ----
+  // Seed changes daily + hourly but deterministic per hour (feels consistent).
+  const seed = (now.getDate() * 31) + hour;
+  const pick = (arr, s) => arr[s % arr.length];
+
+  // Peak hours → emphasize Near STITCH; icons still shown but with warning
+  const near = pick(nearStitch, seed);
+  const icon = pick(kyotoIcons, seed + 2);
+
+  document.getElementById("nearSuggest").textContent = `Near STITCH: ${near.name}`;
+  document.getElementById("nearNote").textContent = `${near.dist} · Best: ${near.best} · ${near.tip}`;
+
+  let iconLine = `${icon.dist} · Best: ${icon.best} · ${icon.tip}`;
+  if (hour >= 11 && hour < 16) iconLine = `Peak hours now — consider going later. ${iconLine}`;
+
+  document.getElementById("iconSuggest").textContent = `Kyoto Icon: ${icon.name}`;
+  document.getElementById("iconNote").textContent = iconLine;
+
+})();
 </script>
-
 </body>
 </html>
