@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>STITCH Sakura Smart Engine</title>
+<style>
+body{
+  margin:0;
+  font-family:Georgia, serif;
+  background:#f9f6f7;
+}
+.card{
+  max-width:800px;
+  margin:30px auto;
+  background:white;
+  border-radius:14px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.08);
+  padding:25px;
+}
+.title{
+  font-size:22px;
+  font-weight:bold;
+}
+.index{
+  float:right;
+  font-size:18px;
+}
+.highlight{
+  background:#f3e4ea;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="title">
+    STITCH Sakura Smart Guide
+    <span class="index" id="crowdIndex"></span>
+  </div>
+
+  <div id="datetime"></div>
+
+  <div class="highlight">
+    <div><strong>Best Time Today</strong></div>
+    <div id="bestTime"></div>
+  </div>
+
+  <div class="highlight">
+    <div><strong>Today's Suggestion</strong></div>
+    <div id="suggestion"></div>
+  </div>
+
+</div>
+
+<script>
+const now = new Date();
+const hour = now.getHours();
+const dateString = now.toLocaleString("en-US",{ timeZone:"Asia/Tokyo" });
+
+document.getElementById("datetime").innerText = dateString;
+
+// Crowd logic
+let crowd = "Low";
+if(hour >= 11 && hour < 16){ crowd = "High"; }
+if(hour >= 9 && hour < 11){ crowd = "Moderate"; }
+if(hour >= 16 && hour < 19){ crowd = "Moderate"; }
+
+document.getElementById("crowdIndex").innerText = "Crowd: " + crowd;
+
+// Best time logic
+let best = "";
+if(hour < 9){ best = "Now (calm & fresh air)"; }
+else if(hour < 16){ best = "After 6:30 PM (cooler & calmer)"; }
+else{ best = "Early Morning Tomorrow (7–9 AM)"; }
+
+document.getElementById("bestTime").innerText = best;
+
+// Curated Spots
+const nearStitch = [
+"Takasegawa Riverside",
+"Kamo River",
+"Gion Shirakawa",
+"Maruyama Park",
+"Yasaka Shrine"
+];
+
+const kyotoIcons = [
+"Fushimi Inari Taisha",
+"Kiyomizu-dera",
+"Kinkaku-ji",
+"Nijo Castle",
+"Arashiyama"
+];
+
+const pick = (arr) => arr[Math.floor(Math.random()*arr.length)];
+
+let suggestionText =
+"Near STITCH: " + pick(nearStitch) +
+" | Kyoto Icon: " + pick(kyotoIcons);
+
+document.getElementById("suggestion").innerText = suggestionText;
+</script>
+
+</body>
+</html>
