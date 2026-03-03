@@ -20,14 +20,15 @@
   body{
     margin:0;
     font-family: Georgia, "Times New Roman", serif;
-    background: radial-gradient(1200px 500px at 50% -10%, rgba(231,182,199,0.45), transparent 55%),
-                radial-gradient(900px 400px at 10% 10%, rgba(217,137,166,0.18), transparent 60%),
-                var(--bg);
+    background:
+      radial-gradient(1200px 500px at 50% -10%, rgba(231,182,199,0.45), transparent 55%),
+      radial-gradient(900px 400px at 10% 10%, rgba(217,137,166,0.18), transparent 60%),
+      var(--bg);
     color:var(--ink);
   }
   .wrap{
     max-width: 980px;
-    margin: 22px auto;
+    margin: 18px auto;
     padding: 0 14px;
   }
   .card{
@@ -37,12 +38,13 @@
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.04);
   }
+
   .top{
-    padding: 18px 18px 10px;
+    padding: 16px 16px 10px;
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
-    gap: 14px;
+    gap: 12px;
   }
   .brand{
     display:flex; flex-direction:column; gap:6px;
@@ -58,13 +60,14 @@
     font-weight: 700;
     line-height: 1.15;
   }
-  .meta{
-    display:flex; flex-direction:column; align-items:flex-end; gap:8px;
-    min-width: 190px;
-  }
   .datetime{
     font-size: 13px;
     color: var(--muted);
+  }
+
+  .meta{
+    display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+    min-width: 190px;
   }
   .crowd{
     display:flex; align-items:center; gap:8px;
@@ -82,18 +85,18 @@
   .grid{
     display:grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    padding: 0 18px 18px;
+    gap: 12px;
+    padding: 0 16px 14px;
   }
   .panel{
     background: var(--chip);
     border-radius: 14px;
-    padding: 14px 14px 12px;
+    padding: 12px 12px 10px;
     border: 1px solid rgba(0,0,0,0.04);
   }
   .panel h3{
     margin:0 0 8px;
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .06em;
     color: rgba(31,31,31,0.75);
@@ -101,7 +104,7 @@
   .big{
     font-size: 20px;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.2;
     margin: 0 0 6px;
   }
   .small{
@@ -110,11 +113,6 @@
     color: rgba(31,31,31,0.78);
   }
 
-  .subgrid{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
   .pill{
     display:inline-flex;
     gap:8px;
@@ -129,7 +127,7 @@
   }
 
   .footer{
-    padding: 12px 18px 18px;
+    padding: 10px 16px 14px;
     display:flex;
     flex-wrap:wrap;
     gap:10px;
@@ -142,9 +140,7 @@
     font-size: 12.5px;
     color: rgba(31,31,31,0.75);
   }
-  .btns{
-    display:flex; gap:10px; flex-wrap:wrap;
-  }
+  .btns{ display:flex; gap:10px; flex-wrap:wrap; }
   .btn{
     appearance:none;
     border:none;
@@ -167,12 +163,26 @@
     box-shadow: none;
   }
 
-  /* Mobile */
+  /* ===== Mobile responsiveness ===== */
   @media (max-width: 720px){
     .meta{ min-width:auto; align-items:flex-start; }
     .top{ flex-direction:column; }
     .grid{ grid-template-columns: 1fr; }
     .brand .title{ font-size: 20px; }
+  }
+
+  /* ===== Mobile Compact Mode (핵심) ===== */
+  @media (max-width: 600px){
+    .wrap{ margin: 10px auto; padding: 0 10px; }
+    .top{ padding: 14px 14px 8px; }
+    .grid{ padding: 0 14px 12px; gap: 10px; }
+    .panel{ padding: 12px; }
+    .brand .title{ font-size: 18px; }
+    .big{ font-size: 18px; }
+    #photoTip{ display:none; }      /* 길어져서 숨김 */
+    #legalNote{ display:none; }     /* 하단 문구 숨김 */
+    #iconNote{ display:none; }      /* 아이콘 긴 설명 숨김 */
+    .footer{ padding: 10px 14px 12px; }
   }
 </style>
 </head>
@@ -206,15 +216,17 @@
 
         <div class="panel">
           <h3>Curated suggestion</h3>
-          <div class="subgrid">
+          <div style="display:grid; gap:10px;">
             <div>
               <div class="big" id="nearSuggest">Near STITCH: --</div>
               <p class="small" id="nearNote">--</p>
             </div>
-            <div>
+
+            <div id="iconBlock">
               <div class="big" id="iconSuggest">Kyoto Icon: --</div>
               <p class="small" id="iconNote">--</p>
             </div>
+
             <div class="pill" id="comfortIndex">🌡 Comfort Index: --</div>
           </div>
         </div>
@@ -225,7 +237,6 @@
           Estimated guidance based on typical crowd patterns. Please check the live crowd map before heading out.
         </div>
         <div class="btns">
-          <!-- 너의 실제 링크로 바꿔도 됨 -->
           <a class="btn secondary" href="#" onclick="location.reload(); return false;">↻ Refresh</a>
         </div>
       </div>
@@ -239,7 +250,6 @@
   const tz = "Asia/Tokyo";
   const fmt = (opt) => new Intl.DateTimeFormat("en-US", { timeZone: tz, ...opt }).format(now);
   const hour = Number(fmt({ hour: "2-digit", hour12: false }));
-  const minute = Number(fmt({ minute: "2-digit" }));
   const weekday = fmt({ weekday:"long" });
   const month = fmt({ month:"short" });
   const day = fmt({ day:"2-digit" });
@@ -247,10 +257,8 @@
 
   document.getElementById("datetime").textContent = `${weekday}, ${month} ${day} · ${time}`;
 
-  // ---- Crowd heuristic (simple, safe wording) ----
-  // You can tune these windows later.
+  // ---- Crowd heuristic ----
   let crowd = { level:"Low", dot:"#2ecc71", note:"Good time for popular spots." };
-
   if (hour >= 9 && hour < 11) crowd = { level:"Moderate", dot:"#f1c40f", note:"Crowds building — start with nearby areas." };
   if (hour >= 11 && hour < 16) crowd = { level:"High", dot:"#e74c3c", note:"Peak hours — expect queues at major icons." };
   if (hour >= 16 && hour < 19) crowd = { level:"Moderate", dot:"#f1c40f", note:"Nice for riverside walk & sunset photos." };
@@ -276,20 +284,17 @@
   document.getElementById("bestTime").textContent = bestTime;
   document.getElementById("bestTimeNote").textContent = bestTimeNote;
 
-  // ---- Photo tip (simple golden hour heuristic; no external API) ----
-  // Spring: sunset tends to be around 17:40~18:20. We'll show a helpful range.
+  // ---- Photo tip ----
   document.getElementById("photoTip").textContent = "📷 Best photo light: 17:45–18:20 (soft sakura colors)";
 
-  // ---- Comfort Index (simple; based on season guess, no API) ----
-  // If you later want real temperature, we can connect to a weather API.
+  // ---- Comfort Index ----
   let comfort = "Comfortable";
   if (hour < 8) comfort = "Cool morning";
   if (hour >= 11 && hour < 16) comfort = "Mild daytime";
   if (hour >= 19) comfort = "Cool evening";
   document.getElementById("comfortIndex").textContent = `🌡 Comfort Index: ${comfort}`;
 
-  // ---- Curated spots (edit names + times + distance) ----
-  // ✅ Near STITCH: your sakura map list
+  // ---- Curated spots (edit freely) ----
   const nearStitch = [
     { name:"Takasegawa Riverside", dist:"2–5 min walk", best:"sunrise / after 6 PM", tip:"Closest sakura stroll. Great for quick photos." },
     { name:"Kamo River", dist:"5–10 min walk", best:"sunset walk", tip:"Open space — feels calm even on busy days." },
@@ -298,7 +303,6 @@
     { name:"Yasaka Shrine", dist:"18–22 min walk", best:"dusk", tip:"Beautiful at dusk. Pair with Gion walk." }
   ];
 
-  // ✅ Kyoto Icons: famous spots list
   const kyotoIcons = [
     { name:"Fushimi Inari Taisha", dist:"~25 min by train", best:"7–9 AM", tip:"Go at opening time to avoid crowds." },
     { name:"Kiyomizu-dera", dist:"~20 min by bus/taxi", best:"early morning", tip:"Avoid 12:00–16:00 during peak season." },
@@ -307,12 +311,9 @@
     { name:"Arashiyama", dist:"~35–45 min by train", best:"before 9 AM", tip:"Very busy later — start early." }
   ];
 
-  // ---- Smart picking (time-based, not random-feeling) ----
-  // Seed changes daily + hourly but deterministic per hour (feels consistent).
   const seed = (now.getDate() * 31) + hour;
   const pick = (arr, s) => arr[s % arr.length];
 
-  // Peak hours → emphasize Near STITCH; icons still shown but with warning
   const near = pick(nearStitch, seed);
   const icon = pick(kyotoIcons, seed + 2);
 
@@ -324,7 +325,6 @@
 
   document.getElementById("iconSuggest").textContent = `Kyoto Icon: ${icon.name}`;
   document.getElementById("iconNote").textContent = iconLine;
-
 })();
 </script>
 </body>
