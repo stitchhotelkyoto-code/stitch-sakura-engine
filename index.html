@@ -6,21 +6,13 @@
 <title>STITCH HOTEL KYOTO Sakura Smart Guide</title>
 <style>
   :root{
-    /* soft pink, not loud */
     --bg:#fbf4f6;
     --card:#ffffff;
     --ink:#171717;
     --muted:#6b6b6b;
-
-    /* pink-tinted borders */
     --line:#f0dde3;
-
-    /* icon / tag soft pink */
     --soft:#f7e9ee;
-
-    /* accent pink (subtle) */
     --accent: rgba(231,184,194,.85);
-
     --shadow:0 14px 34px rgba(10,10,10,.08);
     --radius:22px;
     --radius-sm:14px;
@@ -33,10 +25,9 @@
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
   body{font-family:var(--sans); overflow-x:hidden;}
 
-  /* prevent mobile cut-off */
   .wrap{
     width:100%;
-    max-width:760px;
+    max-width:780px;
     margin:0 auto;
     padding:16px 12px 26px;
     overflow-x:hidden;
@@ -60,7 +51,7 @@
   }
 
   .hero{
-    padding:18px 18px 16px;
+    padding:18px 18px 12px;
     background:linear-gradient(180deg,rgba(247,233,238,.55),rgba(255,255,255,0));
   }
 
@@ -97,6 +88,41 @@
     line-height:1.45;
   }
 
+  /* Controls (manual) */
+  .controls{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .select{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 12px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    box-shadow:0 10px 24px rgba(10,10,10,.06);
+    max-width:100%;
+  }
+  .select label{
+    font-size:12px;
+    color:var(--muted);
+    font-weight:800;
+    letter-spacing:.08em;
+    white-space:nowrap;
+  }
+  .select select{
+    border:none;
+    outline:none;
+    font-weight:800;
+    font-size:13px;
+    background:transparent;
+    padding:2px 4px;
+  }
+
   .status{
     flex:0 0 auto;
     display:flex;
@@ -108,14 +134,12 @@
     background:rgba(255,255,255,.86);
     max-width:100%;
   }
-
-  /* crowd indicator - change color if you want */
   .dot{
-    width:10px;height:10px;border-radius:999px;background:#57b06a;
+    width:10px;height:10px;border-radius:999px;
+    background:#57b06a;
     box-shadow:0 0 0 4px rgba(87,176,106,.12);
     flex:0 0 auto;
   }
-
   .status b{
     font-size:14px; line-height:1.1; white-space:nowrap;
   }
@@ -189,6 +213,8 @@
     background:#fff;
     font-size:13px;
     max-width:100%;
+    word-break:break-word;
+    overflow-wrap:anywhere;
   }
 
   .section{
@@ -224,7 +250,7 @@
 
   .txt{
     flex:1 1 auto;
-    min-width:0; /* critical for wrap */
+    min-width:0;
   }
   .txt b{
     display:block;
@@ -293,22 +319,20 @@
     line-height:1.45;
   }
 
-  /* desktop enhancement */
   @media (min-width: 860px){
     .grid{ grid-template-columns: 1fr 1fr; }
-    .hero{ padding:22px 22px 18px; }
+    .hero{ padding:22px 22px 12px; }
     .grid{ padding:0 22px 22px; }
   }
 
-  /* mobile tuning */
   @media (max-width: 480px){
     .wrap{ padding:14px 10px 22px; }
-    .hero{ padding:16px 14px 14px; }
+    .hero{ padding:16px 14px 10px; }
     .grid{ padding:0 14px 14px; }
     .h1{ font-size:36px; }
     .big{ font-size:30px; }
     .status b, .status span{ white-space:normal; }
-    .cta{ grid-template-columns:1fr; } /* buttons 1 col */
+    .cta{ grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -324,19 +348,39 @@
           <div style="flex:1 1 320px; min-width:240px;">
             <div class="brand">STITCH HOTEL KYOTO</div>
             <h1 class="h1">Sakura Smart Guide</h1>
-            <div class="meta">
-              <!-- ✅ update these -->
-              Tuesday, Mar 03 · 19:39 (JST)<br/>
-              Good timing. Kyoto icon spot first, then nearby stroll.
+
+            <div class="meta" id="metaLine">
+              <!-- 자동 표기 -->
+            </div>
+
+            <!-- ✅ Manual Controls (Time & Crowd) -->
+            <div class="controls">
+              <div class="select">
+                <label for="timeSel">TIME</label>
+                <select id="timeSel">
+                  <option value="morning">Morning</option>
+                  <option value="midday">Midday</option>
+                  <option value="late" selected>Late afternoon</option>
+                  <option value="night">Night</option>
+                </select>
+              </div>
+
+              <div class="select">
+                <label for="crowdSel">CROWD</label>
+                <select id="crowdSel">
+                  <option value="low" selected>Low</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <!-- ✅ crowd status -->
-          <div class="status">
-            <div class="dot"></div>
+          <div class="status" id="statusBadge">
+            <div class="dot" id="statusDot"></div>
             <div>
-              <b>Crowd: Low</b>
-              <span>Recommended: start earlier</span>
+              <b id="statusMain">Crowd: Low</b>
+              <span id="statusSub">Recommended: icon spot OK, then nearby stroll.</span>
             </div>
           </div>
         </div>
@@ -345,13 +389,13 @@
       <!-- CONTENT -->
       <div class="grid">
 
-        <!-- LEFT: BEST TIME -->
+        <!-- BEST TIME / FLOW -->
         <div class="card">
-          <div class="label">BEST TIME TODAY</div>
+          <div class="label">BEST TIME & FLOW</div>
           <div class="accentLine"></div>
 
-          <p class="big">Late afternoon (15:30–17:30)</p>
-          <p class="sub">Good for riverside light and short walks. If crowded, shift to morning.</p>
+          <p class="big" id="bestTimeTitle">Late afternoon (15:30–17:30)</p>
+          <p class="sub" id="bestTimeDesc">Good for riverside light and short walks.</p>
 
           <div class="pillRow">
             <div class="pill">🌇 <b>Sunset:</b> 17:53</div>
@@ -365,7 +409,7 @@
                 <div class="ico">🌦️</div>
                 <div class="txt">
                   <b>Weather Strategy</b>
-                  <span>Rain likely → prioritize covered spots and short routes. Check live weather before departure.</span>
+                  <span id="weatherLine">Check weather and adjust routes. If rain, prioritize covered spots and short walks.</span>
                 </div>
               </div>
 
@@ -373,14 +417,14 @@
                 <div class="ico">🧭</div>
                 <div class="txt">
                   <b>Suggested Flow</b>
-                  <span>Kyoto icon spot → riverside stroll → return via quiet backstreets.</span>
+                  <span id="flowLine">Icon spot → riverside stroll → return via quiet streets.</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT: SPOTS (Icon first, Nearby second) -->
+        <!-- SPOTS -->
         <div class="card">
           <div class="label">CURATED SPOTS</div>
           <div class="accentLine"></div>
@@ -390,13 +434,9 @@
             <div class="row">
               <div class="ico">🏯</div>
               <div class="txt">
-                <b>Kyoto Icon: Nijō Castle</b>
-                <span>~15 min by subway · Best: weekday mid-morning for calmer entry.</span>
-                <div class="tags">
-                  <div class="tag">🏯 Icon</div>
-                  <div class="tag">🌿 Balanced</div>
-                  <div class="tag">📸 Photo Spot</div>
-                </div>
+                <b id="iconName">Kyoto Icon: Nijō Castle</b>
+                <span id="iconDesc">~15 min by subway · Best: weekday morning for calmer entry.</span>
+                <div class="tags" id="iconTags"></div>
               </div>
             </div>
 
@@ -404,13 +444,9 @@
             <div class="row">
               <div class="ico">🌊</div>
               <div class="txt">
-                <b>Near STITCH: Takasegawa / Kamogawa</b>
-                <span>5–12 min walk · Best: sunset · Riverside calm, easy stroll.</span>
-                <div class="tags">
-                  <div class="tag">🌊 Riverside</div>
-                  <div class="tag">🌿 Quiet</div>
-                  <div class="tag">🚶 Easy walk</div>
-                </div>
+                <b id="nearName">Near STITCH: Takasegawa / Kamogawa</b>
+                <span id="nearDesc">5–12 min walk · Best: sunset · Riverside calm, easy stroll.</span>
+                <div class="tags" id="nearTags"></div>
               </div>
             </div>
           </div>
@@ -421,7 +457,7 @@
                 <div class="ico">🚶</div>
                 <div class="txt">
                   <b>Walkability (on-site walking)</b>
-                  <span>★★★★★ Easy. Flat routes and short walking distance from hotel / stations.</span>
+                  <span id="walkLine">★★★★★ Easy. Flat routes and short walking distance.</span>
                 </div>
               </div>
 
@@ -429,7 +465,7 @@
                 <div class="ico">⚠️</div>
                 <div class="txt">
                   <b>Peak Risk</b>
-                  <span>Near: Moderate (16:00–18:00). Avoid main gates and narrow bridges during peak.</span>
+                  <span id="riskLine">Near: Moderate (16:00–18:00). Avoid main gates and narrow bridges.</span>
                 </div>
               </div>
 
@@ -437,7 +473,7 @@
                 <div class="ico">📍</div>
                 <div class="txt">
                   <b>Best Angle</b>
-                  <span>Use riverside edges and wider viewpoints. If queues form, shift to backstreets for smoother photos.</span>
+                  <span id="angleLine">Use wider viewpoints. If queues form, shift to quieter edges/backstreets for smoother photos.</span>
                 </div>
               </div>
             </div>
@@ -445,18 +481,155 @@
             <div class="cta">
               <!-- ✅ replace links -->
               <a class="btn" href="https://forecast7.com/en/35d01135d77/kyoto/" target="_blank" rel="noreferrer">🌦️ Weather</a>
-              <a class="btn" href="https://www.google.com/maps/d/u/0/edit?mid=1d4bRtlPGDMOtNh13XdboeiLs5gIK_sk&ll=34.99575518042425%2C135.74457159999997&z=12" target="_blank" rel="noreferrer">🌸 Sakura Map</a>
-              <a class="btn" href="https://platinumaps.jp/d/kyoto-smart-navi" target="_blank" rel="noreferrer">👥 Crowd Map</a>
+              <a class="btn" href="hhttps://www.google.com/maps/d/u/0/edit?mid=1d4bRtlPGDMOtNh13XdboeiLs5gIK_sk&ll=34.99575518042425%2C135.74457159999997&z=12" rel="noreferrer">🌸 Sakura Map</a>
+              <a class="btn" href="https://platinumaps.jp/d/kyoto-smart-navi" rel="noreferrer">👥 Crowd Map</a>
               <a class="btn" href="https://www.instagram.com/stitchhotelkyoto/" target="_blank" rel="noreferrer">📷 Instagram</a>
             </div>
 
-            <div class="foot">
-              Tip: Check the crowd map before you go. If crowded, start earlier or choose nearby calm routes first.
+            <div class="foot" id="footLine">
+              Tip: If crowded, start earlier or choose nearby calm routes first.
             </div>
           </div>
         </div>
+
       </div><!-- /grid -->
     </div><!-- /shell -->
   </div><!-- /wrap -->
+
+<script>
+  // --- Manual selections (Time + Crowd) ---
+  const CROWD = {
+    low:      { label:"Low",      dot:"#57b06a", ring:"rgba(87,176,106,.12)", hint:"Recommended: icon spot OK, then nearby stroll." },
+    moderate: { label:"Moderate", dot:"#f0b429", ring:"rgba(240,180,41,.14)", hint:"Recommended: start earlier + mix icon & nearby." },
+    high:     { label:"High",     dot:"#e45d5d", ring:"rgba(228,93,93,.14)", hint:"Recommended: nearby routes first to avoid queues." }
+  };
+
+  const TIME_PRESET = {
+    morning: { title:"Morning (08:00–10:30)", desc:"Best for iconic spots with minimal queues. Crisp light and calmer routes." },
+    midday:  { title:"Midday (11:00–14:00)", desc:"Crowds rise. Choose wider areas and short routes; keep plans flexible." },
+    late:    { title:"Late afternoon (15:30–17:30)", desc:"Soft light for riverside. Great for nearby stroll + photos." },
+    night:   { title:"Night (18:30–21:00)", desc:"Night sakura vibes. Stick to safe, well-lit routes and avoid bottlenecks." }
+  };
+
+  // --- Spot candidates (edit freely) ---
+  const ICON_SPOTS = [
+    { name:"Kyoto Icon: Nijō Castle", desc:"~15 min by subway · Best: weekday morning for calmer entry.", tags:["🏯 Icon","🌿 Balanced","📸 Photo Spot"] },
+    { name:"Kyoto Icon: Philosopher’s Path", desc:"Best: morning · Calm walking route along canal.", tags:["🌸 Famous","🚶 Walk","📸 Photo Spot"] },
+    { name:"Kyoto Icon: Kiyomizu-dera", desc:"Best: early morning to avoid heavy crowds.", tags:["🏯 Icon","⏰ Early","📸 Classic View"] }
+  ];
+
+  const NEAR_SPOTS = [
+    { name:"Near STITCH: Takasegawa", desc:"5–8 min walk · Best: late afternoon · Riverside calm.", tags:["🌊 Riverside","🌿 Quiet","🚶 Easy walk"] },
+    { name:"Near STITCH: Kamogawa", desc:"10–12 min walk · Wide paths · Great for sunset.", tags:["🌊 Riverside","🌇 Sunset","🚶 Easy walk"] },
+    { name:"Near STITCH: Gion backstreets", desc:"Walkable · Best: evening · Avoid main roads during peak.", tags:["🏮 Streets","🌿 Quiet","📸 Atmosphere"] }
+  ];
+
+  function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+  function renderTags(el, tags){
+    el.innerHTML = "";
+    tags.forEach(t=>{
+      const d = document.createElement("div");
+      d.className = "tag";
+      d.textContent = t;
+      el.appendChild(d);
+    });
+  }
+
+  function formatMeta(){
+    const d = new Date();
+    const opt = { weekday:"long", month:"short", day:"2-digit" };
+    const dateStr = d.toLocaleDateString("en-US", opt);
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mm = String(d.getMinutes()).padStart(2,"0");
+    return `${dateStr} · ${hh}:${mm} (JST)<br/>Set time & crowd manually for today’s best plan.`;
+  }
+
+  function update(){
+    const crowdKey = document.getElementById("crowdSel").value;
+    const timeKey = document.getElementById("timeSel").value;
+
+    // meta
+    document.getElementById("metaLine").innerHTML = formatMeta();
+
+    // crowd badge
+    const c = CROWD[crowdKey];
+    document.getElementById("statusMain").textContent = `Crowd: ${c.label}`;
+    document.getElementById("statusSub").textContent = c.hint;
+
+    const dot = document.getElementById("statusDot");
+    dot.style.background = c.dot;
+    dot.style.boxShadow = `0 0 0 4px ${c.ring}`;
+
+    // time copy
+    const t = TIME_PRESET[timeKey];
+    document.getElementById("bestTimeTitle").textContent = t.title;
+    document.getElementById("bestTimeDesc").textContent = t.desc;
+
+    // logic lines (time + crowd)
+    const flowLine = document.getElementById("flowLine");
+    const riskLine = document.getElementById("riskLine");
+    const footLine = document.getElementById("footLine");
+    const weatherLine = document.getElementById("weatherLine");
+    const walkLine = document.getElementById("walkLine");
+    const angleLine = document.getElementById("angleLine");
+
+    // defaults
+    weatherLine.textContent = "Check weather and adjust routes. If rain, prioritize covered spots and short walks.";
+    angleLine.textContent = "Use wider viewpoints. If queues form, shift to quieter edges/backstreets for smoother photos.";
+
+    if (crowdKey === "high"){
+      flowLine.textContent = "Nearby routes first → riverside edges → optional icon only if calm.";
+      riskLine.textContent = "High crowd: avoid main gates + famous bottlenecks. Prefer wide riverside paths.";
+      footLine.textContent = "High crowd today: start with nearby calm routes, then decide if icon spot is feasible.";
+    } else if (crowdKey === "moderate"){
+      flowLine.textContent = "Start earlier → icon (short stay) → move to nearby riverside to spread out.";
+      riskLine.textContent = "Moderate crowd: avoid narrow bridges and long queues during peak hours.";
+      footLine.textContent = "Moderate crowd: go earlier, keep icon stop short, then shift to nearby routes.";
+    } else {
+      flowLine.textContent = "Icon spot first → riverside stroll → return via quiet streets.";
+      riskLine.textContent = "Low crowd: still avoid narrow bridges during peak, but icon spots are feasible.";
+      footLine.textContent = "Low crowd: icon spots are feasible. Still check crowd map before departure.";
+    }
+
+    // time nuance
+    if (timeKey === "morning"){
+      weatherLine.textContent = "Morning is best for icons. Aim for earlier departure to avoid queues.";
+    }
+    if (timeKey === "night"){
+      riskLine.textContent = "Night: choose well-lit routes, avoid overly narrow paths, and stay mindful of congestion.";
+    }
+
+    // spot selection (random, with light bias)
+    let iconPick = pick(ICON_SPOTS);
+    let nearPick = pick(NEAR_SPOTS);
+
+    // If crowd high, pick calmer icon if available
+    if (crowdKey === "high"){
+      const calmIcon = ICON_SPOTS.find(s => s.name.includes("Philosopher")) || null;
+      if (calmIcon) iconPick = calmIcon;
+    }
+
+    // render spots
+    document.getElementById("iconName").textContent = iconPick.name;
+    document.getElementById("iconDesc").textContent = iconPick.desc;
+    renderTags(document.getElementById("iconTags"), iconPick.tags);
+
+    document.getElementById("nearName").textContent = nearPick.name;
+    document.getElementById("nearDesc").textContent = nearPick.desc;
+    renderTags(document.getElementById("nearTags"), nearPick.tags);
+
+    // walkability note (route-based)
+    if (nearPick.name.includes("Takasegawa") || nearPick.name.includes("Kamogawa")){
+      walkLine.textContent = "★★★★★ Easy. Flat riverside paths and short walking distance from STITCH.";
+    } else {
+      walkLine.textContent = "★★★★☆ Easy–Moderate. Mostly flat, but crowds may slow walking during peak.";
+    }
+  }
+
+  document.getElementById("crowdSel").addEventListener("change", update);
+  document.getElementById("timeSel").addEventListener("change", update);
+  update();
+</script>
 </body>
 </html>
