@@ -171,7 +171,7 @@
     .brand .title{ font-size: 20px; }
   }
 
-  /* ===== Mobile Compact Mode (핵심) ===== */
+  /* ===== Mobile Compact Mode (핵심: 폰마다 덜 흔들리게) ===== */
   @media (max-width: 600px){
     .wrap{ margin: 10px auto; padding: 0 10px; }
     .top{ padding: 14px 14px 8px; }
@@ -179,9 +179,10 @@
     .panel{ padding: 12px; }
     .brand .title{ font-size: 18px; }
     .big{ font-size: 18px; }
-    #photoTip{ display:none; }      /* 길어져서 숨김 */
-    #legalNote{ display:none; }     /* 하단 문구 숨김 */
+    #legalNote{ display:none; }     /* 하단 긴 문구 숨김 */
     #iconNote{ display:none; }      /* 아이콘 긴 설명 숨김 */
+    /* photoTip은 유지(자동 일몰이라 보여주는 가치 큼) — 너무 길면 숨기고 싶으면 아래 줄 주석 해제 */
+    /* #photoTip{ display:none; } */
     .footer{ padding: 10px 14px 12px; }
   }
 </style>
@@ -245,10 +246,13 @@
 
 <script>
 (function(){
-  // ---- Time (Asia/Tokyo) ----
+  // ------------------------------
+  // Time (Asia/Tokyo)
+  // ------------------------------
   const now = new Date();
   const tz = "Asia/Tokyo";
-  const fmt = (opt) => new Intl.DateTimeFormat("en-US", { timeZone: tz, ...opt }).format(now);
+  const fmt = (opt, d = now) => new Intl.DateTimeFormat("en-US", { timeZone: tz, ...opt }).format(d);
+
   const hour = Number(fmt({ hour: "2-digit", hour12: false }));
   const weekday = fmt({ weekday:"long" });
   const month = fmt({ month:"short" });
@@ -257,7 +261,9 @@
 
   document.getElementById("datetime").textContent = `${weekday}, ${month} ${day} · ${time}`;
 
-  // ---- Crowd heuristic ----
+  // ------------------------------
+  // Crowd heuristic (time band)
+  // ------------------------------
   let crowd = { level:"Low", dot:"#2ecc71", note:"Good time for popular spots." };
   if (hour >= 9 && hour < 11) crowd = { level:"Moderate", dot:"#f1c40f", note:"Crowds building — start with nearby areas." };
   if (hour >= 11 && hour < 16) crowd = { level:"High", dot:"#e74c3c", note:"Peak hours — expect queues at major icons." };
@@ -268,7 +274,9 @@
   document.getElementById("crowdLabel").textContent = `Crowd: ${crowd.level}`;
   document.getElementById("crowdNote").textContent = crowd.note;
 
-  // ---- Best time suggestion ----
+  // ------------------------------
+  // Best time suggestion
+  // ------------------------------
   const bestTime =
     (hour < 7) ? "7:00–9:00 AM (best light & fewer crowds)" :
     (hour < 11) ? "Now → good time before peak crowds" :
@@ -284,17 +292,93 @@
   document.getElementById("bestTime").textContent = bestTime;
   document.getElementById("bestTimeNote").textContent = bestTimeNote;
 
-  // ---- Photo tip ----
-  document.getElementById("photoTip").textContent = "📷 Best photo light: 17:45–18:20 (soft sakura colors)";
+  // ------------------------------
+  // Sunset calculation (NO API) — NOAA algorithm (approx.)
+  // ------------------------------
+  function calcSunset(dateUTC, lat, lon) {
+    const rad = Math.PI / 180;
 
-  // ---- Comfort Index ----
+    const year = dateUTC.getUTCFullYear();
+    const month = dateUTC.getUTCMonth() + 1;
+    const day = dateUTC.getUTCDate();
+
+    const N1 = Math.floor(275 * month / 9);
+    const N2 = Math.floor((month + 9) / 12);
+    const N3 = (1 + Math.floor((year - 4 * Math.floor(year / 4) + 2) / 3));
+    const N = N1 - (N2 * N3) + day - 30;
+
+    const lngHour = lon / 15;
+    const t = N + ((18 - lngHour) / 24);
+
+    const M = (0.9856 * t) - 3.289;
+
+    let L = M + (1.916 * Math.sin(M * rad)) + (0.020 * Math.sin(2 * M * rad)) + 282.634;
+    L = (L + 360) % 360;
+
+    let RA = Math.atan(0.91764 * Math.tan(L * rad)) / rad;
+    RA = (RA + 360) % 360;
+
+    const Lquadrant  = Math.floor(L / 90) * 90;
+    const RAquadrant = Math.floor(RA / 90) * 90;
+    RA = RA + (Lquadrant - RAquadrant);
+    RA = RA / 15;
+
+    const sinDec = 0.39782 * Math.sin(L * rad);
+    const cosDec = Math.cos(Math.asin(sinDec));
+
+    const zenith = 90.833;
+    const cosH = (Math.cos(zenith * rad) - (sinDec * Math.sin(lat * rad))) / (cosDec * Math.cos(lat * rad));
+    if (cosH > 1) return null;
+
+    let H = Math.acos(cosH) / rad;
+    H = H / 15;
+
+    const T = H + RA - (0.06571 * t) - 6.622;
+
+    let UT = (T - lngHour) % 24;
+    if (UT < 0) UT += 24;
+
+    const sunsetUTC = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+    sunsetUTC.setUTCHours(Math.floor(UT), Math.floor((UT % 1) * 60), 0, 0);
+    return sunsetUTC;
+  }
+
+  // ------------------------------
+  // Photo tip: Sunset-based (auto seasonal, today-based)
+  // ------------------------------
+  const KYOTO_LAT = 35.0116;
+  const KYOTO_LON = 135.7681;
+
+  // "today" for sunrise/sunset algorithm uses UTC date components
+  const todayUTC = new Date(); // now in local, but we use its UTC components internally
+  const sunsetUTC = calcSunset(todayUTC, KYOTO_LAT, KYOTO_LON);
+
+  const fmtHM = (d) => fmt({ hour:"2-digit", minute:"2-digit", hour12:false }, d);
+
+  if (sunsetUTC) {
+    const beforeMin = 35;
+    const afterMin = 20;
+    const start = new Date(sunsetUTC.getTime() - beforeMin * 60000);
+    const end = new Date(sunsetUTC.getTime() + afterMin * 60000);
+
+    document.getElementById("photoTip").textContent =
+      `📷 Best photo light: ${fmtHM(start)}–${fmtHM(end)} (around sunset)`;
+  } else {
+    document.getElementById("photoTip").textContent = "📷 Best photo light: around sunset";
+  }
+
+  // ------------------------------
+  // Comfort Index (light heuristic; no weather API)
+  // ------------------------------
   let comfort = "Comfortable";
   if (hour < 8) comfort = "Cool morning";
   if (hour >= 11 && hour < 16) comfort = "Mild daytime";
   if (hour >= 19) comfort = "Cool evening";
   document.getElementById("comfortIndex").textContent = `🌡 Comfort Index: ${comfort}`;
 
-  // ---- Curated spots (edit freely) ----
+  // ------------------------------
+  // Curated spots (edit freely)
+  // ------------------------------
   const nearStitch = [
     { name:"Takasegawa Riverside", dist:"2–5 min walk", best:"sunrise / after 6 PM", tip:"Closest sakura stroll. Great for quick photos." },
     { name:"Kamo River", dist:"5–10 min walk", best:"sunset walk", tip:"Open space — feels calm even on busy days." },
@@ -311,7 +395,8 @@
     { name:"Arashiyama", dist:"~35–45 min by train", best:"before 9 AM", tip:"Very busy later — start early." }
   ];
 
-  const seed = (now.getDate() * 31) + hour;
+  // Deterministic pick per day+hour (feels "smart", not random spam)
+  const seed = (todayUTC.getDate() * 31) + hour;
   const pick = (arr, s) => arr[s % arr.length];
 
   const near = pick(nearStitch, seed);
@@ -325,6 +410,7 @@
 
   document.getElementById("iconSuggest").textContent = `Kyoto Icon: ${icon.name}`;
   document.getElementById("iconNote").textContent = iconLine;
+
 })();
 </script>
 </body>
