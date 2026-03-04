@@ -17,15 +17,11 @@
 
       --pink:#f3c7d4;
       --pink2:#f7dbe4;
-
-      --btn:#fff;
-      --btnText:#171717;
-      --btnBorder:rgba(23,23,23,0.14);
-      --btnPink:#f2d6df;
+      --chip:#ffffff;
     }
 
-    *{box-sizing:border-box}
-    html,body{width:100%; overflow-x:hidden;}
+    *{ box-sizing:border-box; }
+    html, body{ width:100%; overflow-x:hidden; }
     body{
       margin:0;
       font-family: Georgia, "Times New Roman", serif;
@@ -35,6 +31,13 @@
         radial-gradient(900px 450px at 85% 15%, rgba(247,219,228,0.55), transparent 60%),
         linear-gradient(180deg, #fff, var(--bg));
       padding:18px;
+    }
+
+    /* ⭐ 세로글자 방지 핵심 */
+    body, .card, .panel, .chip, .spotCard, .miniRow, .btn{
+      word-break: normal;
+      overflow-wrap: break-word;  /* anywhere 금지 */
+      white-space: normal;
     }
 
     .wrap{
@@ -53,6 +56,14 @@
       overflow:hidden;
     }
 
+    .hero{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
     .brand{
       letter-spacing:0.12em;
       font-size:12px;
@@ -67,123 +78,81 @@
       letter-spacing:-0.02em;
     }
 
-    .sub{
+    .meta{
       margin:0;
       color:rgba(23,23,23,0.60);
-      font-size:22px;
-      line-height:1.2;
-    }
-
-    /* Top row */
-    .heroTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
+      font-size:18px;
+      line-height:1.25;
     }
 
     .badge{
       display:flex;
-      align-items:center;
       gap:10px;
+      align-items:center;
       padding:10px 14px;
       border-radius:999px;
       background:#fff;
       border:1px solid var(--line);
-      white-space:nowrap;
+      max-width:420px;
     }
     .dot{
       width:10px;height:10px;border-radius:50%;
-      background:#e74c3c;
-      box-shadow:0 0 0 5px rgba(231,76,60,0.12);
+      background:#3CB371;
+      box-shadow:0 0 0 5px rgba(60,179,113,0.14);
       flex:0 0 auto;
     }
     .badgeTitle{
-      font-weight:700;
-      font-size:20px;
-      line-height:1;
+      font-weight:800;
+      font-size:18px;
+      line-height:1.1;
+      white-space:nowrap;
     }
     .badgeDesc{
       display:block;
-      font-size:14px;
+      font-size:13px;
       color:rgba(23,23,23,0.62);
       margin-top:2px;
-      white-space:normal;
+      line-height:1.2;
     }
 
-    /* Controls area */
-    .controlsPanel{
-      margin-top:16px;
-      padding:14px;
-      border-radius:18px;
-      background:rgba(247,219,228,0.35);
-      border:1px solid var(--line);
+    .controls{
+      margin-top:14px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
     }
-
-    /* AUTO CROWD single widget */
-    .autoCrowd{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:12px 14px;
+    .select{
       display:flex;
       align-items:center;
       gap:10px;
-      flex-wrap:wrap;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 12px;
     }
-    .autoCrowd .label{
+    .select label{
       letter-spacing:0.12em;
-      font-size:12px;
+      font-size:11px;
       color:rgba(23,23,23,0.55);
       text-transform:uppercase;
-      margin-right:2px;
-    }
-    .autoCrowd .level{
-      font-weight:800;
-      font-size:28px;
-      line-height:1;
-      letter-spacing:-0.01em;
-    }
-    .autoCrowd .time{
-      margin-left:auto;
-      font-size:14px;
-      color:rgba(23,23,23,0.55);
+      margin-left:2px;
       white-space:nowrap;
     }
-
-    /* Manual selects row */
-    .selectRow{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    .selectBox label{
-      display:block;
-      letter-spacing:0.12em;
-      font-size:12px;
-      color:rgba(23,23,23,0.55);
-      text-transform:uppercase;
-      margin:2px 0 8px;
-    }
     select{
-      width:100%;
-      padding:14px 16px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-family:inherit;
-      font-size:22px;
-      font-weight:700;
+      border:none;
       outline:none;
+      background:transparent;
+      font-family:inherit;
+      font-weight:800;
+      font-size:18px;
+      padding:2px 2px;
     }
 
-    /* Main grid (desktop: 2 columns, mobile: 1) */
     .grid{
       margin-top:16px;
       display:grid;
-      grid-template-columns:1.25fr 0.85fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap:14px;
       align-items:start;
     }
@@ -194,97 +163,110 @@
       border-radius:18px;
       padding:16px;
       overflow:hidden;
+      min-width:0;
     }
-
     .panelTitle{
       letter-spacing:0.12em;
       font-size:12px;
       color:rgba(23,23,23,0.55);
       text-transform:uppercase;
-      margin:0 0 6px;
+      margin:0 0 8px;
     }
 
     .big{
-      font-size:44px;
-      line-height:0.98;
-      margin:0 0 8px;
+      font-size:40px;
+      line-height:1.02;
+      margin:0 0 6px;
       letter-spacing:-0.02em;
-      font-weight:800;
+      font-weight:900;
     }
-
     .tip{
       margin:0 0 12px;
       color:rgba(23,23,23,0.62);
-      font-size:18px;
+      font-size:16px;
       line-height:1.25;
     }
 
-    /* Info chips -> prevent overlap */
+    /* Left info chips */
     .chips{
       display:grid;
-      grid-template-columns:1fr;
       gap:10px;
       margin-top:10px;
     }
-
     .chip{
-      background:#fff;
+      background:var(--chip);
       border:1px solid var(--line);
-      border-radius:999px;
+      border-radius:18px;
       padding:12px 14px;
       display:flex;
       align-items:center;
-      gap:10px;
-      min-width:0; /* IMPORTANT: allows wrapping inside */
-    }
-
-    .chip .k{
-      font-weight:800;
-      font-size:22px;
-      line-height:1.05;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      gap:12px;
       min-width:0;
-      flex:1 1 auto;
+    }
+    .chip .k{
+      font-weight:900;
+      font-size:18px;
+      line-height:1.1;
+      flex:0 0 auto;
+      white-space:nowrap;
     }
     .chip .v{
-      font-size:20px;
+      margin-left:auto;
       color:rgba(23,23,23,0.62);
+      font-size:16px;
+      line-height:1.2;
       text-align:right;
-      white-space:normal;
-      overflow-wrap:anywhere;
       min-width:0;
-      flex:0 1 auto;
+      max-width:58%;
     }
 
-    /* Curated section */
+    /* Right cards */
+    .spotCard{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:10px;
+      min-width:0;
+    }
+    .spotHead{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:6px;
+    }
+    .spotIcon{
+      width:26px;height:26px;border-radius:8px;
+      background:rgba(243,199,212,0.55);
+      display:grid;place-items:center;
+      font-size:14px;
+      flex:0 0 auto;
+    }
     .spotTitle{
-      font-size:34px;
-      line-height:1.02;
-      margin:0 0 6px;
-      font-weight:800;
-      letter-spacing:-0.02em;
+      font-weight:900;
+      font-size:18px;
+      line-height:1.1;
+      margin:0;
     }
     .spotMeta{
       margin:0 0 10px;
       color:rgba(23,23,23,0.62);
-      font-size:18px;
-      line-height:1.25;
+      font-size:14px;
+      line-height:1.2;
     }
     .tags{
       display:flex;
+      gap:8px;
       flex-wrap:wrap;
-      gap:10px;
-      margin:10px 0 14px;
     }
     .tag{
       background:#fff;
       border:1px solid var(--line);
       border-radius:999px;
-      padding:10px 14px;
-      font-weight:700;
-      font-size:18px;
+      padding:8px 12px;
+      font-weight:800;
+      font-size:13px;
+      white-space:nowrap;
     }
 
     .miniList{
@@ -295,7 +277,7 @@
     .miniRow{
       background:#fff;
       border:1px solid var(--line);
-      border-radius:16px;
+      border-radius:18px;
       padding:12px 14px;
       display:flex;
       gap:12px;
@@ -303,80 +285,64 @@
       min-width:0;
     }
     .miniRow .k{
-      font-weight:800;
-      font-size:22px;
-      line-height:1.05;
-      min-width:0;
+      font-weight:900;
+      font-size:16px;
+      white-space:nowrap;
       flex:0 0 auto;
     }
     .miniRow .v{
       margin-left:auto;
       color:rgba(23,23,23,0.62);
-      font-size:20px;
+      font-size:14px;
       text-align:right;
       min-width:0;
-      overflow-wrap:anywhere;
+      max-width:62%;
     }
 
-    .note{
-      margin:14px 2px 0;
-      color:rgba(23,23,23,0.60);
-      font-size:18px;
-      line-height:1.25;
-      border-top:1px solid var(--line);
-      padding-top:12px;
-    }
-
-    /* Footer buttons */
-    .foot{
-      margin-top:16px;
-      padding-top:14px;
-      border-top:1px solid var(--line);
-    }
     .cta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
       margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
     }
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding:14px 16px;
+      padding:12px 12px;
       border-radius:999px;
-      border:1px solid var(--btnBorder);
-      background:var(--btn);
-      color:var(--btnText);
+      border:1px solid rgba(23,23,23,0.14);
+      background:#fff;
+      color:#171717;
       text-decoration:none;
-      font-weight:800;
-      font-size:20px;
-      min-width: 220px;
+      font-weight:900;
+      font-size:16px;
       cursor:pointer;
+      min-width:0;
     }
-    .btn.primary{ background:#fff; } /* Crowd Map should be WHITE */
-    .btn.pink{ background:var(--btnPink); } /* Instagram should be PINK */
+    .btn.crowd{ background:rgba(243,199,212,0.55); } /* crowd 버튼 핑크 */
+    .btn.insta{ background:#fff; }                /* 인스타 흰색(원하면 바꿔도 됨) */
 
-    /* Responsive */
+    .footLine{
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid var(--line);
+      color:rgba(23,23,23,0.60);
+      font-size:14px;
+      line-height:1.25;
+    }
+
     @media (max-width: 900px){
       .h1{font-size:46px;}
       .grid{grid-template-columns:1fr;}
-      .selectRow{grid-template-columns:1fr;}
-      .btn{min-width:0; width:100%;}
     }
-
     @media (max-width: 520px){
       body{padding:12px;}
       .card{padding:18px;}
       .h1{font-size:44px;}
-      select{font-size:20px;}
-      .big{font-size:40px;}
-      .chip .k{font-size:20px;}
-      .chip .v{font-size:18px;}
-      .spotTitle{font-size:32px;}
-      .miniRow .k{font-size:20px;}
-      .miniRow .v{font-size:18px;}
+      .big{font-size:36px;}
+      .cta{grid-template-columns:1fr 1fr;}
     }
   </style>
 </head>
@@ -385,15 +351,14 @@
   <div class="wrap">
     <div class="card">
 
-      <!-- HEADER -->
-      <div class="heroTop">
+      <div class="hero">
         <div>
           <div class="brand">STITCH HOTEL KYOTO</div>
-          <h1 class="h1">Sakura Smart<br/>Guide</h1>
-          <p class="sub" id="dateLine">—</p>
+          <div class="h1">Sakura Smart<br/>Guide</div>
+          <p class="meta" id="dateLine">—</p>
+          <p class="meta" style="margin-top:6px;">Set time &amp; crowd manually for today’s best plan.</p>
         </div>
 
-        <!-- Manual crowd badge (this is ONE place) -->
         <div class="badge" id="crowdBadge">
           <span class="dot" id="crowdDot"></span>
           <div>
@@ -403,133 +368,106 @@
         </div>
       </div>
 
-      <!-- CONTROLS -->
-      <div class="controlsPanel">
-        <!-- AUTO CROWD (ONLY ONE WIDGET) -->
-        <div class="autoCrowd" id="autoCrowdBox">
-          <span class="dot" id="autoCrowdDot" style="background:#999; box-shadow:0 0 0 5px rgba(0,0,0,0.08)"></span>
-          <span class="label">AUTO CROWD</span>
-          <span class="level" id="autoCrowdLabel">Detecting…</span>
-          <span class="time" id="autoCrowdTime"></span>
+      <div class="controls">
+        <div class="select">
+          <label for="timeSel">TIME</label>
+          <select id="timeSel">
+            <option value="morning">Morning</option>
+            <option value="midday">Midday</option>
+            <option value="late" selected>Late afternoon</option>
+            <option value="night">Night</option>
+          </select>
         </div>
 
-        <!-- Manual -->
-        <div class="selectRow">
-          <div class="selectBox">
-            <label for="timeSel">TIME</label>
-            <select id="timeSel">
-              <option value="morning">Morning</option>
-              <option value="midday">Midday</option>
-              <option value="late" selected>Late afternoon</option>
-              <option value="night">Night</option>
-            </select>
-          </div>
-
-          <div class="selectBox">
-            <label for="crowdSel">CROWD (MANUAL)</label>
-            <select id="crowdSel">
-              <option value="Very Low">Very Low</option>
-              <option value="Low">Low</option>
-              <option value="Moderate">Moderate</option>
-              <option value="High" selected>High</option>
-            </select>
-          </div>
+        <div class="select">
+          <label for="crowdSel">CROWD</label>
+          <select id="crowdSel">
+            <option value="Very Low">Very Low</option>
+            <option value="Low" selected>Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+          </select>
         </div>
       </div>
 
-      <!-- MAIN -->
       <div class="grid">
         <!-- LEFT -->
         <div class="panel">
           <div class="panelTitle">BEST TIME &amp; FLOW</div>
-          <h2 class="big" id="bestTime">—</h2>
+          <div class="big" id="bestTime">—</div>
           <p class="tip" id="bestTip">—</p>
 
           <div class="chips">
             <div class="chip">
-              <div class="k">🌇 Sunset in Kyoto</div>
+              <div class="k">🌇 Sunset</div>
               <div class="v" id="sunset">—</div>
             </div>
-
             <div class="chip">
-              <div class="k">📷 Best photo light</div>
-              <div class="v" id="photoTime">—</div>
+              <div class="k">📷 Best light</div>
+              <div class="v" id="bestLight">—</div>
             </div>
-
             <div class="chip">
-              <div class="k">🌸 Bloom Progress</div>
-              <div class="v" id="bloomPct">—</div>
-            </div>
-
-            <div class="chip">
-              <div class="k">🗓️ Peak Window</div>
+              <div class="k">🗓 Peak window (avg.)</div>
               <div class="v" id="peakWindow">—</div>
             </div>
-
             <div class="chip">
-              <div class="k">⏳ Peak Countdown</div>
-              <div class="v" id="countdown">—</div>
-            </div>
-
-            <div class="chip">
-              <div class="k">🌦️ Weather Strategy</div>
+              <div class="k">🌦 Weather Strategy</div>
               <div class="v" id="weatherStrategy">—</div>
             </div>
-
             <div class="chip">
               <div class="k">🧭 Suggested Flow</div>
-              <div class="v" id="flowLine">—</div>
+              <div class="v" id="suggestedFlow">—</div>
             </div>
           </div>
         </div>
 
         <!-- RIGHT -->
         <div class="panel">
-          <div class="panelTitle">CURATED SUGGESTION</div>
+          <div class="panelTitle">CURATED SPOTS</div>
 
-          <h3 class="spotTitle" id="nearTitle">Near STITCH: —</h3>
-          <p class="spotMeta" id="nearMeta">—</p>
-          <div class="tags" id="nearTags"></div>
+          <div class="spotCard">
+            <div class="spotHead">
+              <div class="spotIcon">🌸</div>
+              <p class="spotTitle" id="iconTitle">Kyoto Icon: —</p>
+            </div>
+            <p class="spotMeta" id="iconMeta">—</p>
+            <div class="tags" id="iconTags"></div>
+          </div>
 
-          <h3 class="spotTitle" id="iconTitle" style="margin-top:8px;">Kyoto Icon: —</h3>
-          <p class="spotMeta" id="iconMeta">—</p>
-          <div class="tags" id="iconTags"></div>
+          <div class="spotCard">
+            <div class="spotHead">
+              <div class="spotIcon">🏞️</div>
+              <p class="spotTitle" id="nearTitle">Near STITCH: —</p>
+            </div>
+            <p class="spotMeta" id="nearMeta">—</p>
+            <div class="tags" id="nearTags"></div>
+          </div>
 
-          <!-- extra info box (the “missing widget” issue) -->
           <div class="miniList">
             <div class="miniRow">
-              <div class="k">🥶 Comfort Index</div>
-              <div class="v" id="comfort">—</div>
+              <div class="k">🚶 Walkability</div>
+              <div class="v" id="walkability">—</div>
             </div>
             <div class="miniRow">
               <div class="k">⚠️ Peak Risk</div>
-              <div class="v" id="risk">—</div>
+              <div class="v" id="peakRisk">—</div>
             </div>
             <div class="miniRow">
-              <div class="k">🚶 Suggested Visit Flow</div>
-              <div class="v" id="visitFlow">—</div>
+              <div class="k">📍 Best Angle</div>
+              <div class="v" id="bestAngle">—</div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- FOOTER -->
-      <div class="foot">
-        <div class="note" id="footLine">
-          Estimated guidance based on time, weather and typical crowd patterns. Please check the live crowd map before heading out.
-        </div>
+          <div class="cta">
+            <a class="btn" id="btnWeather" href="#" target="_blank" rel="noopener noreferrer">🌦 Weather</a>
+            <a class="btn" id="btnSakura" href="#" target="_blank" rel="noopener noreferrer">🌸 Sakura Map</a>
+            <a class="btn crowd" id="btnCrowd" href="#" target="_blank" rel="noopener noreferrer">📍 Crowd Map</a>
+            <a class="btn insta" id="btnInsta" href="#" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
+          </div>
 
-        <div class="cta">
-          <a class="btn" id="btnWeather" href="#" target="_blank" rel="noopener noreferrer">🌦️ Open Weather</a>
-          <a class="btn" id="btnSakura" href="#" target="_blank" rel="noopener noreferrer">🌸 Open Sakura Map</a>
-
-          <!-- Crowd Map should be WHITE (not pink) -->
-          <a class="btn primary" id="btnCrowd" href="#" target="_blank" rel="noopener noreferrer">📍 Open Live Crowd Map</a>
-
-          <a class="btn" id="btnRefresh" href="javascript:void(0)">↻ Refresh</a>
-
-          <!-- Instagram should be PINK -->
-          <a class="btn pink" id="btnInsta" href="#" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
+          <div class="footLine">
+            Low crowd icon spots are flexible. Still check crowd map before departure.
+          </div>
         </div>
       </div>
 
@@ -537,9 +475,9 @@
   </div>
 
   <script>
-    /***********************
-     * 0) LINKS (your URLs)
-     ***********************/
+    /***************
+     * LINKS
+     ***************/
     const WEATHER_URL = "https://forecast7.com/en/35d01135d77/kyoto/";
     const SAKURA_MAP_URL = "https://www.google.com/maps/d/u/0/viewer?mid=1d4bRtlPGDMOtNh13XdboeiLs5gIK_sk";
     const CROWD_MAP_URL  = "https://platinumaps.jp/d/kyoto-smart-navic";
@@ -550,38 +488,25 @@
     document.getElementById("btnCrowd").href   = CROWD_MAP_URL;
     document.getElementById("btnInsta").href   = INSTA_URL;
 
-    /***********************
-     * 1) Settings
-     ***********************/
-    const KYOTO = { lat: 35.0116, lon: 135.7681, tz: 9 }; // JST
+    /***************
+     * PEAK WINDOW
+     ***************/
     const PEAK_START = "2026-03-28";
     const PEAK_END   = "2026-04-05";
 
-    /***********************
-     * 2) Spots (example)
-     ***********************/
-    const NEAR_SPOTS = [
-      { name:"Takasegawa (Hotel-front Riverside)", meta:"5–12 min walk · Best: sunset · Quiet riverside", tags:["Riverside","Quiet","Short walk"] },
-      { name:"Maruyama Park", meta:"20–25 min walk · Best: late afternoon · Lively", tags:["Park","Popular","Evening"] },
-      { name:"Kamo River", meta:"10–15 min walk · Best: evening · Open riverside", tags:["Riverside","Open","Walk"] }
-    ];
-
     const ICON_SPOTS = [
-      { name:"Kiyomizu-dera", meta:"~15 min by bus · Best: opening time · Go early to avoid crowds.", tags:["Icon","Crowded","Morning"] },
-      { name:"Nijō Castle", meta:"~15 min by subway · Best: weekday daytime · Spacious.", tags:["Icon","Balanced","Day"] },
-      { name:"Fushimi Inari Taisha", meta:"~25 min by train · Best: 7–9 AM · Go at opening time.", tags:["Icon","Morning","Hike"] }
+      { title:"Kyoto Icon: Nijō Castle", meta:"~15 min by subway · Best: weekday morning for calmer entry", tags:["Icon","Balanced","Photo Spot"] },
+      { title:"Kyoto Icon: Kiyomizu-dera", meta:"~15 min by bus · Best: opening time · Go early to avoid crowds", tags:["Icon","Crowded","Morning"] },
+      { title:"Kyoto Icon: Fushimi Inari", meta:"~25 min by train · Best: 7–9 AM · Go at opening time", tags:["Icon","Morning","Hike"] },
     ];
 
-    /***********************
-     * 3) Helpers
-     ***********************/
-    function pad2(n){ return String(n).padStart(2,"0"); }
+    const NEAR_SPOTS = [
+      { title:"Near STITCH: Takasegawa", meta:"5–8 min walk · Best: late afternoon · Riverside calm", tags:["Riverside","Calm","Easy walk"] },
+      { title:"Near STITCH: Kamo River", meta:"10–15 min walk · Best: sunset · Open riverside", tags:["Riverside","Open","Walk"] },
+      { title:"Near STITCH: Maruyama Park", meta:"20–25 min walk · Best: evening · Lively", tags:["Park","Popular","Evening"] },
+    ];
 
-    function nowJST(){
-      // Keep it simple: browser local time assumed JST while used in Kyoto.
-      // If not JST, this still works as a "relative guide".
-      return new Date();
-    }
+    function pad2(n){ return String(n).padStart(2,"0"); }
 
     function formatDateLine(d){
       const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -589,250 +514,150 @@
       return `${days[d.getDay()]}, ${months[d.getMonth()]} ${pad2(d.getDate())} · ${pad2(d.getHours())}:${pad2(d.getMinutes())} (JST)`;
     }
 
-    function pickSpot(list, seed){
-      return list[seed % list.length];
-    }
-
-    function renderTags(el, tags){
-      el.innerHTML = "";
-      tags.forEach(t=>{
-        const s=document.createElement("span");
-        s.className="tag";
-        s.textContent=t;
-        el.appendChild(s);
-      });
-    }
-
     function crowdColor(level){
       if(level==="Very Low") return "#4A90E2";
       if(level==="Low") return "#3CB371";
       if(level==="Moderate") return "#F5A623";
-      return "#E74C3C"; // High
+      return "#E74C3C";
     }
-
     function crowdDesc(level){
-      if(level==="Very Low") return "Quiet hours — check transport / opening times.";
-      if(level==="Low") return "Comfortable — good time for icons.";
-      if(level==="Moderate") return "Some queues — mix riverside + icons off-peak.";
-      return "Peak time now — choose nearby routes first to avoid queues.";
+      if(level==="Very Low") return "Very quiet — ideal for icons and photos.";
+      if(level==="Low") return "Recommended: icon spot OK, then nearby stroll.";
+      if(level==="Moderate") return "Some queues — mix near spots + icons off-peak.";
+      return "Peak — start near STITCH first, avoid top icons now.";
     }
 
     function computeSunsetMock(d){
-      // Simple seasonal approximation (no external API).
-      // If you already had real sunset calc, replace this with your existing function.
-      const m = d.getMonth()+1; // 1-12
-      // Kyoto rough: winter ~17:00, summer ~19:10
+      const m = d.getMonth()+1;
       let base = 17.2;
       if(m>=5 && m<=8) base = 19.0;
       else if(m===4 || m===9) base = 18.3;
       else if(m===3 || m===10) base = 17.7;
-
       const hour = Math.floor(base);
       const min = Math.round((base-hour)*60);
       return { hh:hour, mm:min };
     }
 
-    function bestPhotoWindow(sunset){
-      // around sunset: -35min to +20min
-      const start = new Date();
-      start.setHours(sunset.hh, sunset.mm, 0, 0);
-      start.setMinutes(start.getMinutes()-35);
-
-      const end = new Date();
-      end.setHours(sunset.hh, sunset.mm, 0, 0);
-      end.setMinutes(end.getMinutes()+20);
-
-      return `${pad2(start.getHours())}:${pad2(start.getMinutes())}–${pad2(end.getHours())}:${pad2(end.getMinutes())} (around sunset)`;
+    function bestLightWindow(sunset){
+      const s = new Date(); s.setHours(sunset.hh, sunset.mm, 0, 0);
+      const a = new Date(s.getTime() - 35*60000);
+      const b = new Date(s.getTime() + 20*60000);
+      return `${pad2(a.getHours())}:${pad2(a.getMinutes())}–${pad2(b.getHours())}:${pad2(b.getMinutes())}`;
     }
 
-    function daysBetween(aStr, bStr){
-      const a = new Date(aStr+"T00:00:00");
-      const b = new Date(bStr+"T00:00:00");
-      const ms = b-a;
-      return Math.round(ms/86400000);
+    function pick(list, seed){ return list[seed % list.length]; }
+
+    function renderTags(el, tags){
+      el.innerHTML = "";
+      tags.forEach(t=>{
+        const span = document.createElement("span");
+        span.className="tag";
+        span.textContent=t;
+        el.appendChild(span);
+      });
     }
 
-    function midpointDate(startStr,endStr){
-      const s = new Date(startStr+"T00:00:00");
-      const e = new Date(endStr+"T00:00:00");
-      const mid = new Date((s.getTime()+e.getTime())/2);
-      return `${mid.getFullYear()}-${pad2(mid.getMonth()+1)}-${pad2(mid.getDate())}`;
-    }
-
-    /***********************
-     * 4) AUTO crowd (hourly refresh)
-     *    - NOTE: This is a "local estimate" (no live API).
-     ***********************/
-    function getAutoCrowdLevel(){
-      const d = nowJST();
-      const h = d.getHours();
-      const dow = d.getDay(); // 0 Sun
-      const weekend = (dow===0 || dow===6);
-
-      // simple rule
-      if(h>=7 && h<9) return weekend ? "Moderate" : "Low";
-      if(h>=9 && h<12) return weekend ? "High" : "Moderate";
-      if(h>=12 && h<16) return weekend ? "High" : "Moderate";
-      if(h>=16 && h<20) return weekend ? "High" : "Moderate";
-      if(h>=20 && h<23) return weekend ? "Moderate" : "Low";
-      return "Very Low";
-    }
-
-    function updateAutoCrowd(){
-      const level = getAutoCrowdLevel();
-      const dot = document.getElementById("autoCrowdDot");
-      const label = document.getElementById("autoCrowdLabel");
-      const time = document.getElementById("autoCrowdTime");
-
-      label.textContent = level;
-      dot.style.background = crowdColor(level);
-      dot.style.boxShadow = `0 0 0 5px ${crowdColor(level)}22`;
-
-      const d = nowJST();
-      time.textContent = `updated ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-    }
-
-    /***********************
-     * 5) Main render based on MANUAL selects
-     ***********************/
-    function computeBestTime(timeKey, crowdLevel){
-      // you can keep/replace with your existing logic
-      if(crowdLevel==="High"){
-        if(timeKey==="morning") return {title:"Early morning tomorrow (7:00–9:00 AM)", tip:"Icon spots are calmest at opening time."};
-        if(timeKey==="midday")  return {title:"After 6:30 PM (cooler & calmer)", tip:"Peak now — choose nearby sakura spots first, then icons later."};
-        if(timeKey==="late")    return {title:"After 6:30 PM (cooler & calmer)", tip:"Peak time — riverside first, icons off-peak."};
-        return {title:"Late night walk (quiet streets)", tip:"Great for nearby riverside and short routes."};
-      }
-      if(crowdLevel==="Moderate"){
-        if(timeKey==="morning") return {title:"Morning (openings are smooth)", tip:"Mix icons early + riverside after."};
-        if(timeKey==="midday")  return {title:"Midday (choose balanced routes)", tip:"Avoid top icons at peak — pick near STITCH first."};
-        if(timeKey==="late")    return {title:"Late afternoon → sunset", tip:"Riverside near STITCH first, then one icon."};
-        return {title:"Evening (comfortable)", tip:"Good for riverside photos and calm walks."};
-      }
-      if(crowdLevel==="Low" || crowdLevel==="Very Low"){
-        return {title:"Anytime (quiet today)", tip:"Enjoy flexible timing — prioritize your closest spots."};
-      }
-      return {title:"Anytime", tip:""};
-    }
-
-    function computeStrategy(autoLevel, manualLevel){
-      // keep simple
-      if(autoLevel==="High" || manualLevel==="High"){
+    function computeBest(timeKey, crowd){
+      if(timeKey==="late" && (crowd==="Low" || crowd==="Very Low")){
         return {
-          comfort:"Cool evening",
-          risk:"High",
-          visitFlow:"Near STITCH first → Icons at opening time → Riverside at sunset"
+          title:"Late afternoon (15:30–17:30)",
+          tip:"Soft light for riverside. Great for nearby stroll + photos."
         };
       }
-      if(autoLevel==="Moderate" || manualLevel==="Moderate"){
+      if(crowd==="High"){
+        if(timeKey==="morning") return { title:"Early morning tomorrow (7:00–9:00 AM)", tip:"Icons are calmest at opening time." };
+        if(timeKey==="midday")  return { title:"After 6:30 PM (cooler & calmer)", tip:"Peak now — do nearby first, icons later." };
+        if(timeKey==="late")    return { title:"After 6:30 PM (cooler & calmer)", tip:"Riverside first, icons off-peak." };
+        return { title:"Late night walk (quiet streets)", tip:"Good for short routes near the hotel." };
+      }
+      if(crowd==="Moderate"){
+        if(timeKey==="late") return { title:"Late afternoon → sunset", tip:"Near STITCH first, then one icon off-peak." };
+        return { title:"Balanced timing", tip:"Avoid peak icons at peak hour — mix near spots." };
+      }
+      return { title:"Anytime (quiet today)", tip:"Flexible — prioritize your closest spots." };
+    }
+
+    function computeExtras(crowd){
+      if(crowd==="High"){
         return {
-          comfort:"Balanced",
-          risk:"Moderate",
-          visitFlow:"Near STITCH → One icon off-peak → Riverside sunset"
+          weather:"Check weather & adjust routes. If rain: covered/temple first, riverside short.",
+          flow:"Icon spot first → riverside stroll → return via quiet streets.",
+          walk:"★★★☆ Easy — prefer riverside paths, avoid narrow bridges at peak.",
+          risk:"High crowd risk — but near spots are flexible.",
+          angle:"Use wide viewpoints. If queues form, shift to quieter edges/backstreets."
+        };
+      }
+      if(crowd==="Moderate"){
+        return {
+          weather:"If rain: covered areas first. Keep riverside short.",
+          flow:"Near STITCH first → one icon off-peak → riverside sunset.",
+          walk:"★★★★ Comfortable walk from STITCH.",
+          risk:"Moderate — avoid top icons at peak.",
+          angle:"Shoot riverside at golden hour; icons earlier."
         };
       }
       return {
-        comfort:"Relaxed",
-        risk:"Low",
-        visitFlow:"Any order — choose your favorite spots"
+        weather:"Dry/low rain: riverside first, then icons off-peak.",
+        flow:"Near STITCH first → icons at opening time → riverside at sunset.",
+        walk:"★★★★★ Easy — flexible routes.",
+        risk:"Low — enjoy freely.",
+        angle:"Golden hour riverside; calm streets for portraits."
       };
     }
 
     function render(){
-      const d = nowJST();
+      const d = new Date();
       document.getElementById("dateLine").textContent = formatDateLine(d);
 
       const timeKey = document.getElementById("timeSel").value;
-      const manualCrowd = document.getElementById("crowdSel").value;
+      const crowd = document.getElementById("crowdSel").value;
 
-      // manual badge
-      document.getElementById("crowdTitle").textContent = `Crowd: ${manualCrowd}`;
-      document.getElementById("crowdDesc").textContent = crowdDesc(manualCrowd);
-      const cd = document.getElementById("crowdDot");
-      cd.style.background = crowdColor(manualCrowd);
-      cd.style.boxShadow = `0 0 0 5px ${crowdColor(manualCrowd)}22`;
+      // badge
+      const dot = document.getElementById("crowdDot");
+      dot.style.background = crowdColor(crowd);
+      dot.style.boxShadow = `0 0 0 5px ${crowdColor(crowd)}22`;
+      document.getElementById("crowdTitle").textContent = `Crowd: ${crowd}`;
+      document.getElementById("crowdDesc").textContent = crowdDesc(crowd);
 
-      // best time
-      const bt = computeBestTime(timeKey, manualCrowd);
-      document.getElementById("bestTime").textContent = bt.title;
-      document.getElementById("bestTip").textContent = bt.tip;
+      // best
+      const best = computeBest(timeKey, crowd);
+      document.getElementById("bestTime").textContent = best.title;
+      document.getElementById("bestTip").textContent = best.tip;
 
-      // sunset & photo
+      // sunset + light
       const sunset = computeSunsetMock(d);
       document.getElementById("sunset").textContent = `${pad2(sunset.hh)}:${pad2(sunset.mm)}`;
-      document.getElementById("photoTime").textContent = bestPhotoWindow(sunset);
+      document.getElementById("bestLight").textContent = bestLightWindow(sunset);
 
-      // bloom / peak
-      const mid = midpointDate(PEAK_START, PEAK_END);
-      const todayStr = `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-      const dToMid = daysBetween(todayStr, mid);
+      // peak window
       document.getElementById("peakWindow").textContent = `${PEAK_START} – ${PEAK_END}`;
-      document.getElementById("countdown").textContent = (dToMid>=0) ? `D-${dToMid}` : `D+${Math.abs(dToMid)}`;
 
-      // bloom % (simple: 0% before peak start, 100% after peak end, linear inside)
-      const total = Math.max(1, daysBetween(PEAK_START, PEAK_END));
-      const into = daysBetween(PEAK_START, todayStr);
-      let pct = 0;
-      if(into<=0) pct = 0;
-      else if(into>=total) pct = 100;
-      else pct = Math.round((into/total)*100);
-      document.getElementById("bloomPct").textContent = `${pct}%`;
-
-      // auto crowd influences right-side strategy
-      const autoLevel = getAutoCrowdLevel();
-      const strat = computeStrategy(autoLevel, manualCrowd);
-
-      // weather strategy text (no API; keep readable & not overlapping)
-      const weatherText =
-        (manualCrowd==="High" || autoLevel==="High")
-          ? "If rain: covered/temple first → riverside short. (~8–10°C)"
-          : "Flexible: riverside + icon anytime (quiet)";
-      document.getElementById("weatherStrategy").textContent = weatherText;
-
-      // flow line
-      document.getElementById("flowLine").textContent =
-        (manualCrowd==="High" || autoLevel==="High")
-          ? "Near STITCH first → Short riverside → Icons off-peak"
-          : "Near STITCH → Icon → Riverside sunset";
-
-      // curated spots
+      // right cards
       const seed = d.getDate() + d.getHours();
-      const near = pickSpot(NEAR_SPOTS, seed);
-      const icon = pickSpot(ICON_SPOTS, seed+2);
+      const icon = pick(ICON_SPOTS, seed);
+      const near = pick(NEAR_SPOTS, seed+1);
 
-      document.getElementById("nearTitle").textContent = `Near STITCH: ${near.name}`;
-      document.getElementById("nearMeta").textContent = near.meta;
-      renderTags(document.getElementById("nearTags"), near.tags);
-
-      document.getElementById("iconTitle").textContent = `Kyoto Icon: ${icon.name}`;
+      document.getElementById("iconTitle").textContent = icon.title;
       document.getElementById("iconMeta").textContent = icon.meta;
       renderTags(document.getElementById("iconTags"), icon.tags);
 
-      // right-side mini widgets
-      document.getElementById("comfort").textContent = strat.comfort;
-      document.getElementById("risk").textContent = strat.risk;
-      document.getElementById("visitFlow").textContent = strat.visitFlow;
+      document.getElementById("nearTitle").textContent = near.title;
+      document.getElementById("nearMeta").textContent = near.meta;
+      renderTags(document.getElementById("nearTags"), near.tags);
+
+      // extras
+      const ex = computeExtras(crowd);
+      document.getElementById("weatherStrategy").textContent = ex.weather;
+      document.getElementById("suggestedFlow").textContent = ex.flow;
+      document.getElementById("walkability").textContent = ex.walk;
+      document.getElementById("peakRisk").textContent = ex.risk;
+      document.getElementById("bestAngle").textContent = ex.angle;
     }
 
-    /***********************
-     * 6) Events
-     ***********************/
     document.getElementById("timeSel").addEventListener("change", render);
     document.getElementById("crowdSel").addEventListener("change", render);
-    document.getElementById("btnRefresh").addEventListener("click", ()=>{
-      updateAutoCrowd();
-      render();
-    });
 
-    // init
-    updateAutoCrowd();
     render();
-
-    // hourly refresh (auto crowd)
-    setInterval(()=>{
-      updateAutoCrowd();
-      render();
-    }, 3600000);
   </script>
 </body>
 </html>
