@@ -6,27 +6,24 @@
   <title>STITCH Sakura Smart Guide</title>
 
   <style>
-    :root{
-      --bg:#fbf3f6;
-      --card:rgba(255,255,255,0.90);
-      --ink:#171717;
-      --muted:rgba(23,23,23,0.62);
-      --line:rgba(23,23,23,0.10);
-      --shadow:0 18px 50px rgba(0,0,0,0.12);
-      --radius:22px;
+    /* =========
+      Mobile text-size 안정화 (iOS에서 글자 갑자기 작아지는 현상 방지)
+    ========= */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
-      --pink:#f3c7d4;
+    :root{
+      --bg: #fbf3f6;
+      --card: rgba(255,255,255,0.90);
+      --ink: #171717;
+      --muted: rgba(23,23,23,0.62);
+      --line: rgba(23,23,23,0.10);
+      --pink: #f3c7d4;
       --pink2:#f7dbe4;
-      --pill:rgba(255,255,255,0.75);
+      --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      --radius: 26px;
     }
 
     *{ box-sizing:border-box; }
-
-    html, body{
-      width:100%;
-      overflow-x:hidden;
-    }
-
     body{
       margin:0;
       font-family: Georgia, "Times New Roman", serif;
@@ -35,12 +32,12 @@
         radial-gradient(1200px 500px at 20% 10%, rgba(243,199,212,0.55), transparent 60%),
         radial-gradient(900px 450px at 85% 15%, rgba(247,219,228,0.55), transparent 60%),
         linear-gradient(180deg, #fff, var(--bg));
-      padding: 14px; /* ✅ 너무 큰 상단 공백 방지 */
+      padding: 18px;
+      overflow-x:hidden;
     }
 
     .wrap{
       max-width: 980px;
-      width: min(980px, 100%);
       margin: 0 auto;
     }
 
@@ -50,335 +47,311 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 18px;
-      overflow: hidden;
+      padding: 22px;
     }
 
-    /* ✅ PC=가로 / 모바일=세로 자동 */
-    .grid{
-      display:grid;
-      grid-template-columns: 1.45fr 1fr;
-      gap: 16px;
-      align-items: start;
-    }
-    @media (max-width: 860px){
-      .grid{ grid-template-columns: 1fr; }
-      body{ padding: 12px; }
-    }
-
-    /* HEADER */
+    /* ===== Header ===== */
     .heroTop{
       display:flex;
-      gap:14px;
-      justify-content: space-between;
       align-items:flex-start;
-      flex-wrap:wrap; /* ✅ 잘림 방지 */
-      margin-bottom: 10px;
+      justify-content:space-between;
+      gap: 18px;
+      flex-wrap: wrap;
     }
-
     .brand{
-      letter-spacing:0.14em;
-      font-size:12px;
-      color:var(--muted);
+      letter-spacing: .14em;
+      font-size: clamp(12px, 1.6vw, 14px);
+      color: rgba(23,23,23,0.65);
+      margin-bottom: 6px;
     }
     .h1{
-      margin:4px 0 2px 0;
-      font-size: clamp(34px, 5.2vw, 56px);
+      font-size: clamp(36px, 5.5vw, 56px);
       line-height: 0.98;
+      margin: 0 0 8px;
+      font-weight: 700;
     }
     .meta{
-      font-size: 16px;
-      color: var(--muted);
+      font-size: clamp(14px, 2.0vw, 18px);
+      color: rgba(23,23,23,0.62);
+      margin-top: 6px;
     }
 
-    /* Crowd bubble (상단 오른쪽) */
-    .crowdBubble{
+    /* Crowd pill (top right) */
+    .crowdPill{
       display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding: 12px 14px;
+      align-items:center;
+      gap: 10px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.75);
-      border: 1px solid var(--line);
-      max-width: 100%;
-      flex: 1 1 330px;
+      min-width: 240px;
+      justify-content:space-between;
     }
     .dot{
-      width:12px; height:12px; border-radius:50%;
-      margin-top: 5px;
-      flex: 0 0 auto;
+      width:10px;height:10px;border-radius:50%;
+      background:#999;
+      flex:0 0 auto;
     }
-    .crowdBubble b{
-      font-size: 22px;
-      line-height: 1.05;
-      display:block;
-      white-space: normal;     /* ✅ 줄바꿈 허용 */
-      overflow: visible;       /* ✅ 잘림 방지 */
-      word-break: break-word;  /* ✅ 모바일 좁을 때 강제 줄바꿈 */
+    .crowdLabel{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size: clamp(14px, 2.0vw, 16px);
+      font-weight: 700;
     }
-    .crowdBubble .desc{
-      font-size: 16px;
-      color: var(--muted);
-      line-height: 1.25;
-      white-space: normal;
-      word-break: break-word;
+    .crowdHint{
+      font-size: 12px;
+      color: rgba(23,23,23,0.55);
+      margin-left: 20px;
+      margin-top: 3px;
     }
 
-    /* ✅ AUTO CROWD + MANUAL SELECT 영역을 "한 덩어리"로 자연스럽게 */
-    .controlsBlock{
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(247,219,228,0.35);
+    /* ===== Auto + Manual controls block ===== */
+    .controlBlock{
+      margin-top: 14px;
       border: 1px solid var(--line);
+      background: rgba(247,219,228,0.28);
+      border-radius: 22px;
+      padding: 14px;
     }
 
     .autoRow{
       display:flex;
-      gap:10px;
       align-items:center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .autoBox{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-      border-radius: 999px;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 12px 14px;
       background:#fff;
       border: 1px solid var(--line);
-      min-width: 240px;
-      flex: 1 1 260px;
+      border-radius: 999px;
     }
-    .autoLabel{
+    .autoLeft{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: clamp(16px, 2.6vw, 22px);
+    }
+    .autoSmall{
+      letter-spacing:.16em;
       font-size: 12px;
-      letter-spacing: 0.14em;
-      color: var(--muted);
+      color: rgba(23,23,23,0.55);
       margin-right: 10px;
-      text-transform: uppercase;
-    }
-    .autoValue{
-      font-size: 26px;
       font-weight: 700;
-      line-height: 1;
     }
     .autoTime{
-      margin-left:auto;
       font-size: 12px;
-      color: rgba(0,0,0,0.45);
+      color: rgba(23,23,23,0.55);
       white-space: nowrap;
     }
 
-    .selectRow{
+    .manualRow{
+      margin-top: 12px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-    @media (max-width: 520px){
-      .selectRow{ grid-template-columns: 1fr; }
-    }
-
-    .select{
-      display:flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    label{
+    .field label{
+      display:block;
+      letter-spacing:.18em;
+      color: rgba(23,23,23,0.55);
       font-size: 12px;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      text-transform: uppercase;
+      margin: 2px 0 8px;
+      font-weight: 700;
     }
     select{
       width:100%;
       font-family: inherit;
-      font-size: 20px;
-      padding: 14px 16px;
+      font-size: clamp(16px, 2.5vw, 20px);
+      padding: 12px 14px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.90);
+      background:#fff;
       outline: none;
     }
 
-    /* LEFT: Best time & flow */
-    .panel{
-      background: rgba(247,219,228,0.40);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 16px;
-      overflow: hidden;
+    /* ===== Main grid ===== */
+    .grid{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+      align-items:start;
     }
 
-    .panelTitle{
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      color: rgba(0,0,0,0.55);
+    .panel{
+      border:1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      background: rgba(247,219,228,0.26);
+      overflow:hidden;
+    }
+
+    .kicker{
+      letter-spacing:.18em;
+      font-size: 12px;
+      color: rgba(23,23,23,0.55);
+      font-weight: 800;
       margin-bottom: 8px;
-      text-transform: uppercase;
     }
 
     .bigTitle{
-      font-size: clamp(28px, 4.2vw, 44px);
-      line-height: 1.05;
-      margin: 0 0 8px 0;
+      font-size: clamp(28px, 4.4vw, 44px);
+      margin: 0 0 6px;
+      line-height: 1.02;
+      font-weight: 800;
     }
     .sub{
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.25;
-      margin-bottom: 12px;
+      color: rgba(23,23,23,0.62);
+      margin: 0 0 12px;
+      font-size: clamp(14px, 2.0vw, 16px);
     }
 
+    /* Info chips rows */
     .pillGrid{
       display:grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
     }
-    @media (max-width: 860px){
-      .pillGrid{ grid-template-columns: 1fr; }
-    }
-
     .pill{
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 14px;
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap: 10px;
-      padding: 12px 14px;
-      border-radius: 999px;
-      background: var(--pill);
-      border: 1px solid var(--line);
-      min-height: 56px;
+      min-height: 52px; /* ← 위젯 틀이 글보다 작아지는 현상 방지 */
     }
-    .pill b{
-      font-size: 20px;         /* ✅ Weather Strategy / Suggested Flow 크기 업 */
-      line-height: 1.05;
+    .pill strong{
+      font-weight: 800;
+      font-size: 14px;
     }
     .pill span{
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.2;
-      margin-left:auto;
+      color: rgba(23,23,23,0.65);
+      font-size: 14px;
       text-align:right;
     }
-
-    /* RIGHT: Curated */
-    .rightTitle{
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      color: rgba(0,0,0,0.55);
-      text-transform: uppercase;
-      margin-bottom: 8px;
+    .pill .l{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
     }
+    .emoji{ width: 18px; text-align:center; flex:0 0 auto; }
 
+    /* Curated right card */
+    .curatedCard{
+      background: rgba(247,219,228,0.30);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+    }
     .spotTitle{
-      font-size: clamp(26px, 4.8vw, 40px); /* ✅ 모바일에서 너무 작아지지 않게 */
-      line-height: 1.05;
-      margin: 0 0 6px 0;
-      word-break: break-word;
+      font-size: clamp(24px, 3.9vw, 34px);
+      line-height: 1.02;
+      margin: 0 0 8px;
+      font-weight: 900;
     }
     .spotMeta{
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.25;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
+      color: rgba(23,23,23,0.62);
+      font-size: 15px;
     }
-
     .tags{
       display:flex;
-      gap:10px;
       flex-wrap: wrap;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin: 10px 0 12px;
     }
     .tag{
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.85);
       border: 1px solid var(--line);
-      font-size: 16px;
-      white-space: nowrap;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 14px;
     }
-
-    .miniPills{
+    .miniList{
       display:grid;
-      grid-template-columns: 1fr;
       gap: 10px;
-      margin-top: 6px;
+      margin-top: 10px;
     }
-   .mini{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.72);
-  border: 1px solid var(--line);
-
-  flex-wrap: wrap;              /* 좁으면 자동 줄바꿈 */
-}
-
-.mini b{
-  font-size: 18px;
-  line-height: 1.15;
-  white-space: normal;
-  word-break: normal;           /* 글자 1개씩 찢어지는 것 방지 */
-  flex: 0 0 auto;
-  min-width: 150px;             /* 제목 영역 최소 폭 확보 */
-}
-
-.mini span{
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 16px;
-
-  white-space: normal;          /* 긴 문장 줄바꿈 허용 */
-  word-break: break-word;
-  flex: 1 1 240px;              /* 값 영역이 넓게 먹게 */
-}
-    .mini span{
-      margin-left:auto;
-      color: var(--muted);
+    .miniRow{
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 12px;
+      font-size: 15px;
+      min-height: 46px;
+      align-items:center;
+    }
+    .miniRow b{ font-weight: 900; }
+    .flowBox{
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 12px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .flowBox .t{
+      font-weight: 900;
+      margin-bottom: 6px;
       font-size: 16px;
-      white-space: nowrap;
+    }
+    .flowBox .v{
+      color: rgba(23,23,23,0.70);
     }
 
-    /* FOOT */
+    /* ===== Footer CTA buttons ===== */
     .foot{
       margin-top: 14px;
-      padding-top: 12px;
+      padding-top: 10px;
       border-top: 1px solid var(--line);
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
     }
-
+    .footLine{
+      color: rgba(23,23,23,0.60);
+      font-size: 14px;
+      margin: 10px 0 12px;
+    }
     .cta{
       display:flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
     }
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap: 10px;
-      padding: 14px 16px;
+      padding: 12px 16px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.92);
       text-decoration:none;
       color: var(--ink);
-      font-size: 18px;
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 16px;
       white-space: nowrap;
     }
     .btn.primary{
       background: rgba(243,199,212,0.55);
+      border-color: rgba(243,199,212,0.95);
     }
-    .mutedLine{
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.3;
+    .btn.soft{
+      background: rgba(255,255,255,0.92); /* ← Crowd Map 버튼 흰색 */
+    }
+
+    /* ===== Responsive: 모바일은 세로, PC는 가로 자동 ===== */
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .pillGrid{ grid-template-columns: 1fr; }
+      .manualRow{ grid-template-columns: 1fr; }
+      .crowdPill{ width: 100%; min-width: unset; }
+      .card{ padding: 18px; }
     }
   </style>
 </head>
@@ -386,39 +359,38 @@
 <body>
   <div class="wrap">
     <div class="card">
-
       <!-- HEADER -->
       <div class="heroTop">
-        <div style="flex:1 1 380px; min-width: 280px;">
+        <div>
           <div class="brand">STITCH HOTEL KYOTO</div>
-          <div class="h1">Sakura Smart<br/>Guide</div>
-          <div class="meta" id="metaLine"></div>
+          <h1 class="h1">Sakura Smart<br/>Guide</h1>
+          <div class="meta" id="metaLine">—</div>
         </div>
 
-        <div class="crowdBubble" id="crowdBubble">
-          <div class="dot" id="crowdDot"></div>
-          <div>
-            <b id="crowdTitle">Crowd: —</b>
-            <div class="desc" id="crowdDesc">—</div>
+        <div>
+          <div class="crowdPill">
+            <div class="crowdLabel">
+              <span class="dot" id="crowdDot"></span>
+              <span id="crowdText">Crowd: —</span>
+            </div>
           </div>
+          <div class="crowdHint" id="crowdHint">—</div>
         </div>
       </div>
 
-      <!-- AUTO + MANUAL CONTROLS -->
-      <div class="controlsBlock">
-        <div class="autoRow">
-          <div class="autoBox">
-            <div class="dot" id="autoCrowdDot" style="background:#999;"></div>
-            <div>
-              <div class="autoLabel">AUTO CROWD</div>
-              <div class="autoValue" id="autoCrowdLabel">Detecting…</div>
-            </div>
-            <div class="autoTime" id="autoCrowdTime"></div>
+      <!-- AUTO + MANUAL -->
+      <div class="controlBlock">
+        <div class="autoRow" aria-label="Auto crowd">
+          <div class="autoLeft">
+            <span class="dot" id="autoCrowdDot"></span>
+            <span class="autoSmall">AUTO CROWD</span>
+            <span id="autoCrowdLabel">Detecting…</span>
           </div>
+          <div class="autoTime" id="autoCrowdTime">—</div>
         </div>
 
-        <div class="selectRow">
-          <div class="select">
+        <div class="manualRow">
+          <div class="field">
             <label for="timeSel">TIME</label>
             <select id="timeSel">
               <option value="morning">Morning</option>
@@ -428,8 +400,8 @@
             </select>
           </div>
 
-          <div class="select">
-            <label for="crowdSel">CROWD (manual)</label>
+          <div class="field">
+            <label for="crowdSel">CROWD (MANUAL)</label>
             <select id="crowdSel">
               <option value="Very Low">Very Low</option>
               <option value="Low">Low</option>
@@ -441,63 +413,92 @@
       </div>
 
       <!-- MAIN GRID -->
-      <div class="grid" style="margin-top:14px;">
+      <div class="grid">
         <!-- LEFT -->
         <div class="panel">
-          <div class="panelTitle">Best time & flow</div>
-          <div class="bigTitle" id="bestTitle">—</div>
-          <div class="sub" id="bestSub">—</div>
+          <div class="kicker">BEST TIME & FLOW</div>
+          <h2 class="bigTitle" id="bestTimeTitle">—</h2>
+          <p class="sub" id="bestTimeSub">—</p>
 
-          <div class="pillGrid" id="pillGrid">
-            <!-- filled by JS -->
+          <div class="pillGrid" style="margin-top:10px;">
+            <div class="pill">
+              <div class="l"><span class="emoji">🌇</span><strong>Sunset</strong></div>
+              <span id="sunsetText">—</span>
+            </div>
+
+            <div class="pill">
+              <div class="l"><span class="emoji">📷</span><strong>Best photo light</strong></div>
+              <span id="photoText">—</span>
+            </div>
+
+            <div class="pill">
+              <div class="l"><span class="emoji">🌸</span><strong>Bloom Progress</strong></div>
+              <span id="bloomText">—</span>
+            </div>
+
+            <div class="pill">
+              <div class="l"><span class="emoji">🗓️</span><strong>Peak Window</strong></div>
+              <span id="peakWindowText">—</span>
+            </div>
+
+            <div class="pill">
+              <div class="l"><span class="emoji">⏳</span><strong>Peak Countdown</strong></div>
+              <span id="countdownText">—</span>
+            </div>
+
+            <div class="pill" style="grid-column: 1 / -1;">
+              <div class="l"><span class="emoji">🌦️</span><strong>Weather Strategy</strong></div>
+              <span id="weatherStrategyText" style="text-align:left;">—</span>
+            </div>
+
+            <div class="pill" style="grid-column: 1 / -1;">
+              <div class="l"><span class="emoji">🧭</span><strong>Suggested Flow</strong></div>
+              <span id="flowText" style="text-align:left;">—</span>
+            </div>
           </div>
         </div>
 
         <!-- RIGHT -->
-        <div class="panel">
-          <div class="rightTitle">Curated suggestion</div>
+        <div class="curatedCard">
+          <div class="kicker">CURATED SUGGESTION</div>
 
-          <div style="margin-bottom:12px;">
-            <div class="spotTitle" id="nearTitle">Near STITCH: —</div>
-            <div class="spotMeta" id="nearMeta">—</div>
-            <div class="tags" id="nearTags"></div>
-          </div>
+          <div class="spotTitle" id="nearTitle">Near STITCH: —</div>
+          <p class="spotMeta" id="nearMeta">—</p>
+          <div class="tags" id="nearTags"></div>
 
-          <div style="margin-bottom:12px;">
-            <div class="spotTitle" id="iconTitle">Kyoto Icon: —</div>
-            <div class="spotMeta" id="iconMeta">—</div>
-            <div class="tags" id="iconTags"></div>
-          </div>
+          <div class="spotTitle" style="margin-top:10px;" id="iconTitle">Kyoto Icon: —</div>
+          <p class="spotMeta" id="iconMeta">—</p>
+          <div class="tags" id="iconTags"></div>
 
-          <div class="miniPills">
-            <div class="mini">
-              <b>Comfort Index</b>
-              <span id="comfortText">—</span>
-            </div>
-            <div class="mini">
-              <b>Peak Risk</b>
-              <span id="riskText">—</span>
-            </div>
-            <div class="mini">
-              <b>Suggested Visit Flow</b>
-              <span id="flowText">—</span>
+          <div class="miniList">
+            <div class="miniRow"><b>Comfort Index</b><span id="comfortText">—</span></div>
+            <div class="miniRow"><b>Peak Risk</b><span id="riskText">—</span></div>
+
+            <div class="flowBox">
+              <div class="t">Suggested Visit Flow</div>
+              <div class="v" id="visitFlowText">—</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- FOOT -->
+      <!-- FOOTER -->
       <div class="foot">
-        <div class="mutedLine" id="footLine">
+        <div class="footLine" id="footLine">
           Estimated guidance based on time, weather and typical crowd patterns. Please check the live crowd map before heading out.
         </div>
 
         <div class="cta">
-          <a class="btn" id="btnWeather" href="https://forecast7.com/en/35d01135d77/kyoto" target="_blank" rel="noopener noreferrer">🌦️ Open Weather</a>
-          <a class="btn" id="btnSakura"  href="https://www.google.com/maps/d/u/0/viewer?mid=1d4bRtlPGDMOtNh13XdboeiLs5gIK_sk" target="_blank" rel="noopener noreferrer">🌸 Open Sakura Map</a>
-          <a class="btn primary" id="btnCrowd" href="https://platinumaps.jp/d/kyoto-smart-navi" target="_blank" rel="noopener noreferrer">📍 Open Live Crowd Map</a>
+          <a class="btn" id="btnWeather" target="_blank" rel="noopener noreferrer">🌦️ Open Weather</a>
+          <a class="btn" id="btnSakura" target="_blank" rel="noopener noreferrer">🌸 Open Sakura Map</a>
+
+          <!-- Crowd Map는 흰색(soft) -->
+          <a class="btn soft" id="btnCrowd" target="_blank" rel="noopener noreferrer">📍 Open Live Crowd Map</a>
+
           <a class="btn" id="btnRefresh" href="javascript:void(0)">↻ Refresh</a>
-          <a class="btn" id="btnInsta" href="https://www.instagram.com/stitchhotelkyoto/" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
+
+          <!-- Instagram은 핑크(primary) -->
+          <a class="btn primary" id="btnInsta" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
         </div>
       </div>
 
@@ -505,310 +506,320 @@
   </div>
 
   <script>
-    /************************************************************
-     * 0) LINKS (너가 준 URL로 고정)
-     ************************************************************/
+    /* ============================
+      0) 링크 (여기만 바꾸면 됨)
+    ============================ */
     const SAKURA_MAP_URL = "https://www.google.com/maps/d/u/0/viewer?mid=1d4bRtlPGDMOtNh13XdboeiLs5gIK_sk";
-    const CROWD_MAP_URL  = "https://platinumaps.jp/d/kyoto-smart-navi";
+    const CROWD_MAP_URL  = "https://platinumaps.jp/d/kyoto-smart-navic";
     const WEATHER_URL    = "https://forecast7.com/en/35d01135d77/kyoto/";
     const INSTA_URL      = "https://www.instagram.com/stitchhotelkyoto/";
 
-    /************************************************************
-     * 1) Kyoto location (sunset calc)
-     ************************************************************/
-    const KYOTO = { lat: 35.0116, lon: 135.7681, tz: 9 }; // JST
+    document.getElementById("btnWeather").href = WEATHER_URL;
+    document.getElementById("btnSakura").href  = SAKURA_MAP_URL;
+    document.getElementById("btnCrowd").href   = CROWD_MAP_URL;
+    document.getElementById("btnInsta").href   = INSTA_URL;
 
-    /************************************************************
-     * 2) Bloom season (너가 쓰던 값)
-     ************************************************************/
+    document.getElementById("btnRefresh").addEventListener("click", () => {
+      renderAll();
+    });
+
+    /* ============================
+      1) 교토 위치/시즌 (원하는대로 바꿀 수 있음)
+    ============================ */
+    const KYOTO = { lat: 35.0116, lon: 135.7681, tz: 9 }; // JST
     const PEAK_START = "2026-03-28";
     const PEAK_END   = "2026-04-05";
 
-    /************************************************************
-     * 3) Spots
-     ************************************************************/
+    /* ============================
+      2) 스팟 데이터
+      - 여기만 바꾸면 추천 문구가 바뀜
+    ============================ */
     const NEAR_SPOTS = [
-      { name:"Takasegawa (Hotel-front Riverside)", walk:"5–12 min walk", best:"sunset", tags:["Riverside","Quiet","Short walk"] },
-      { name:"Maruyama Park", walk:"20–25 min walk", best:"late afternoon", tags:["Classic","Lively","Night ok"] },
-      { name:"Keage Incline", walk:"~18 min by subway", best:"morning", tags:["Sakura tunnel","Photo","Popular"] },
-      { name:"Philosopher’s Path (short)", walk:"~20 min by bus", best:"morning", tags:["Canal walk","Calm","Longer"] }
+      { name:"Takasegawa (Hotel-front Riverside)", walk:"5–12 min walk", best:"sunset", vibe:"Quiet riverside", tags:["Riverside","Quiet","Short walk"] },
+      { name:"Kamo River", walk:"10–15 min walk", best:"late afternoon", vibe:"Open riverside", tags:["Riverside","Open view","Easy"] },
+      { name:"Maruyama Park", walk:"20–25 min walk", best:"late afternoon", vibe:"Lively", tags:["Park","Classic","Night"] }
     ];
 
     const ICON_SPOTS = [
-      { name:"Kiyomizu-dera", travel:"~15 min by bus", best:"opening time", tags:["Icon","Crowded","Morning"] },
-      { name:"Fushimi Inari Taisha", travel:"~25 min by train", best:"7–9 AM", tags:["Icon","Hike","Early"] },
-      { name:"Kinkaku-ji", travel:"~35 min by bus", best:"early morning", tags:["Icon","Bus","Queue"] },
-      { name:"Nijō Castle", travel:"~10 min by subway", best:"off-peak", tags:["History","Balanced","Easy"] }
+      { name:"Kiyomizu-dera", access:"~15 min by bus", best:"opening time", note:"Go early to avoid crowds.", tags:["Icon","Crowded","Morning"] },
+      { name:"Fushimi Inari Taisha", access:"~25 min by train", best:"7–9 AM", note:"Best early morning.", tags:["Icon","Hike","Morning"] },
+      { name:"Kinkaku-ji", access:"~35 min by bus", best:"opening time", note:"Short visit, go early.", tags:["Icon","Crowded","Morning"] },
+      { name:"Nijō Castle", access:"~15 min by subway", best:"weekday daytime", note:"Avoid peak mid-day.", tags:["Icon","Balanced","Day"] }
     ];
 
-    /************************************************************
-     * Helpers
-     ************************************************************/
-    const $ = (id) => document.getElementById(id);
-
-    function pad2(n){ return String(n).padStart(2,"0"); }
-
-    function fmtDateJST(d){
-      // display: Wednesday, Mar 04 · 14:24 (JST)
-      const opts = { weekday:"long", month:"short", day:"2-digit" };
-      const datePart = d.toLocaleDateString("en-US", opts);
-      return `${datePart} · ${pad2(d.getHours())}:${pad2(d.getMinutes())} (JST)`;
+    /* ============================
+      3) Auto Crowd (시간 기반 추정) - 1시간마다 갱신
+      ※ “진짜 실시간”은 외부 API 없이는 불가.
+      대신: 시간대 기반 “추정치”로 자동 표시.
+    ============================ */
+    function getAutoCrowdLevel(now = new Date()){
+      const h = now.getHours();
+      // 대충 교토 관광 피크 패턴
+      if (h >= 6 && h < 9) return "Low";
+      if (h >= 9 && h < 11) return "Moderate";
+      if (h >= 11 && h < 16) return "High";
+      if (h >= 16 && h < 19) return "Moderate";
+      if (h >= 19 && h < 22) return "Low";
+      return "Very Low";
     }
 
     function crowdColor(level){
       if(level==="Very Low") return "#4A90E2";
-      if(level==="Low")      return "#3CB371";
+      if(level==="Low") return "#3CB371";
       if(level==="Moderate") return "#F5A623";
       return "#E74C3C"; // High
     }
 
-    function crowdDesc(level){
-      if(level==="Very Low") return "Very quiet — great time for icons or riverside.";
-      if(level==="Low") return "Calm — flexible routes, enjoy nearby spots.";
-      if(level==="Moderate") return "Some queues — mix near spots + icons off-peak.";
-      return "Peak time now — choose nearby routes first to avoid queues.";
+    function crowdHintText(level){
+      if(level==="High") return "Peak time now — choose nearby routes first to avoid queues.";
+      if(level==="Moderate") return "Moderate crowd — mix near spots + one icon if off-peak.";
+      if(level==="Low") return "Quiet hours (check transport / opening times).";
+      return "Very quiet — great time for icons or photos.";
     }
 
-    function getAutoCrowdLevel(){
-      // ✅ “실시간” 크롤링은 브라우저에서 보안상 거의 불가(CORS).
-      // 대신 시간대 기반으로 자동 추정 + 1시간마다 갱신.
-      const now = new Date();
-      const h = now.getHours();
-
-      // 대충 교토 관광 패턴(예시)
-      if(h >= 7 && h < 9)  return "Low";
-      if(h >= 9 && h < 12) return "Moderate";
-      if(h >= 12 && h < 16) return "High";
-      if(h >= 16 && h < 18) return "Moderate";
-      if(h >= 18 && h < 21) return "Low";
-      return "Very Low";
+    /* ============================
+      4) Sunset 계산 (간단형)
+      - 외부 라이브러리 없이 동작하는 근사치
+    ============================ */
+    function toISODate(d){
+      const y=d.getFullYear();
+      const m=String(d.getMonth()+1).padStart(2,"0");
+      const day=String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
     }
 
-    /************************************************************
-     * Sunset calculation (간단/안전 버전)
-     * - 정확한 천문급은 아니지만 "운영용"으로 충분히 자연스럽게 나옴.
-     ************************************************************/
-    function approxSunsetMinutes(date, lat){
-      // 매우 단순한 계절 기반 근사(교토 위도에서 대략적)
-      // dayOfYear: 1..365
-      const start = new Date(date.getFullYear(),0,0);
-      const diff = date - start;
-      const day = Math.floor(diff / 86400000);
+    function calcSunsetLocal(lat, lon, date, tz){
+      // NOAA Simplified sunset (근사)
+      const rad = Math.PI/180;
+      const day = Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(),0,0)) / 86400000);
 
-      // 계절 변동(대략): 12월 16:40~17:00 / 6월 19:10~19:20 근처 느낌
-      // 사인 곡선으로 근사
-      const base = 17*60 + 50; // 17:50 기준
-      const amp  = 90;         // ±90분
-      const phase = (2*Math.PI*(day-172))/365; // 6월(172)에서 가장 늦게
-      const minutes = base + Math.round(amp * Math.sin(phase));
+      const lngHour = lon / 15;
+      const t = day + ((18 - lngHour) / 24);
 
-      // 위도 보정(교토면 거의 0)
-      return minutes;
+      const M = (0.9856 * t) - 3.289;
+      let L = M + (1.916 * Math.sin(rad*M)) + (0.020 * Math.sin(rad*2*M)) + 282.634;
+      L = (L + 360) % 360;
+
+      let RA = (180/Math.PI) * Math.atan(0.91764 * Math.tan(rad*L));
+      RA = (RA + 360) % 360;
+      const Lquadrant  = Math.floor(L/90) * 90;
+      const RAquadrant = Math.floor(RA/90) * 90;
+      RA = (RA + (Lquadrant - RAquadrant)) / 15;
+
+      const sinDec = 0.39782 * Math.sin(rad*L);
+      const cosDec = Math.cos(Math.asin(sinDec));
+
+      const cosH = (Math.cos(rad*90.833) - (sinDec * Math.sin(rad*lat))) / (cosDec * Math.cos(rad*lat));
+      if (cosH > 1) return null; // never sets
+      const H = (180/Math.PI) * Math.acos(cosH) / 15;
+
+      const T = H + RA - (0.06571 * t) - 6.622;
+      let UT = (T - lngHour) % 24;
+      if (UT < 0) UT += 24;
+
+      // convert UT -> local
+      let local = UT + tz;
+      local = (local + 24) % 24;
+
+      const hh = Math.floor(local);
+      const mm = Math.round((local - hh) * 60);
+      return { hh, mm: (mm===60?0:mm) };
     }
 
-    function minsToHHMM(m){
-      const hh = Math.floor(m/60);
-      const mm = m%60;
-      return `${pad2(hh)}:${pad2(mm)}`;
+    function fmtHM(hh, mm){
+      return `${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}`;
+    }
+
+    /* ============================
+      5) Bloom progress (중간값 기준 % + D-day)
+    ============================ */
+    function parseDate(str){
+      const [y,m,d] = str.split("-").map(Number);
+      return new Date(y, m-1, d);
+    }
+
+    function daysBetween(a,b){
+      const A = Date.UTC(a.getFullYear(),a.getMonth(),a.getDate());
+      const B = Date.UTC(b.getFullYear(),b.getMonth(),b.getDate());
+      return Math.round((B - A)/86400000);
     }
 
     function bloomProgressPct(today){
-      const s = new Date(PEAK_START+"T00:00:00");
-      const e = new Date(PEAK_END+"T00:00:00");
-      const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const start = parseDate(PEAK_START);
+      const end   = parseDate(PEAK_END);
+      const mid   = new Date((start.getTime()+end.getTime())/2);
 
-      if(t < s) return 0;
-      if(t > e) return 100;
+      // “중간값 기준” 진행률: (today - (mid-21)) / 42 * 100 형태로 완만하게
+      const windowStart = new Date(mid.getTime() - 21*86400000);
+      const windowEnd   = new Date(mid.getTime() + 21*86400000);
+      const total = daysBetween(windowStart, windowEnd);
 
-      const total = (e - s);
-      const cur = (t - s);
-      return Math.round((cur/total)*100);
+      const passed = daysBetween(windowStart, today);
+      let pct = Math.round((passed / total) * 100);
+      pct = Math.max(0, Math.min(100, pct));
+
+      const dday = daysBetween(today, mid); // mid까지 남은 일수
+      return { pct, dday, mid };
     }
 
-    function peakCountdownMidpoint(today){
-      const s = new Date(PEAK_START+"T00:00:00");
-      const e = new Date(PEAK_END+"T00:00:00");
-      const mid = new Date((s.getTime()+e.getTime())/2);
-      const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const diffDays = Math.ceil((mid - t)/86400000);
-      return diffDays >= 0 ? `D-${diffDays}` : `D+${Math.abs(diffDays)}`;
-    }
-
-    function comfortIndex(timeKey){
-      if(timeKey==="morning") return "Crisp morning";
-      if(timeKey==="midday")  return "Warmer midday";
-      if(timeKey==="late")    return "Cool evening";
-      return "Night chill";
-    }
-
-    function peakRisk(level){
-      if(level==="Very Low" || level==="Low") return "Low";
-      if(level==="Moderate") return "Medium";
-      return "High";
-    }
-
-    function suggestedFlow(level){
-      if(level==="High") return "Near STITCH first → Icons at opening time → Riverside at sunset";
-      if(level==="Moderate") return "Near STITCH → One icon off-peak → Riverside";
-      return "Icons anytime → Riverside → Nearby cafés";
-    }
-
-    function bestTimeTitle(timeKey, crowd){
+    /* ============================
+      6) 추천 로직 (manual time + manual crowd 사용)
+    ============================ */
+    function bestTimeText(timeKey, crowd){
+      // crowd가 높을수록 "아침/야간" 추천
       if(crowd==="High"){
-        if(timeKey==="midday") return "After 6:30 PM (cooler & calmer)";
-        if(timeKey==="late")   return "After 6:30 PM (cooler & calmer)";
-        return "Early morning tomorrow (7:00–9:00 AM)";
+        if(timeKey==="midday") return { title:"After 6:30 PM (cooler & calmer)", sub:"Peak time now — choose nearby sakura spots first, then icons later." };
+        return { title:"Early morning tomorrow (7:00–9:00 AM)", sub:"Tip: Icon spots are calmest at opening time." };
       }
       if(crowd==="Moderate"){
-        if(timeKey==="midday") return "Late afternoon (off-peak pockets)";
-        return "Morning (calmer)";
+        if(timeKey==="morning") return { title:"Morning (8:00–10:00 AM)", sub:"Balanced timing — icons early, riverside later." };
+        return { title:"Late afternoon (15:30–17:30)", sub:"Good for photos — avoid busiest icons until off-peak." };
       }
-      return "Anytime (quiet today)";
+      if(crowd==="Low"){
+        return { title:"Anytime (quiet today)", sub:"Enjoy flexible timing — prioritize your closest spots." };
+      }
+      return { title:"Very quiet now", sub:"Great moment for icons or a relaxed riverside walk." };
     }
 
-    function bestTimeSub(timeKey, crowd){
-      if(crowd==="High") return "Peak time now — choose nearby sakura spots first, then icons later.";
-      if(crowd==="Moderate") return "Some queues — mix nearby spots + icons off-peak.";
-      return "Enjoy flexible timing — prioritize your closest spots.";
+    function pickNearSpot(timeKey, crowd){
+      // crowd가 높으면 가까운 강변 우선
+      if(crowd==="High") return NEAR_SPOTS[0]; // Takasegawa
+      if(timeKey==="night") return NEAR_SPOTS[2]; // Maruyama (night lively)
+      if(timeKey==="morning") return NEAR_SPOTS[1]; // Kamo
+      return NEAR_SPOTS[0];
     }
 
-    function pickNear(crowd, timeKey){
-      // 간단 룰
-      if(crowd==="High" && (timeKey==="midday" || timeKey==="late")) return NEAR_SPOTS[0]; // Takasegawa
-      if(timeKey==="night") return NEAR_SPOTS[1]; // Maruyama
-      return NEAR_SPOTS[Math.floor(Math.random()*NEAR_SPOTS.length)];
+    function pickIconSpot(timeKey, crowd){
+      if(crowd==="High") return ICON_SPOTS[0]; // Kiyomizu early
+      if(timeKey==="morning") return ICON_SPOTS[1]; // Fushimi morning
+      if(timeKey==="midday") return ICON_SPOTS[3]; // Nijo weekday daytime
+      return ICON_SPOTS[0];
     }
 
-    function pickIcon(crowd, timeKey){
-      if(crowd==="High") return ICON_SPOTS[0]; // Kiyomizu (go early)
-      if(timeKey==="morning") return ICON_SPOTS[1]; // Fushimi
-      return ICON_SPOTS[Math.floor(Math.random()*ICON_SPOTS.length)];
+    function comfortIndex(now){
+      const h = now.getHours();
+      if(h >= 18 && h < 22) return "Cool evening";
+      if(h >= 6 && h < 10) return "Fresh morning";
+      if(h >= 11 && h < 16) return "Warm / busy hours";
+      return "Quiet late hours";
     }
 
-    function renderTags(el, arr){
+    function peakRisk(crowd){
+      if(crowd==="High") return "High";
+      if(crowd==="Moderate") return "Medium";
+      return "Low";
+    }
+
+    function weatherStrategy(now){
+      // 외부 날씨 API 없이 “가이드 문구”만 제공 (실제는 Weather 버튼으로 확인)
+      const m = now.getMonth()+1;
+      // 봄/초봄은 쌀쌀한 날이 많다고 가정
+      if(m <= 3) return "If rain: covered/temple first → riverside short. (~8–10°C)";
+      return "Check forecast → avoid long riverside if windy. Icons off-peak.";
+    }
+
+    function suggestedFlowText(crowd){
+      if(crowd==="High") return "Near STITCH first → Icons at opening time → Riverside at sunset";
+      if(crowd==="Moderate") return "One icon off-peak → Near STITCH stroll → Photo time around sunset";
+      return "Flexible: riverside + icon anytime (quiet)";
+    }
+
+    /* ============================
+      7) 렌더
+    ============================ */
+    function renderAll(){
+      const now = new Date();
+
+      // meta line (날짜/시간)
+      const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      const mon  = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const meta = `${days[now.getDay()]}, ${mon[now.getMonth()]} ${String(now.getDate()).padStart(2,"0")} · ${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")} (JST)`;
+      document.getElementById("metaLine").innerText = meta;
+
+      // AUTO crowd
+      const auto = getAutoCrowdLevel(now);
+      document.getElementById("autoCrowdLabel").innerText = auto;
+      document.getElementById("autoCrowdDot").style.background = crowdColor(auto);
+      document.getElementById("autoCrowdTime").innerText =
+        `updated ${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+
+      // top crowd = manual crowd (사용자가 선택한 값) 기준으로 표시
+      const timeKey = document.getElementById("timeSel").value;
+      const crowd   = document.getElementById("crowdSel").value;
+
+      document.getElementById("crowdText").innerText = `Crowd: ${crowd}`;
+      document.getElementById("crowdDot").style.background = crowdColor(crowd);
+      document.getElementById("crowdHint").innerText = crowdHintText(crowd);
+
+      // Best time
+      const bt = bestTimeText(timeKey, crowd);
+      document.getElementById("bestTimeTitle").innerText = bt.title;
+      document.getElementById("bestTimeSub").innerText = bt.sub;
+
+      // Sunset + photo time
+      const ss = calcSunsetLocal(KYOTO.lat, KYOTO.lon, now, KYOTO.tz);
+      if(ss){
+        const sst = fmtHM(ss.hh, ss.mm);
+        document.getElementById("sunsetText").innerText = sst;
+
+        // photo window: sunset -35min ~ sunset +20min
+        const startMin = (ss.hh*60+ss.mm) - 35;
+        const endMin   = (ss.hh*60+ss.mm) + 20;
+        const sh = Math.floor((startMin+1440)%1440/60), sm = (startMin+1440)%1440%60;
+        const eh = Math.floor((endMin+1440)%1440/60), em = (endMin+1440)%1440%60;
+        document.getElementById("photoText").innerText = `${fmtHM(sh,sm)}–${fmtHM(eh,em)} (around sunset)`;
+      } else {
+        document.getElementById("sunsetText").innerText = "—";
+        document.getElementById("photoText").innerText = "—";
+      }
+
+      // Bloom progress + peak window + countdown
+      const bp = bloomProgressPct(now);
+      document.getElementById("bloomText").innerText = `${bp.pct}%`;
+      document.getElementById("peakWindowText").innerText = `${PEAK_START} – ${PEAK_END}`;
+      document.getElementById("countdownText").innerText = (bp.dday>=0) ? `D-${bp.dday}` : `D+${Math.abs(bp.dday)}`;
+
+      // Weather strategy / flow
+      document.getElementById("weatherStrategyText").innerText = weatherStrategy(now);
+      document.getElementById("flowText").innerText = suggestedFlowText(crowd);
+
+      // Curated suggestions
+      const near = pickNearSpot(timeKey, crowd);
+      const icon = pickIconSpot(timeKey, crowd);
+
+      document.getElementById("nearTitle").innerText = `Near STITCH: ${near.name}`;
+      document.getElementById("nearMeta").innerText  = `${near.walk} · Best: ${near.best} · ${near.vibe}`;
+      renderTags("nearTags", near.tags);
+
+      document.getElementById("iconTitle").innerText = `Kyoto Icon: ${icon.name}`;
+      document.getElementById("iconMeta").innerText  = `${icon.access} · Best: ${icon.best} · ${icon.note}`;
+      renderTags("iconTags", icon.tags);
+
+      document.getElementById("comfortText").innerText = comfortIndex(now);
+      document.getElementById("riskText").innerText = peakRisk(crowd);
+      document.getElementById("visitFlowText").innerText = suggestedFlowText(crowd);
+    }
+
+    function renderTags(elId, tags){
+      const el = document.getElementById(elId);
       el.innerHTML = "";
-      arr.forEach(t=>{
-        const d = document.createElement("div");
-        d.className = "tag";
-        d.textContent = t;
+      tags.forEach(t=>{
+        const d=document.createElement("div");
+        d.className="tag";
+        d.innerText=t;
         el.appendChild(d);
       });
     }
 
-    /************************************************************
-     * Render
-     ************************************************************/
-    function applyLinks(){
-      $("btnWeather").href = WEATHER_URL;
-      $("btnSakura").href  = SAKURA_MAP_URL;
-      $("btnCrowd").href   = CROWD_MAP_URL;
-      $("btnInsta").href   = INSTA_URL;
-    }
+    // events
+    document.getElementById("timeSel").addEventListener("change", renderAll);
+    document.getElementById("crowdSel").addEventListener("change", renderAll);
 
-    function updateAutoCrowd(){
-      const level = getAutoCrowdLevel();
-      $("autoCrowdLabel").innerText = level;
-      $("autoCrowdDot").style.background = crowdColor(level);
+    // initial render
+    renderAll();
 
-      const now = new Date();
-      $("autoCrowdTime").innerText = `updated ${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
-    }
-
-    function renderAll(){
-      const now = new Date();
-      $("metaLine").innerText = fmtDateJST(now);
-
-      const manualTime = $("timeSel").value;
-      const manualCrowd = $("crowdSel").value;
-
-      // Top crowd bubble = manual crowd (네가 선택한 값)
-      $("crowdTitle").innerText = `Crowd: ${manualCrowd}`;
-      $("crowdDesc").innerText  = crowdDesc(manualCrowd);
-      $("crowdDot").style.background = crowdColor(manualCrowd);
-
-      // Best time
-      $("bestTitle").innerText = bestTimeTitle(manualTime, manualCrowd);
-      $("bestSub").innerText   = bestTimeSub(manualTime, manualCrowd);
-
-      // Sunset & photo time
-      const sunsetMin = approxSunsetMinutes(now, KYOTO.lat);
-      const sunsetTxt = minsToHHMM(sunsetMin);
-      const photoStart = minsToHHMM(Math.max(0, sunsetMin - 35));
-      const photoEnd   = minsToHHMM(Math.min(23*60+59, sunsetMin + 20));
-
-      // Bloom
-      const bloom = bloomProgressPct(now);
-      const countdown = peakCountdownMidpoint(now);
-
-      // Weather strategy (가벼운 문구/운영용)
-      const weatherStrategy =
-        (manualCrowd==="High")
-          ? "If rain: covered/temple first → riverside short."
-          : "Dry/low rain: riverside first → icons off-peak.";
-
-      // Flow
-      const flow = suggestedFlow(manualCrowd);
-
-      // LEFT pills
-      const pillGrid = $("pillGrid");
-      pillGrid.innerHTML = "";
-
-      const pills = [
-        { icon:"🌇", left:`Sunset in Kyoto:`, right:sunsetTxt },
-        { icon:"📷", left:`Best photo light:`, right:`${photoStart}–${photoEnd} (around sunset)` },
-        { icon:"🌸", left:`Estimated Bloom Progress:`, right:`${bloom}%` },
-        { icon:"🗓️", left:`Peak Window (Seasonal Avg.):`, right:`${PEAK_START} – ${PEAK_END}` },
-        { icon:"⏳", left:`Peak Countdown (midpoint):`, right:countdown },
-        { icon:"🌦️", left:`Weather Strategy:`, right:weatherStrategy },
-        { icon:"🧭", left:`Suggested Flow:`, right:flow }
-      ];
-
-      pills.forEach(p=>{
-        const div = document.createElement("div");
-        div.className = "pill";
-        div.innerHTML = `<div style="font-size:18px;">${p.icon}</div>
-                         <div style="display:flex; gap:10px; align-items:center; width:100%;">
-                           <b>${p.left}</b>
-                           <span>${p.right}</span>
-                         </div>`;
-        pillGrid.appendChild(div);
-      });
-
-      // RIGHT spots
-      const near = pickNear(manualCrowd, manualTime);
-      const icon = pickIcon(manualCrowd, manualTime);
-
-      $("nearTitle").innerText = `Near STITCH: ${near.name}`;
-      $("nearMeta").innerText  = `${near.walk} · Best: ${near.best}`;
-      renderTags($("nearTags"), near.tags);
-
-      $("iconTitle").innerText = `Kyoto Icon: ${icon.name}`;
-      $("iconMeta").innerText  = `${icon.travel} · Best: ${icon.best} · Go early to avoid crowds.`;
-      renderTags($("iconTags"), icon.tags);
-
-      $("comfortText").innerText = comfortIndex(manualTime);
-      $("riskText").innerText    = peakRisk(manualCrowd);
-      $("flowText").innerText    = flow;
-    }
-
-    function boot(){
-      applyLinks();
-      updateAutoCrowd();
-      renderAll();
-
-      $("timeSel").addEventListener("change", renderAll);
-      $("crowdSel").addEventListener("change", renderAll);
-
-      $("btnRefresh").addEventListener("click", ()=>{
-        updateAutoCrowd();
-        renderAll();
-      });
-
-      // ✅ 1시간마다 자동 갱신 (auto crowd)
-      setInterval(updateAutoCrowd, 3600000);
-    }
-
-    boot();
+    // auto crowd hourly refresh (표시 갱신)
+    setInterval(renderAll, 3600000);
   </script>
 </body>
 </html>
