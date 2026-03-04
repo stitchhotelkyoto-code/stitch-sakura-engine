@@ -364,6 +364,30 @@
                   <option value="night">Night</option>
                 </select>
               </div>
+<!-- AUTO CROWD NOW -->
+<div class="select">
+  <label>AUTO CROWD</label>
+
+  <div id="autoCrowdBox" style="
+    padding:10px 14px;
+    border-radius:12px;
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.08);
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  ">
+    <span id="autoCrowdDot"
+      style="width:10px;height:10px;border-radius:50%;background:#999;">
+    </span>
+
+    <span id="autoCrowdLabel">Detecting...</span>
+
+    <span id="autoCrowdTime"
+      style="font-size:12px;color:rgba(0,0,0,0.5);margin-left:auto;">
+    </span>
+  </div>
 
               <div class="select">
                 <label for="crowdSel">CROWD</label>
@@ -630,6 +654,52 @@
   document.getElementById("crowdSel").addEventListener("change", update);
   document.getElementById("timeSel").addEventListener("change", update);
   update();
+  function getAutoCrowdLevel(){
+
+  const now = new Date()
+  const h = now.getHours()
+  const weekend = (now.getDay()==0 || now.getDay()==6)
+
+  if(h < 7) return "Very Low"
+
+  if(h < 9) return weekend ? "Moderate" : "Low"
+
+  if(h < 12) return weekend ? "High" : "Moderate"
+
+  if(h < 15) return weekend ? "High" : "Moderate"
+
+  if(h < 18) return weekend ? "High" : "Moderate"
+
+  if(h < 21) return weekend ? "Moderate" : "Low"
+
+  return "Low"
+}
+
+function crowdColor(level){
+
+  if(level=="Very Low") return "#4A90E2"
+  if(level=="Low") return "#3CB371"
+  if(level=="Moderate") return "#F5A623"
+  return "#E74C3C"
+
+}
+
+function updateAutoCrowd(){
+
+  const level = getAutoCrowdLevel()
+
+  document.getElementById("autoCrowdLabel").innerText = level
+  document.getElementById("autoCrowdDot").style.background = crowdColor(level)
+
+  const now = new Date()
+  document.getElementById("autoCrowdTime").innerText =
+    "updated " + now.getHours() + ":" + String(now.getMinutes()).padStart(2,"0")
+
+}
+
+updateAutoCrowd()
+
+setInterval(updateAutoCrowd, 3600000)
 </script>
 </body>
 </html>
