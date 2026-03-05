@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STITCH Sakura Smart Guide</title>
+  <style>
+    :root{
+      --bg: #fbf3f6;
+      --card: rgba(255,255,255,0.88);
+      --ink: #171717;
+      --muted: rgba(23,23,23,0.62);
+      --pink: #f3c7d4;
+      --pink2:#f7dbe4;
+      --line: rgba(23,23,23,0.10);
+      --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      --radius: 22px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 20% 10%, rgba(243,199,212,0.55), transparent 60%),
+        radial-gradient(900px 450px at 85% 15%, rgba(247,219,228,0.55), transparent 60%),
+        linear-gradient(180deg, #fff, var(--bg));
+      padding: 18px;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .top{
+      padding: 22px 22px 12px 22px;
+      display:flex;
+      gap: 14px;
+      align-items:flex-start;
+      justify-content: space-between;
+    }
+
+    .brand{
+      letter-spacing: .08em;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    h1{
+      margin: 4px 0 6px 0;
+      font-size: 34px;
+      line-height: 1.05;
+    }
+
+    .sub{
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .status{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap: 8px;
+      min-width: 180px;
+    }
+
+    .crowdPill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.7);
+      font-weight: 700;
+    }
+    .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #999;
+      box-shadow: 0 0 0 6px rgba(0,0,0,0.04);
+    }
+    .statusSmall{
+      color: var(--muted);
+      font-size: 14px;
+      text-align:right;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 14px;
+      padding: 0 14px 14px 14px;
+    }
+
+    .panel{
+      background: rgba(247,219,228,0.40);
+      border: 1px solid rgba(23,23,23,0.08);
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 250px;
+    }
+    .panelTitle{
+      font-weight: 900;
+      letter-spacing: .06em;
+      font-size: 13px;
+      color: rgba(23,23,23,0.70);
+      margin-bottom: 6px;
+    }
+    .big{
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.05;
+      margin: 2px 0 6px 0;
+    }
+    .tip{
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .pillRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .pill{
+      display:flex;
+      align-items:center;
+      gap: 9px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(23,23,23,0.08);
+      font-size: 15px;
+      color: rgba(23,23,23,0.86);
+      white-space: nowrap;
+    }
+    .pill strong{font-weight:900}
+
+    .curated h2{
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      line-height:1.05;
+    }
+    .item{
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(23,23,23,0.12);
+    }
+    .item:first-of-type{
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+    .meta{
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 8px;
+    }
+    .tag{
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(23,23,23,0.10);
+      background: rgba(255,255,255,0.65);
+      font-size: 13px;
+      color: rgba(23,23,23,0.78);
+    }
+
+    .ctaBar{
+      display:flex;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 18px 16px 18px;
+      border-top: 1px solid rgba(23,23,23,0.08);
+      background: rgba(255,255,255,0.55);
+    }
+    .foot{
+      color: rgba(23,23,23,0.55);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .btnRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    a.btn{
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(23,23,23,0.16);
+      background: rgba(243,199,212,0.75);
+      color: rgba(23,23,23,0.92);
+      font-weight: 800;
+      font-size: 14px;
+    }
+    a.btn.secondary{
+      background: rgba(255,255,255,0.70);
+    }
+    button.btn{
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(23,23,23,0.16);
+      background: rgba(255,255,255,0.70);
+      color: rgba(23,23,23,0.92);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    /* Mobile: 스크롤 최소화 + 글자 크기 살짝 키움 */
+    @media (max-width: 760px){
+      body{ padding: 12px; }
+      .top{ padding: 18px 16px 10px 16px; }
+      h1{ font-size: 30px; }
+      .grid{
+        grid-template-columns: 1fr;
+        padding: 0 12px 12px 12px;
+      }
+      .status{ min-width: auto; align-items:flex-start; }
+      .statusSmall{ text-align:left; }
+      .panel{ padding: 14px; }
+      .big{ font-size: 30px; }
+      .ctaBar{ padding: 12px 14px 14px 14px; }
+      .btnRow{ justify-content:flex-start; }
+      .pill{ font-size: 14px; }
+      .tag{ font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div>
+          <div class="brand">STITCH HOTEL KYOTO</div>
+          <h1>Sakura Smart Guide</h1>
+          <div class="sub" id="nowLine">—</div>
+        </div>
+
+        <div class="status">
+          <div class="crowdPill">
+            <span class="dot" id="crowdDot"></span>
+            <span id="crowdText">Crowd: —</span>
+          </div>
+          <div class="statusSmall" id="crowdAdvice">—</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- LEFT: BEST TIME + DATA PILLS -->
+        <div class="panel">
+          <div class="panelTitle">BEST TIME TODAY</div>
+          <div class="big" id="bestTime">—</div>
+          <div class="tip" id="bestTip">—</div>
+
+          <div class="pillRow">
+            <div class="pill"><span>🌇</span> <span><strong>Sunset</strong> in Kyoto: <span id="sunset">—</span></span></div>
+            <div class="pill"><span>📸</span> <span><strong>Best photo</strong> light: <span id="photoWindow">—</span></span></div>
+            <div class="pill"><span>🌸</span> <span><strong>Estimated Bloom</strong> Progress: <span id="bloomPct">—</span></span></div>
+            <div class="pill"><span>🗓️</span> <span><strong>Peak Window</strong> (Seasonal Avg.): <span id="peakWindow">—</span></span></div>
+            <div class="pill"><span>⏳</span> <span><strong>Peak Countdown</strong> (midpoint): <span id="peakDday">—</span></span></div>
+            <div class="pill"><span>🌦️</span> <span><strong>Weather Strategy</strong>: <span id="weatherTip">—</span></span></div>
+            <div class="pill"><span>🧭</span> <span><strong>Suggested Flow</strong>: <span id="flow">—</span></span></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: CURATED -->
+        <div class="panel curated">
+          <div class="panelTitle">CURATED SUGGESTION</div>
+
+          <div class="item">
+            <h2 id="nearTitle">Near STITCH: —</h2>
+            <div class="meta" id="nearMeta">—</div>
+            <div class="tags" id="nearTags"></div>
+          </div>
+
+          <div class="item">
+            <h2 id="iconTitle">Kyoto Icon: —</h2>
+            <div class="meta" id="iconMeta">—</div>
+            <div class="tags" id="iconTags"></div>
+          </div>
+
+          <!-- 밑이 허전하지 않게: 한 줄 큐레이션 요약 -->
+          <div class="item">
+            <div class="pillRow">
+              <div class="pill"><span>🚶</span> <span><strong>Walkability</strong>: <span id="walkScore">—</span></span></div>
+              <div class="pill"><span>⚠️</span> <span><strong>Peak Risk</strong>: <span id="riskLine">—</span></span></div>
+              <div class="pill"><span>📍</span> <span><strong>Best angle</strong>: <span id="angleLine">—</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctaBar">
+        <div class="foot">
+          Estimated guidance based on typical crowd patterns. Please check the live crowd map before heading out.
+        </div>
+        <div class="btnRow">
+          <a class="btn secondary" id="btnWeather" target="_blank" rel="noopener">🌦 Open Weather</a>
+          <a class="btn secondary" id="btnSakura" target="_blank" rel="noopener">🌸 Open Sakura Map</a>
+          <a class="btn" id="btnCrowd" target="_blank" rel="noopener">📍 Open Live Crowd Map</a>
+          <button class="btn" onclick="init()">↻ Refresh</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/** ==============================
+ *  0) 너 링크만 여기서 교체!
+ *  ============================== */
+const SAKURA_MAP_URL = "PASTE_YOUR_MYMAPS_LINK_HERE";
+const CROWD_MAP_URL = "https://platinumaps.jp/d/kyoto-smart-navi"; // Kyoto Smart Navi
+const WEATHER_URL   = "PASTE_YOUR_WEATHER_LINK_HERE"; // Weathernews Kyoto etc.
+
+/** ==============================
+ *  1) 위치(교토) - 일몰 계산용
+ *  ============================== */
+const KYOTO = { lat: 35.0116, lon: 135.7681, tz: 9 }; // JST
+
+/** ==============================
+ *  2) Bloom 시즌(평균치 기반) - 너가 쓰던 값
+ *  ============================== */
+const PEAK_START = "2026-03-28";
+const PEAK_END   = "2026-04-05";
+
+/** ==============================
+ *  3) 추천 스팟 (Near STITCH / Icon)
+ *  - 여기는 “네 사쿠라 지도 스팟만” 쓰고 싶으면
+ *    배열을 너 MyMaps 기준으로 줄이면 됨
+ *  ============================== */
+const NEAR_SPOTS = [
+  {
+    name:"Maruyama Park",
+    walk:"20–25 min walk",
+    best:"late afternoon",
+    vibe:"Lively atmosphere. Expect more people at night.",
+    tags:["🌸 Night Sakura","🎎 Traditional","📸 Photo Spot"],
+    risk:"High (18:00–21:00)",
+    angle:"Yasaka Shrine side → lanterns + blossoms"
+  },
+  {
+    name:"Kamo River (Takasegawa area)",
+    walk:"5–12 min walk",
+    best:"sunset",
+    vibe:"Riverside calm. Easy for quick photos.",
+    tags:["🌊 Riverside","🌿 Quiet","📸 Photo Spot"],
+    risk:"Moderate (16:00–19:00)",
+    angle:"Bridge view west → soft sunset reflections"
+  },
+  {
+    name:"Philosopher’s Path (start point)",
+    walk:"~20 min by bus",
+    best:"morning",
+    vibe:"Best when calm. Avoid noon.",
+    tags:["🌿 Quiet","🚶 Scenic Walk","📸 Photo Spot"],
+    risk:"High (11:00–16:00)",
+    angle:"Canal line framing → long depth shots"
+  }
+];
+
+const ICON_SPOTS = [
+  {
+    name:"Fushimi Inari Taisha",
+    access:"~25 min by train",
+    best:"7–9 AM",
+    note:"Go at opening time to avoid crowds.",
+    tags:["⛩ Icon","🌿 Quiet AM","📸 Photo Spot"],
+    risk:"High (10:30–16:30)",
+    angle:"First torii corridor → center alignment"
+  },
+  {
+    name:"Kiyomizu-dera",
+    access:"~20 min by bus",
+    best:"8–10 AM",
+    note:"Morning is smoother; late afternoon gets packed.",
+    tags:["🏯 Icon","📸 Viewpoint","🎎 Traditional"],
+    risk:"High (12:00–18:00)",
+    angle:"Main stage → city backdrop + blossoms"
+  },
+  {
+    name:"Nijō Castle",
+    access:"~15 min by subway",
+    best:"weekday mid-morning",
+    note:"Stable option when other icons are crowded.",
+    tags:["🏯 Icon","🌿 Balanced","📸 Gardens"],
+    risk:"Moderate (11:00–15:00)",
+    angle:"Garden loop → blossoms + stone textures"
+  }
+];
+
+/** ==============================
+ *  4) 유틸
+ *  ============================== */
+function pad2(n){ return String(n).padStart(2,"0"); }
+function formatDateTimeJST(d){
+  // d is Date in local machine; we'll convert to JST by offset trick
+  const utc = d.getTime() + d.getTimezoneOffset()*60000;
+  const jst = new Date(utc + 9*3600000);
+  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const dayName = days[jst.getDay()];
+  const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const mm = monthNames[jst.getMonth()];
+  const dd = pad2(jst.getDate());
+  const hh = pad2(jst.getHours());
+  const mi = pad2(jst.getMinutes());
+  return `${dayName}, ${mm} ${dd} · ${hh}:${mi} (JST)`;
+}
+
+function parseYMD(s){
+  const [y,m,d]=s.split("-").map(Number);
+  return new Date(Date.UTC(y, m-1, d, 0,0,0));
+}
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+/** ==============================
+ *  5) 간단 일몰 계산 (NOAA 기반 간이)
+ *  - 정확도 “실사용 충분” 수준
+ *  ============================== */
+function calcSunsetJST(date, lat, lon){
+  // date: JS Date (now), compute sunset for that day in JST.
+  // We'll compute using a simplified solar algorithm.
+  const utc = date.getTime() + date.getTimezoneOffset()*60000;
+  const jstDate = new Date(utc + 9*3600000);
+
+  // day of year
+  const start = new Date(Date.UTC(jstDate.getUTCFullYear(),0,0));
+  const doy = Math.floor((Date.UTC(jstDate.getUTCFullYear(), jstDate.getUTCMonth(), jstDate.getUTCDate()) - start.getTime())/86400000);
+
+  const lngHour = lon / 15;
+  // approximate sunset time
+  const t = doy + ((18 - lngHour) / 24);
+
+  // Sun's mean anomaly
+  const M = (0.9856 * t) - 3.289;
+
+  // Sun's true longitude
+  let L = M + (1.916 * Math.sin(M*Math.PI/180)) + (0.020 * Math.sin(2*M*Math.PI/180)) + 282.634;
+  L = (L + 360) % 360;
+
+  // Sun's right ascension
+  let RA = Math.atan(0.91764 * Math.tan(L*Math.PI/180)) * 180/Math.PI;
+  RA = (RA + 360) % 360;
+
+  // RA quadrant adjustment
+  const Lquadrant  = Math.floor(L/90) * 90;
+  const RAquadrant = Math.floor(RA/90) * 90;
+  RA = RA + (Lquadrant - RAquadrant);
+  RA = RA / 15;
+
+  // Sun's declination
+  const sinDec = 0.39782 * Math.sin(L*Math.PI/180);
+  const cosDec = Math.cos(Math.asin(sinDec));
+
+  // Sun's local hour angle
+  const zenith = 90.833; // official
+  const cosH = (Math.cos(zenith*Math.PI/180) - (sinDec * Math.sin(lat*Math.PI/180))) / (cosDec * Math.cos(lat*Math.PI/180));
+
+  if (cosH > 1) return null; // no sunset
+  if (cosH < -1) return null; // no sunset
+
+  let H = Math.acos(cosH) * 180/Math.PI;
+  H = H / 15;
+
+  // Local mean time
+  const T = H + RA - (0.06571 * t) - 6.622;
+
+  // UTC
+  let UT = T - lngHour;
+  UT = (UT + 24) % 24;
+
+  // JST
+  let JST = UT + 9;
+  JST = (JST + 24) % 24;
+
+  const hh = Math.floor(JST);
+  const mm = Math.floor((JST - hh) * 60);
+  return { hh, mm };
+}
+
+/** ==============================
+ *  6) Crowd “인덱스” (실시간 API 없이: 시간대/요일 휴리스틱)
+ *  - 발표용: “시간대 알고리즘 추정”
+ *  ============================== */
+function crowdLevelByTime(jstDate){
+  const day = jstDate.getDay(); // 0 Sun ... 6 Sat
+  const h = jstDate.getHours();
+  const isWeekend = (day===0 || day===6);
+
+  // base
+  let score = 0;
+  // morning
+  if (h>=6 && h<9) score += 1;
+  // late morning - noon
+  if (h>=9 && h<12) score += 2;
+  // afternoon peak
+  if (h>=12 && h<16) score += 3;
+  // evening peak (esp. sakura / icons)
+  if (h>=16 && h<20) score += 3;
+  // night
+  if (h>=20 && h<23) score += 2;
+  // deep night
+  if (h>=23 || h<6) score += 0;
+
+  if (isWeekend) score += 1;
+
+  if (score <= 1) return { level:"Very Low", dot:"#2d9cdb", advice:"Quiet hours (check transport / opening times)." };
+  if (score <= 3) return { level:"Low", dot:"#27ae60", advice:"Good timing. Nearby areas first." };
+  if (score <= 5) return { level:"Moderate", dot:"#f2c94c", advice:"Expect some queues. Avoid icons at noon." };
+  return { level:"High", dot:"#eb5757", advice:"Peak hours — queues likely at major icons." };
+}
+
+/** ==============================
+ *  7) Best time 제안
+ *  ============================== */
+function bestTimeSuggestion(crowdLevel, jstDate){
+  const h = jstDate.getHours();
+
+  if (crowdLevel==="High" || crowdLevel==="Moderate"){
+    // suggest tomorrow early or after 18:30
+    if (h >= 17) return { text:"Early morning tomorrow (7:00–9:00 AM)", tip:"Tip: Icon spots are calmest at opening time." };
+    return { text:"After 6:30 PM (cooler & calmer)", tip:"Peak hours now — choose nearby sakura spots first, then icons later." };
+  }
+  if (crowdLevel==="Low"){
+    if (h < 10) return { text:"This morning (now–10:00 AM)", tip:"Great window for icons before noon." };
+    return { text:"Late afternoon (15:30–17:30)", tip:"Good for riverside light and short walks." };
+  }
+  return { text:"Anytime (quiet today)", tip:"Enjoy flexible timing — prioritize your closest spots." };
+}
+
+/** ==============================
+ *  8) Bloom % + D-day (midpoint)
+ *  ============================== */
+function bloomProgress(jstNow){
+  const start = parseYMD(PEAK_START);
+  const end   = parseYMD(PEAK_END);
+  // compare by UTC noon-ish to avoid timezone drift
+  const nowUTC = new Date(Date.UTC(jstNow.getFullYear(), jstNow.getMonth(), jstNow.getDate(), 12,0,0));
+
+  const total = end.getTime() - start.getTime();
+  const done  = nowUTC.getTime() - start.getTime();
+
+  const pct = clamp(Math.round((done/total)*100), 0, 100);
+
+  const midpoint = new Date(start.getTime() + total/2);
+  const dday = Math.ceil((midpoint.getTime() - nowUTC.getTime())/86400000);
+
+  return { pct, midpointD: dday };
+}
+
+/** ==============================
+ *  9) Weather Strategy (외부 API 없이: 기본 + (선택) Open-Meteo)
+ *  ============================== */
+async function weatherStrategy(jstNow){
+  // Default fallback
+  let tip = "Check forecast before going out (wind/rain affects comfort).";
+  let comfort = "Balanced";
+
+  // Try Open-Meteo (CORS 보통 OK)
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${KYOTO.lat}&longitude=${KYOTO.lon}&current=temperature_2m,precipitation,weather_code&timezone=Asia%2FTokyo`;
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error("weather fetch failed");
+    const data = await res.json();
+    const cur = data.current;
+    const t = Math.round(cur.temperature_2m);
+    const p = cur.precipitation; // mm
+    const wc = cur.weather_code;
+
+    const rainy = (p && p > 0) || [51,53,55,61,63,65,80,81,82,95,96,99].includes(wc);
+
+    if (rainy){
+      tip = `Rain likely — choose covered/temple areas first, keep riverside short. (~${t}°C)`;
+      comfort = "Rainy";
+    } else if (t <= 8){
+      tip = `Cool outside — best for calm morning walk, bring a layer. (~${t}°C)`;
+      comfort = "Cool";
+    } else if (t >= 18){
+      tip = `Mild — sunset riverside photos recommended. (~${t}°C)`;
+      comfort = "Mild";
+    } else {
+      tip = `Comfortable — near spots now, icons early/late to avoid crowds. (~${t}°C)`;
+      comfort = "Comfortable";
+    }
+
+    return { tip, comfort };
+  }catch(e){
+    return { tip, comfort };
+  }
+}
+
+/** ==============================
+ *  10) Daily pick (날짜 기반으로 “그날의 추천” 고정)
+ *  ============================== */
+function seededPick(arr, seed){
+  // seed: number
+  const idx = Math.abs(seed) % arr.length;
+  return arr[idx];
+}
+
+function initLinks(){
+  document.getElementById("btnSakura").href = SAKURA_MAP_URL;
+  document.getElementById("btnCrowd").href = CROWD_MAP_URL;
+  document.getElementById("btnWeather").href = WEATHER_URL;
+}
+
+/** ==============================
+ *  11) 메인 렌더
+ *  ============================== */
+async function init(){
+  initLinks();
+
+  // JST now
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset()*60000;
+  const jst = new Date(utc + 9*3600000);
+
+  document.getElementById("nowLine").textContent = formatDateTimeJST(now);
+
+  // Crowd
+  const crowd = crowdLevelByTime(jst);
+  document.getElementById("crowdText").textContent = `Crowd: ${crowd.level}`;
+  document.getElementById("crowdAdvice").textContent = crowd.advice;
+  document.getElementById("crowdDot").style.background = crowd.dot;
+
+  // Best time
+  const best = bestTimeSuggestion(crowd.level, jst);
+  document.getElementById("bestTime").textContent = best.text;
+  document.getElementById("bestTip").textContent = best.tip;
+
+  // Sunset + photo window
+  const ss = calcSunsetJST(now, KYOTO.lat, KYOTO.lon);
+  if (ss){
+    const sunsetStr = `${pad2(ss.hh)}:${pad2(ss.mm)}`;
+    document.getElementById("sunset").textContent = sunsetStr;
+
+    // photo window: -35 to +20 minutes around sunset
+    const ssMin = ss.hh*60 + ss.mm;
+    const a = ssMin - 35;
+    const b = ssMin + 20;
+    const fmt = (m)=>{
+      let mm = (m%1440+1440)%1440;
+      const hh = Math.floor(mm/60);
+      const mi = mm%60;
+      return `${pad2(hh)}:${pad2(mi)}`;
+    };
+    document.getElementById("photoWindow").textContent = `${fmt(a)}–${fmt(b)} (around sunset)`;
+  } else {
+    document.getElementById("sunset").textContent = "—";
+    document.getElementById("photoWindow").textContent = "—";
+  }
+
+  // Bloom progress & D-day
+  const bloom = bloomProgress(jst);
+  document.getElementById("bloomPct").textContent = `${bloom.pct}%`;
+  document.getElementById("peakWindow").textContent = `${PEAK_START} – ${PEAK_END}`;
+  document.getElementById("peakDday").textContent = `D-${Math.max(0,bloom.midpointD)}`;
+
+  // Weather strategy
+  const w = await weatherStrategy(jst);
+  document.getElementById("weatherTip").textContent = w.tip;
+
+  // Flow (간단하지만 “큐레이션 느낌” 나게)
+  let flow = "Near STITCH → Kyoto Icons → Sunset photo";
+  if (crowd.level==="High" || crowd.level==="Moderate") flow = "Near STITCH first → Icons early/late → Sunset photo";
+  if (w.comfort==="Rainy") flow = "Covered spots → Short riverside → Icons off-peak";
+  document.getElementById("flow").textContent = flow;
+
+  // Daily curated picks
+  const seed = jst.getFullYear()*10000 + (jst.getMonth()+1)*100 + jst.getDate();
+  const near = seededPick(NEAR_SPOTS, seed);
+  const icon = seededPick(ICON_SPOTS, seed + 7);
+
+  // Near
+  document.getElementById("nearTitle").textContent = `Near STITCH: ${near.name}`;
+  document.getElementById("nearMeta").textContent = `${near.walk} · Best: ${near.best} · ${near.vibe}`;
+
+  const nearTags = document.getElementById("nearTags");
+  nearTags.innerHTML = "";
+  near.tags.forEach(t=>{
+    const el=document.createElement("div");
+    el.className="tag";
+    el.textContent=t;
+    nearTags.appendChild(el);
+  });
+  // Add walkability + risk tag
+  const nearExtra = document.createElement("div");
+  nearExtra.className="tag";
+  nearExtra.textContent = `⚠️ Peak Risk: ${near.risk}`;
+  nearTags.appendChild(nearExtra);
+
+  // Icon
+  document.getElementById("iconTitle").textContent = `Kyoto Icon: ${icon.name}`;
+  document.getElementById("iconMeta").textContent = `${icon.access} · Best: ${icon.best} · ${icon.note}`;
+
+  const iconTags = document.getElementById("iconTags");
+  iconTags.innerHTML = "";
+  icon.tags.forEach(t=>{
+    const el=document.createElement("div");
+    el.className="tag";
+    el.textContent=t;
+    iconTags.appendChild(el);
+  });
+  const iconExtra = document.createElement("div");
+  iconExtra.className="tag";
+  iconExtra.textContent = `⚠️ Peak Risk: ${icon.risk}`;
+  iconTags.appendChild(iconExtra);
+
+  // Bottom fill (허전함 해결)
+  // Walkability score: 간단 규칙(near walk 시간 기반)
+  const walkScore = (() => {
+    const s = near.walk.toLowerCase();
+    if (s.includes("5–") || s.includes("5-") || s.includes("5–12") || s.includes("5–15")) return "★★★★★ (very easy)";
+    if (s.includes("12") || s.includes("15")) return "★★★★☆ (easy)";
+    if (s.includes("20")) return "★★★☆☆ (moderate)";
+    return "★★★☆☆ (moderate)";
+  })();
+  document.getElementById("walkScore").textContent = walkScore;
+
+  // Risk line: combine both
+  document.getElementById("riskLine").textContent = `Near: ${near.risk} · Icon: ${icon.risk}`;
+
+  // Angle line: pick the one that matches sunset / rain
+  let angle = near.angle;
+  if (w.comfort==="Rainy") angle = "Covered viewpoints → avoid long riverside stops";
+  document.getElementById("angleLine").textContent = angle;
+}
+
+init();
+</script>
+</body>
+</html>
