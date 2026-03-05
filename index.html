@@ -7,342 +7,393 @@
 
   <style>
     :root{
-      --bg:#fbf3f6;
-      --card:rgba(255,255,255,0.88);
-      --ink:#171717;
-      --muted:rgba(23,23,23,0.62);
-      --line:rgba(23,23,23,0.10);
-      --shadow:0 18px 50px rgba(0,0,0,0.12);
-      --radius:22px;
+      --bg: #fbf3f6;
+      --card: rgba(255,255,255,0.92);
+      --ink: #171717;
+      --muted: rgba(23,23,23,0.62);
+      --line: rgba(23,23,23,0.10);
+      --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      --radius: 22px;
 
-      --pink:#f3c7d4;
+      --pink: #f3c7d4;
       --pink2:#f7dbe4;
-      --chip:#ffffff;
+
+      --good:#3CB371;
+      --mid:#F5A623;
+      --bad:#E74C3C;
+      --blue:#4A90E2;
     }
 
     *{ box-sizing:border-box; }
     html, body{ width:100%; overflow-x:hidden; }
+
     body{
       margin:0;
       font-family: Georgia, "Times New Roman", serif;
-      color:var(--ink);
+      color: var(--ink);
       background:
-        radial-gradient(1200px 500px at 20% 10%, rgba(243,199,212,0.55), transparent 60%),
+        radial-gradient(1200px 600px at 20% 10%, rgba(243,199,212,0.55), transparent 60%),
         radial-gradient(900px 450px at 85% 15%, rgba(247,219,228,0.55), transparent 60%),
         linear-gradient(180deg, #fff, var(--bg));
-      padding:18px;
-    }
-
-    /* ⭐ 세로글자 방지 핵심 */
-    body, .card, .panel, .chip, .spotCard, .miniRow, .btn{
-      word-break: normal;
-      overflow-wrap: break-word;  /* anywhere 금지 */
-      white-space: normal;
+      padding: 18px;
     }
 
     .wrap{
-      max-width:980px;
-      width:min(980px, 100%);
-      margin:0 auto;
+      width: min(980px, 100%);
+      margin: 0 auto;
     }
 
     .card{
       width:100%;
-      background:var(--card);
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      border-radius:var(--radius);
-      padding:22px;
-      overflow:hidden;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
+    .inner{ padding: 22px; }
+
+    /* Header */
     .hero{
       display:flex;
-      align-items:flex-start;
       justify-content:space-between;
-      gap:14px;
+      gap:16px;
+      align-items:flex-start;
       flex-wrap:wrap;
     }
-
     .brand{
-      letter-spacing:0.12em;
-      font-size:12px;
-      color:rgba(23,23,23,0.55);
-      text-transform:uppercase;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      color: rgba(23,23,23,0.55);
     }
-
     .h1{
-      margin:6px 0 6px;
-      font-size:54px;
-      line-height:0.95;
-      letter-spacing:-0.02em;
+      margin: 6px 0 6px;
+      font-size: clamp(40px, 6.2vw, 64px);
+      line-height: 0.95;
     }
-
     .meta{
-      margin:0;
-      color:rgba(23,23,23,0.60);
-      font-size:18px;
-      line-height:1.25;
+      margin-top: 10px;
+      color: rgba(23,23,23,0.62);
+      font-size: 18px;
     }
-
-    .badge{
+    .pill{
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.72);
       display:flex;
       gap:10px;
-      align-items:center;
-      padding:10px 14px;
-      border-radius:999px;
-      background:#fff;
-      border:1px solid var(--line);
-      max-width:420px;
+      align-items:flex-start;
+      max-width: 420px;
     }
     .dot{
-      width:10px;height:10px;border-radius:50%;
-      background:#3CB371;
-      box-shadow:0 0 0 5px rgba(60,179,113,0.14);
-      flex:0 0 auto;
+      width:10px; height:10px; border-radius:50%;
+      margin-top: 4px;
+      background: var(--mid);
+      flex: 0 0 auto;
     }
-    .badgeTitle{
-      font-weight:800;
-      font-size:18px;
-      line-height:1.1;
-      white-space:nowrap;
-    }
-    .badgeDesc{
+    .pill b{ font-size: 18px; }
+    .pill small{
       display:block;
-      font-size:13px;
-      color:rgba(23,23,23,0.62);
-      margin-top:2px;
-      line-height:1.2;
-    }
-
-    .controls{
-      margin-top:14px;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .select{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:10px 12px;
-    }
-    .select label{
-      letter-spacing:0.12em;
-      font-size:11px;
-      color:rgba(23,23,23,0.55);
-      text-transform:uppercase;
-      margin-left:2px;
-      white-space:nowrap;
-    }
-    select{
-      border:none;
-      outline:none;
-      background:transparent;
-      font-family:inherit;
-      font-weight:800;
-      font-size:18px;
-      padding:2px 2px;
-    }
-
-    .grid{
-      margin-top:16px;
-      display:grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap:14px;
-      align-items:start;
-    }
-
-    .panel{
-      background:rgba(247,219,228,0.35);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-      overflow:hidden;
-      min-width:0;
-    }
-    .panelTitle{
-      letter-spacing:0.12em;
-      font-size:12px;
-      color:rgba(23,23,23,0.55);
-      text-transform:uppercase;
-      margin:0 0 8px;
-    }
-
-    .big{
-      font-size:40px;
-      line-height:1.02;
-      margin:0 0 6px;
-      letter-spacing:-0.02em;
-      font-weight:900;
-    }
-    .tip{
-      margin:0 0 12px;
-      color:rgba(23,23,23,0.62);
-      font-size:16px;
+      color: rgba(23,23,23,0.58);
       line-height:1.25;
     }
 
-    /* Left info chips */
-    .chips{
+    /* Controls */
+    .controls{
+      margin-top: 14px;
+      background: rgba(243,199,212,0.20);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
       display:grid;
-      gap:10px;
-      margin-top:10px;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 10px;
+      align-items: end;
     }
-    .chip{
-      background:var(--chip);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 14px;
+    .autoCrowd{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.78);
       display:flex;
+      gap:10px;
       align-items:center;
-      gap:12px;
-      min-width:0;
+      min-width: 0;
     }
-    .chip .k{
-      font-weight:900;
-      font-size:18px;
-      line-height:1.1;
-      flex:0 0 auto;
-      white-space:nowrap;
+    .autoCrowd .dot{ margin-top:0; }
+    .autoCrowd .label{
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: rgba(23,23,23,0.55);
+      margin-right: 10px;
     }
-    .chip .v{
+    .autoCrowd .level{
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .autoCrowd .time{
       margin-left:auto;
-      color:rgba(23,23,23,0.62);
-      font-size:16px;
-      line-height:1.2;
-      text-align:right;
-      min-width:0;
-      max-width:58%;
+      color: rgba(23,23,23,0.55);
+      font-size: 13px;
+      white-space: nowrap;
     }
 
-    /* Right cards */
-    .spotCard{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px;
-      margin-bottom:10px;
+    .selectRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      min-width: 0;
+    }
+    .select{
       min-width:0;
     }
-    .spotHead{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:6px;
+    .select label{
+      display:block;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: rgba(23,23,23,0.55);
+      margin: 0 0 8px 2px;
     }
-    .spotIcon{
-      width:26px;height:26px;border-radius:8px;
-      background:rgba(243,199,212,0.55);
-      display:grid;place-items:center;
-      font-size:14px;
-      flex:0 0 auto;
+    select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding: 14px 16px;
+      font-size: 18px;
+      background: rgba(255,255,255,0.85);
+      font-family: inherit;
+      outline: none;
+    }
+
+    /* Main grid */
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+      align-items:start;
+    }
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(243,199,212,0.20);
+      padding: 14px;
+    }
+    .panel h3{
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      color: rgba(23,23,23,0.55);
+    }
+    .panel .big{
+      margin: 6px 0 6px;
+      font-size: clamp(28px, 4.2vw, 44px);
+      line-height: 1.02;
+    }
+    .panel .desc{
+      margin: 0 0 12px;
+      color: rgba(23,23,23,0.62);
+      font-size: 16px;
+    }
+
+    /* Rows (this is where mobile “vertical letters” used to happen) */
+    .rows{ display:flex; flex-direction:column; gap: 10px; }
+    .row{
+      background: rgba(255,255,255,0.82);
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      min-width: 0;
+    }
+    .row .l{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .row .icon{
+      width: 20px;
+      text-align:center;
+      flex: 0 0 auto;
+    }
+    .row .title{
+      font-weight: 700;
+      font-size: 18px;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .row .val{
+      margin-left:auto;
+      color: rgba(23,23,23,0.62);
+      font-size: 16px;
+      text-align:right;
+
+      /* 핵심: 세로 깨짐 방지 */
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+      line-break: strict;
+      min-width: 0;
+      max-width: 58%;
+    }
+
+    /* Right side curated */
+    .spotCard{
+      background: rgba(255,255,255,0.86);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
     }
     .spotTitle{
-      font-weight:900;
-      font-size:18px;
-      line-height:1.1;
-      margin:0;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .spotTitle .badge{
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: rgba(243,199,212,0.55);
+      display:flex; align-items:center; justify-content:center;
+      flex: 0 0 auto;
     }
     .spotMeta{
-      margin:0 0 10px;
-      color:rgba(23,23,23,0.62);
-      font-size:14px;
-      line-height:1.2;
+      color: rgba(23,23,23,0.62);
+      font-size: 15px;
+      margin-bottom: 10px;
     }
-    .tags{
+    .chips{
       display:flex;
-      gap:8px;
       flex-wrap:wrap;
+      gap:8px;
     }
-    .tag{
-      background:#fff;
+    .chip{
       border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px;
-      font-weight:800;
-      font-size:13px;
-      white-space:nowrap;
+      background: rgba(255,255,255,0.78);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 14px;
+      font-weight: 600;
     }
 
-    .miniList{
-      display:grid;
-      gap:10px;
-      margin-top:10px;
-    }
-    .miniRow{
-      background:#fff;
+    .miniRows{ display:flex; flex-direction:column; gap:10px; margin-top:10px; }
+    .mini{
       border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px 14px;
+      background: rgba(255,255,255,0.82);
+      border-radius: 14px;
+      padding: 10px 12px;
       display:flex;
-      gap:12px;
-      align-items:flex-start;
+      gap:10px;
+      align-items:center;
       min-width:0;
     }
-    .miniRow .k{
-      font-weight:900;
-      font-size:16px;
-      white-space:nowrap;
-      flex:0 0 auto;
-    }
-    .miniRow .v{
+    .mini b{ font-size: 18px; }
+    .mini span{
       margin-left:auto;
-      color:rgba(23,23,23,0.62);
-      font-size:14px;
-      text-align:right;
+      color: rgba(23,23,23,0.62);
       min-width:0;
-      max-width:62%;
+      text-align:right;
+
+      /* 핵심: 세로 깨짐 방지 */
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+      max-width: 60%;
+    }
+
+    /* Footer + CTA (one-line scroll on mobile) */
+    .foot{
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: rgba(23,23,23,0.58);
+      font-size: 16px;
     }
 
     .cta{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
+      margin-top: 12px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: nowrap;           /* always one line */
+      overflow-x: auto;            /* slide */
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
     }
+    .cta::-webkit-scrollbar{ height: 6px; }
+    .cta::-webkit-scrollbar-thumb{ background: rgba(23,23,23,0.18); border-radius: 999px; }
     .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.88);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--ink);
       display:inline-flex;
-      align-items:center;
-      justify-content:center;
       gap:10px;
-      padding:12px 12px;
-      border-radius:999px;
-      border:1px solid rgba(23,23,23,0.14);
-      background:#fff;
-      color:#171717;
-      text-decoration:none;
-      font-weight:900;
-      font-size:16px;
-      cursor:pointer;
-      min-width:0;
+      align-items:center;
+      white-space: nowrap;     /* key: no 2-line button text */
+      flex: 0 0 auto;
     }
-    .btn.crowd{ background:rgba(243,199,212,0.55); } /* crowd 버튼 핑크 */
-    .btn.insta{ background:#fff; }                /* 인스타 흰색(원하면 바꿔도 됨) */
-
-    .footLine{
-      margin-top:14px;
-      padding-top:12px;
-      border-top:1px solid var(--line);
-      color:rgba(23,23,23,0.60);
-      font-size:14px;
-      line-height:1.25;
+    .btn.primary{
+      background: rgba(243,199,212,0.55);
     }
 
+    /* Responsive */
     @media (max-width: 900px){
-      .h1{font-size:46px;}
-      .grid{grid-template-columns:1fr;}
+      .grid{ grid-template-columns: 1fr; }
     }
+
+    /* Mobile: avoid “2-column squeeze” -> stack row label/value */
     @media (max-width: 520px){
-      body{padding:12px;}
-      .card{padding:18px;}
-      .h1{font-size:44px;}
-      .big{font-size:36px;}
-      .cta{grid-template-columns:1fr 1fr;}
+      .inner{ padding: 18px; }
+      .controls{ grid-template-columns: 1fr; }
+      .selectRow{ grid-template-columns: 1fr; }
+
+      .row{
+        border-radius: 18px;
+        align-items:flex-start;
+      }
+      .row .title{ white-space: normal; }
+      .row .val{
+        max-width: 100%;
+        text-align:left;
+      }
+
+      /* Convert to vertical layout (label on top, value below) */
+      .row{
+        flex-direction: column;
+        gap: 6px;
+      }
+      .row .l{ width:100%; }
+      .row .val{ margin-left:0; width:100%; }
+
+      .mini{
+        flex-direction: column;
+        align-items:flex-start;
+        gap: 6px;
+      }
+      .mini span{
+        margin-left:0;
+        max-width: 100%;
+        text-align:left;
+        width:100%;
+      }
     }
   </style>
 </head>
@@ -350,314 +401,409 @@
 <body>
   <div class="wrap">
     <div class="card">
+      <div class="inner">
+        <div class="hero">
+          <div style="flex:1 1 320px; min-width:260px;">
+            <div class="brand">STITCH HOTEL KYOTO</div>
+            <h1 class="h1">Sakura Smart Guide</h1>
+            <div class="meta" id="metaLine">—</div>
+          </div>
 
-      <div class="hero">
-        <div>
-          <div class="brand">STITCH HOTEL KYOTO</div>
-          <div class="h1">Sakura Smart<br/>Guide</div>
-          <p class="meta" id="dateLine">—</p>
-          <p class="meta" style="margin-top:6px;">Set time &amp; crowd manually for today’s best plan.</p>
-        </div>
-
-        <div class="badge" id="crowdBadge">
-          <span class="dot" id="crowdDot"></span>
-          <div>
-            <div class="badgeTitle" id="crowdTitle">Crowd: —</div>
-            <span class="badgeDesc" id="crowdDesc">—</span>
+          <div class="pill" id="crowdPill">
+            <div class="dot" id="crowdDot"></div>
+            <div>
+              <b id="crowdTitle">Crowd: —</b>
+              <small id="crowdAdvice">—</small>
+            </div>
           </div>
         </div>
+
+        <!-- Controls (AUTO + Manual) -->
+        <div class="controls">
+          <div class="autoCrowd" id="autoCrowdBox" title="Auto updates every 60 minutes">
+            <span class="dot" id="autoCrowdDot"></span>
+            <span class="label">AUTO CROWD</span>
+            <span class="level" id="autoCrowdLabel">—</span>
+            <span class="time" id="autoCrowdTime">—</span>
+          </div>
+
+          <div class="selectRow">
+            <div class="select">
+              <label for="timeSel">TIME</label>
+              <select id="timeSel">
+                <option value="morning">Morning</option>
+                <option value="midday">Midday</option>
+                <option value="late" selected>Late afternoon</option>
+                <option value="night">Night</option>
+              </select>
+            </div>
+
+            <div class="select">
+              <label for="crowdSel">CROWD (MANUAL)</label>
+              <select id="crowdSel">
+                <option value="Very Low">Very Low</option>
+                <option value="Low">Low</option>
+                <option value="Moderate">Moderate</option>
+                <option value="High" selected>High</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <!-- Left -->
+          <div class="panel">
+            <h3>BEST TIME &amp; FLOW</h3>
+            <div class="big" id="bestTitle">—</div>
+            <p class="desc" id="bestDesc">—</p>
+
+            <div class="rows">
+              <div class="row">
+                <div class="l">
+                  <div class="icon">🌇</div>
+                  <div class="title">Sunset</div>
+                </div>
+                <div class="val" id="sunsetVal">—</div>
+              </div>
+
+              <div class="row">
+                <div class="l">
+                  <div class="icon">📷</div>
+                  <div class="title">Best light</div>
+                </div>
+                <div class="val" id="bestLightVal">—</div>
+              </div>
+
+              <div class="row">
+                <div class="l">
+                  <div class="icon">📆</div>
+                  <div class="title">Peak window (avg.)</div>
+                </div>
+                <div class="val" id="peakWindowVal">—</div>
+              </div>
+
+              <div class="row">
+                <div class="l">
+                  <div class="icon">🌤️</div>
+                  <div class="title">Weather Strategy</div>
+                </div>
+                <div class="val" id="weatherStrVal">—</div>
+              </div>
+
+              <div class="row">
+                <div class="l">
+                  <div class="icon">🧭</div>
+                  <div class="title">Suggested Flow</div>
+                </div>
+                <div class="val" id="flowVal">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right -->
+          <div class="panel">
+            <h3>CURATED SPOTS</h3>
+
+            <div class="spotCard" id="iconSpotCard">
+              <div class="spotTitle">
+                <span class="badge">🌸</span>
+                <span id="iconSpotTitle">Kyoto Icon: Nijō Castle</span>
+              </div>
+              <div class="spotMeta" id="iconSpotMeta">~15 min • Best: weekday morning for calmer entry</div>
+              <div class="chips" id="iconChips">
+                <span class="chip">Icon</span>
+                <span class="chip">Balanced</span>
+                <span class="chip">Photo Spot</span>
+              </div>
+            </div>
+
+            <div class="spotCard" id="nearSpotCard">
+              <div class="spotTitle">
+                <span class="badge">🟦</span>
+                <span id="nearSpotTitle">Near STITCH: Kamo River</span>
+              </div>
+              <div class="spotMeta" id="nearSpotMeta">10–15 min walk • Best: sunset • Open riverside</div>
+              <div class="chips" id="nearChips">
+                <span class="chip">Riverside</span>
+                <span class="chip">Open</span>
+                <span class="chip">Walk</span>
+              </div>
+            </div>
+
+            <div class="miniRows">
+              <div class="mini">
+                <b>🚶 Walkability</b>
+                <span id="walkVal">★★★★★ Easy — flexible routes.</span>
+              </div>
+              <div class="mini">
+                <b>⚠️ Peak Risk</b>
+                <span id="riskVal">Low — enjoy freely.</span>
+              </div>
+              <div class="mini">
+                <b>📍 Best Angle</b>
+                <span id="angleVal">Golden hour riverside; calm streets for portraits.</span>
+              </div>
+            </div>
+
+            <div class="foot" style="margin-top:12px;">
+              Low crowd icon spots are flexible. Still check crowd map before departure.
+            </div>
+
+            <!-- Buttons (one-line scroll, Instagram is pink) -->
+            <div class="cta">
+              <a class="btn" id="btnWeather" href="#" target="_blank" rel="noopener noreferrer">🌦️ Weather</a>
+              <a class="btn" id="btnSakura" href="#" target="_blank" rel="noopener noreferrer">🌸 Sakura Map</a>
+              <a class="btn" id="btnCrowd" href="#" target="_blank" rel="noopener noreferrer">📍 Crowd Map</a>
+              <a class="btn primary" id="btnInsta" href="#" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
+              <a class="btn" id="btnRefresh" href="javascript:void(0)">↻ Refresh</a>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-      <div class="controls">
-        <div class="select">
-          <label for="timeSel">TIME</label>
-          <select id="timeSel">
-            <option value="morning">Morning</option>
-            <option value="midday">Midday</option>
-            <option value="late" selected>Late afternoon</option>
-            <option value="night">Night</option>
-          </select>
-        </div>
-
-        <div class="select">
-          <label for="crowdSel">CROWD</label>
-          <select id="crowdSel">
-            <option value="Very Low">Very Low</option>
-            <option value="Low" selected>Low</option>
-            <option value="Moderate">Moderate</option>
-            <option value="High">High</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grid">
-        <!-- LEFT -->
-        <div class="panel">
-          <div class="panelTitle">BEST TIME &amp; FLOW</div>
-          <div class="big" id="bestTime">—</div>
-          <p class="tip" id="bestTip">—</p>
-
-          <div class="chips">
-            <div class="chip">
-              <div class="k">🌇 Sunset</div>
-              <div class="v" id="sunset">—</div>
-            </div>
-            <div class="chip">
-              <div class="k">📷 Best light</div>
-              <div class="v" id="bestLight">—</div>
-            </div>
-            <div class="chip">
-              <div class="k">🗓 Peak window (avg.)</div>
-              <div class="v" id="peakWindow">—</div>
-            </div>
-            <div class="chip">
-              <div class="k">🌦 Weather Strategy</div>
-              <div class="v" id="weatherStrategy">—</div>
-            </div>
-            <div class="chip">
-              <div class="k">🧭 Suggested Flow</div>
-              <div class="v" id="suggestedFlow">—</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT -->
-        <div class="panel">
-          <div class="panelTitle">CURATED SPOTS</div>
-
-          <div class="spotCard">
-            <div class="spotHead">
-              <div class="spotIcon">🌸</div>
-              <p class="spotTitle" id="iconTitle">Kyoto Icon: —</p>
-            </div>
-            <p class="spotMeta" id="iconMeta">—</p>
-            <div class="tags" id="iconTags"></div>
-          </div>
-
-          <div class="spotCard">
-            <div class="spotHead">
-              <div class="spotIcon">🏞️</div>
-              <p class="spotTitle" id="nearTitle">Near STITCH: —</p>
-            </div>
-            <p class="spotMeta" id="nearMeta">—</p>
-            <div class="tags" id="nearTags"></div>
-          </div>
-
-          <div class="miniList">
-            <div class="miniRow">
-              <div class="k">🚶 Walkability</div>
-              <div class="v" id="walkability">—</div>
-            </div>
-            <div class="miniRow">
-              <div class="k">⚠️ Peak Risk</div>
-              <div class="v" id="peakRisk">—</div>
-            </div>
-            <div class="miniRow">
-              <div class="k">📍 Best Angle</div>
-              <div class="v" id="bestAngle">—</div>
-            </div>
-          </div>
-
-          <div class="cta">
-            <a class="btn" id="btnWeather" href="#" target="_blank" rel="noopener noreferrer">🌦 Weather</a>
-            <a class="btn" id="btnSakura" href="#" target="_blank" rel="noopener noreferrer">🌸 Sakura Map</a>
-            <a class="btn crowd" id="btnCrowd" href="#" target="_blank" rel="noopener noreferrer">📍 Crowd Map</a>
-            <a class="btn insta" id="btnInsta" href="#" target="_blank" rel="noopener noreferrer">📷 Instagram</a>
-          </div>
-
-          <div class="footLine">
-            Low crowd icon spots are flexible. Still check crowd map before departure.
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <script>
-    /***************
-     * LINKS
-     ***************/
+    // ========= LINKS (너가 준 최신 URL) =========
     const WEATHER_URL = "https://forecast7.com/en/35d01135d77/kyoto/";
     const SAKURA_MAP_URL = "https://www.google.com/maps/d/u/0/viewer?mid=1d4bRtlPGDMOtNh13XdboeiLs5gIK_sk";
     const CROWD_MAP_URL  = "https://platinumaps.jp/d/kyoto-smart-navic";
     const INSTA_URL      = "https://www.instagram.com/stitchhotelkyoto/";
 
-    document.getElementById("btnWeather").href = WEATHER_URL;
-    document.getElementById("btnSakura").href  = SAKURA_MAP_URL;
-    document.getElementById("btnCrowd").href   = CROWD_MAP_URL;
-    document.getElementById("btnInsta").href   = INSTA_URL;
-
-    /***************
-     * PEAK WINDOW
-     ***************/
+    // ========= BASIC CONFIG =========
+    const KYOTO = { lat: 35.0116, lon: 135.7681, tz: 9 };
     const PEAK_START = "2026-03-28";
     const PEAK_END   = "2026-04-05";
 
-    const ICON_SPOTS = [
-      { title:"Kyoto Icon: Nijō Castle", meta:"~15 min by subway · Best: weekday morning for calmer entry", tags:["Icon","Balanced","Photo Spot"] },
-      { title:"Kyoto Icon: Kiyomizu-dera", meta:"~15 min by bus · Best: opening time · Go early to avoid crowds", tags:["Icon","Crowded","Morning"] },
-      { title:"Kyoto Icon: Fushimi Inari", meta:"~25 min by train · Best: 7–9 AM · Go at opening time", tags:["Icon","Morning","Hike"] },
-    ];
+    // ========= Helpers =========
+    const pad2 = (n)=> String(n).padStart(2,"0");
 
-    const NEAR_SPOTS = [
-      { title:"Near STITCH: Takasegawa", meta:"5–8 min walk · Best: late afternoon · Riverside calm", tags:["Riverside","Calm","Easy walk"] },
-      { title:"Near STITCH: Kamo River", meta:"10–15 min walk · Best: sunset · Open riverside", tags:["Riverside","Open","Walk"] },
-      { title:"Near STITCH: Maruyama Park", meta:"20–25 min walk · Best: evening · Lively", tags:["Park","Popular","Evening"] },
-    ];
-
-    function pad2(n){ return String(n).padStart(2,"0"); }
-
-    function formatDateLine(d){
-      const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-      return `${days[d.getDay()]}, ${months[d.getMonth()]} ${pad2(d.getDate())} · ${pad2(d.getHours())}:${pad2(d.getMinutes())} (JST)`;
+    function formatDateTimeJST(d){
+      // keep simple + consistent (avoid font shrinking)
+      const y = d.getFullYear();
+      const m = pad2(d.getMonth()+1);
+      const dd = pad2(d.getDate());
+      const hh = pad2(d.getHours());
+      const mm = pad2(d.getMinutes());
+      const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()];
+      return `${weekday}, ${y}-${m}-${dd} · ${hh}:${mm} (JST)`;
     }
 
     function crowdColor(level){
-      if(level==="Very Low") return "#4A90E2";
-      if(level==="Low") return "#3CB371";
-      if(level==="Moderate") return "#F5A623";
-      return "#E74C3C";
+      if(level==="Very Low") return "var(--blue)";
+      if(level==="Low") return "var(--good)";
+      if(level==="Moderate") return "var(--mid)";
+      return "var(--bad)";
     }
-    function crowdDesc(level){
-      if(level==="Very Low") return "Very quiet — ideal for icons and photos.";
+
+    function crowdAdvice(level){
+      if(level==="Very Low") return "Quiet hours — enjoy iconic spots freely.";
       if(level==="Low") return "Recommended: icon spot OK, then nearby stroll.";
-      if(level==="Moderate") return "Some queues — mix near spots + icons off-peak.";
-      return "Peak — start near STITCH first, avoid top icons now.";
+      if(level==="Moderate") return "Some queues — do near spots first, icons off-peak.";
+      return "Peak time now — choose nearby routes first to avoid queues.";
     }
 
-    function computeSunsetMock(d){
-      const m = d.getMonth()+1;
-      let base = 17.2;
-      if(m>=5 && m<=8) base = 19.0;
-      else if(m===4 || m===9) base = 18.3;
-      else if(m===3 || m===10) base = 17.7;
-      const hour = Math.floor(base);
-      const min = Math.round((base-hour)*60);
-      return { hh:hour, mm:min };
+    function guessAutoCrowdLevel(now){
+      // 심플 휴리스틱 (원하면 더 세밀하게 바꿀 수 있음)
+      const h = now.getHours();
+      if(h>=7 && h<=9) return "Moderate";
+      if(h>=10 && h<=16) return "High";
+      if(h>=17 && h<=19) return "Moderate";
+      if(h>=20 && h<=22) return "Low";
+      return "Very Low";
     }
 
-    function bestLightWindow(sunset){
-      const s = new Date(); s.setHours(sunset.hh, sunset.mm, 0, 0);
-      const a = new Date(s.getTime() - 35*60000);
-      const b = new Date(s.getTime() + 20*60000);
-      return `${pad2(a.getHours())}:${pad2(a.getMinutes())}–${pad2(b.getHours())}:${pad2(b.getMinutes())}`;
+    function timeSlotFromClock(now){
+      const h = now.getHours();
+      if(h>=6 && h<10) return "morning";
+      if(h>=10 && h<15) return "midday";
+      if(h>=15 && h<19) return "late";
+      return "night";
     }
 
-    function pick(list, seed){ return list[seed % list.length]; }
+    // --- Sunset calculation (good-enough) ---
+    // NOAA-ish simplified. Returns Date object (local JST) for sunset.
+    function sunsetTime(date, lat, lon, tz){
+      // based on common sunrise/sunset approximation
+      const rad = Math.PI/180;
+      const day = Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(),0,0)) / 86400000);
 
-    function renderTags(el, tags){
-      el.innerHTML = "";
-      tags.forEach(t=>{
-        const span = document.createElement("span");
-        span.className="tag";
-        span.textContent=t;
-        el.appendChild(span);
-      });
+      const lngHour = lon / 15;
+      const t = day + ((18 - lngHour) / 24); // sunset approx
+      const M = (0.9856 * t) - 3.289;
+      let L = M + (1.916*Math.sin(rad*M)) + (0.020*Math.sin(rad*2*M)) + 282.634;
+      L = (L + 360) % 360;
+
+      let RA = (180/Math.PI) * Math.atan(0.91764 * Math.tan(rad*L));
+      RA = (RA + 360) % 360;
+
+      const Lquadrant  = Math.floor(L/90) * 90;
+      const RAquadrant = Math.floor(RA/90) * 90;
+      RA = RA + (Lquadrant - RAquadrant);
+      RA = RA / 15;
+
+      const sinDec = 0.39782 * Math.sin(rad*L);
+      const cosDec = Math.cos(Math.asin(sinDec));
+
+      const cosH = (Math.cos(rad*90.833) - (sinDec * Math.sin(rad*lat))) / (cosDec * Math.cos(rad*lat));
+      if(cosH > 1) return null;  // no sunset
+      if(cosH < -1) return null; // no sunset
+
+      let H = (180/Math.PI) * Math.acos(cosH);
+      H = H / 15;
+
+      const T = H + RA - (0.06571 * t) - 6.622;
+      let UT = (T - lngHour) % 24;
+      if(UT < 0) UT += 24;
+
+      // convert to JST date
+      const hh = Math.floor(UT + tz);
+      const mm = Math.floor(((UT + tz) - hh) * 60);
+      const d = new Date(date);
+      d.setHours((hh+24)%24, mm, 0, 0);
+      return d;
     }
 
-    function computeBest(timeKey, crowd){
-      if(timeKey==="late" && (crowd==="Low" || crowd==="Very Low")){
-        return {
-          title:"Late afternoon (15:30–17:30)",
-          tip:"Soft light for riverside. Great for nearby stroll + photos."
-        };
-      }
+    function addMinutes(date, minutes){
+      const d = new Date(date.getTime());
+      d.setMinutes(d.getMinutes()+minutes);
+      return d;
+    }
+
+    function fmtHM(d){
+      if(!d) return "—";
+      return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+    }
+
+    function setLinks(){
+      document.getElementById("btnWeather").href = WEATHER_URL;
+      document.getElementById("btnSakura").href  = SAKURA_MAP_URL;
+      document.getElementById("btnCrowd").href   = CROWD_MAP_URL;
+      document.getElementById("btnInsta").href   = INSTA_URL;
+    }
+
+    function updateAutoCrowd(now){
+      const level = guessAutoCrowdLevel(now);
+      document.getElementById("autoCrowdLabel").innerText = level;
+      document.getElementById("autoCrowdDot").style.background = `var(${crowdColor(level).replace('var(','').replace(')','')})`;
+      document.getElementById("autoCrowdTime").innerText = `updated ${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+      return level;
+    }
+
+    function applyTopCrowd(level){
+      document.getElementById("crowdTitle").innerText = `Crowd: ${level}`;
+      document.getElementById("crowdAdvice").innerText = crowdAdvice(level);
+      document.getElementById("crowdDot").style.background = `var(${crowdColor(level).replace('var(','').replace(')','')})`;
+    }
+
+    function bestTimeText(timeSlot, crowd){
+      // 원하는 톤으로 유지 (너 스샷 느낌)
       if(crowd==="High"){
-        if(timeKey==="morning") return { title:"Early morning tomorrow (7:00–9:00 AM)", tip:"Icons are calmest at opening time." };
-        if(timeKey==="midday")  return { title:"After 6:30 PM (cooler & calmer)", tip:"Peak now — do nearby first, icons later." };
-        if(timeKey==="late")    return { title:"After 6:30 PM (cooler & calmer)", tip:"Riverside first, icons off-peak." };
-        return { title:"Late night walk (quiet streets)", tip:"Good for short routes near the hotel." };
+        if(timeSlot==="late") return { title:"After 6:30 PM (cooler & calmer)", desc:"Peak time now — choose nearby sakura spots first, then icons later." };
+        if(timeSlot==="midday") return { title:"Late afternoon (icons off-peak)", desc:"Avoid queue hours — do riverside/nearby first, icons later." };
+        return { title:"Early morning tomorrow (7:00–9:00 AM)", desc:"Tip: Icon spots are calmest at opening time." };
       }
       if(crowd==="Moderate"){
-        if(timeKey==="late") return { title:"Late afternoon → sunset", tip:"Near STITCH first, then one icon off-peak." };
-        return { title:"Balanced timing", tip:"Avoid peak icons at peak hour — mix near spots." };
+        if(timeSlot==="morning") return { title:"Morning (icons first)", desc:"Soft light for photos. Go early to avoid buildup." };
+        return { title:"Late afternoon (nearby first)", desc:"Good for riverside stroll + photos. Icons off-peak." };
       }
-      return { title:"Anytime (quiet today)", tip:"Flexible — prioritize your closest spots." };
+      if(crowd==="Low" || crowd==="Very Low"){
+        return { title:"Late afternoon (15:30–17:30)", desc:"Soft light for riverside. Great for nearby stroll + photos." };
+      }
+      return { title:"Anytime (quiet today)", desc:"Enjoy flexible timing — prioritize your closest spots." };
     }
 
-    function computeExtras(crowd){
+    function updateLeftPanel(now, timeSlot, crowd){
+      const t = bestTimeText(timeSlot, crowd);
+      document.getElementById("bestTitle").innerText = t.title;
+      document.getElementById("bestDesc").innerText  = t.desc;
+
+      const sun = sunsetTime(now, KYOTO.lat, KYOTO.lon, KYOTO.tz);
+      const sunText = sun ? fmtHM(sun) : "—";
+      document.getElementById("sunsetVal").innerText = sunText;
+
+      if(sun){
+        const a = addMinutes(sun, -35);
+        const b = addMinutes(sun, +20);
+        document.getElementById("bestLightVal").innerText = `${fmtHM(a)}–${fmtHM(b)} (around sunset)`;
+      }else{
+        document.getElementById("bestLightVal").innerText = "—";
+      }
+
+      document.getElementById("peakWindowVal").innerText = `${PEAK_START} — ${PEAK_END}`;
+
+      // weather strategy: (외부 fetch 없이) 문장만 깔끔하게 유지
+      // 원하면 여기 나중에 “강수확률/기온” API 붙일 수 있음
+      const mon = now.getMonth()+1;
+      let ws = "Dry/low rain: riverside first, then icons off-peak.";
+      if(mon<=2) ws = "Cold day: choose temples/covered streets first, keep riverside short.";
+      if(mon>=6 && mon<=9) ws = "Warm day: riverside + shaded routes first, icons later.";
+      document.getElementById("weatherStrVal").innerText = ws;
+
+      // flow
+      let flow = "Near STITCH first → icons at opening time → riverside at sunset.";
+      if(crowd==="High") flow = "Near STITCH first → short riverside → icons off-peak.";
+      if(timeSlot==="night") flow = "Nearby night stroll → icons early tomorrow → riverside at sunset.";
+      document.getElementById("flowVal").innerText = flow;
+    }
+
+    function updateRightPanel(timeSlot, crowd){
+      // 스샷 느낌 유지: 아이콘/근처 스팟
+      // crowd/time에 따라 문구만 살짝 바뀌게
       if(crowd==="High"){
-        return {
-          weather:"Check weather & adjust routes. If rain: covered/temple first, riverside short.",
-          flow:"Icon spot first → riverside stroll → return via quiet streets.",
-          walk:"★★★☆ Easy — prefer riverside paths, avoid narrow bridges at peak.",
-          risk:"High crowd risk — but near spots are flexible.",
-          angle:"Use wide viewpoints. If queues form, shift to quieter edges/backstreets."
-        };
+        document.getElementById("iconSpotTitle").innerText = "Kyoto Icon: Kiyomizu-dera";
+        document.getElementById("iconSpotMeta").innerText  = "~15 min by bus • Best: opening time • Go early to avoid crowds.";
+      }else{
+        document.getElementById("iconSpotTitle").innerText = "Kyoto Icon: Nijō Castle";
+        document.getElementById("iconSpotMeta").innerText  = "~15 min by subway • Best: weekday morning for calmer entry";
       }
-      if(crowd==="Moderate"){
-        return {
-          weather:"If rain: covered areas first. Keep riverside short.",
-          flow:"Near STITCH first → one icon off-peak → riverside sunset.",
-          walk:"★★★★ Comfortable walk from STITCH.",
-          risk:"Moderate — avoid top icons at peak.",
-          angle:"Shoot riverside at golden hour; icons earlier."
-        };
+
+      if(timeSlot==="late"){
+        document.getElementById("nearSpotTitle").innerText = "Near STITCH: Kamo River";
+        document.getElementById("nearSpotMeta").innerText  = "10–15 min walk • Best: sunset • Open riverside";
+      }else{
+        document.getElementById("nearSpotTitle").innerText = "Near STITCH: Takasegawa (Hotel-front Riverside)";
+        document.getElementById("nearSpotMeta").innerText  = "5–12 min walk • Best: sunset • Quiet riverside";
       }
-      return {
-        weather:"Dry/low rain: riverside first, then icons off-peak.",
-        flow:"Near STITCH first → icons at opening time → riverside at sunset.",
-        walk:"★★★★★ Easy — flexible routes.",
-        risk:"Low — enjoy freely.",
-        angle:"Golden hour riverside; calm streets for portraits."
-      };
+
+      // mini rows (keep clean)
+      document.getElementById("walkVal").innerText = (crowd==="High") ? "★★★★☆ Easy — flexible, avoid narrow alleys." : "★★★★★ Easy — flexible routes.";
+      document.getElementById("riskVal").innerText = (crowd==="High") ? "High — expect queues at icons." : (crowd==="Moderate" ? "Moderate — some queues." : "Low — enjoy freely.");
+      document.getElementById("angleVal").innerText = (timeSlot==="late") ? "Golden hour riverside; calm streets for portraits." : "Soft morning light; wide viewpoints for smoother photos.";
     }
 
-    function render(){
-      const d = new Date();
-      document.getElementById("dateLine").textContent = formatDateLine(d);
+    function refreshAll(){
+      const now = new Date();
 
-      const timeKey = document.getElementById("timeSel").value;
-      const crowd = document.getElementById("crowdSel").value;
+      // header date time
+      document.getElementById("metaLine").innerText = formatDateTimeJST(now);
 
-      // badge
-      const dot = document.getElementById("crowdDot");
-      dot.style.background = crowdColor(crowd);
-      dot.style.boxShadow = `0 0 0 5px ${crowdColor(crowd)}22`;
-      document.getElementById("crowdTitle").textContent = `Crowd: ${crowd}`;
-      document.getElementById("crowdDesc").textContent = crowdDesc(crowd);
+      // auto crowd (display only)
+      const autoLevel = updateAutoCrowd(now);
 
-      // best
-      const best = computeBest(timeKey, crowd);
-      document.getElementById("bestTime").textContent = best.title;
-      document.getElementById("bestTip").textContent = best.tip;
+      // manual selects
+      const timeSlot = document.getElementById("timeSel").value || timeSlotFromClock(now);
+      const crowd = document.getElementById("crowdSel").value || autoLevel;
 
-      // sunset + light
-      const sunset = computeSunsetMock(d);
-      document.getElementById("sunset").textContent = `${pad2(sunset.hh)}:${pad2(sunset.mm)}`;
-      document.getElementById("bestLight").textContent = bestLightWindow(sunset);
+      // top crowd pill uses MANUAL (너 스샷 구조)
+      applyTopCrowd(crowd);
 
-      // peak window
-      document.getElementById("peakWindow").textContent = `${PEAK_START} – ${PEAK_END}`;
-
-      // right cards
-      const seed = d.getDate() + d.getHours();
-      const icon = pick(ICON_SPOTS, seed);
-      const near = pick(NEAR_SPOTS, seed+1);
-
-      document.getElementById("iconTitle").textContent = icon.title;
-      document.getElementById("iconMeta").textContent = icon.meta;
-      renderTags(document.getElementById("iconTags"), icon.tags);
-
-      document.getElementById("nearTitle").textContent = near.title;
-      document.getElementById("nearMeta").textContent = near.meta;
-      renderTags(document.getElementById("nearTags"), near.tags);
-
-      // extras
-      const ex = computeExtras(crowd);
-      document.getElementById("weatherStrategy").textContent = ex.weather;
-      document.getElementById("suggestedFlow").textContent = ex.flow;
-      document.getElementById("walkability").textContent = ex.walk;
-      document.getElementById("peakRisk").textContent = ex.risk;
-      document.getElementById("bestAngle").textContent = ex.angle;
+      // panels
+      updateLeftPanel(now, timeSlot, crowd);
+      updateRightPanel(timeSlot, crowd);
     }
 
-    document.getElementById("timeSel").addEventListener("change", render);
-    document.getElementById("crowdSel").addEventListener("change", render);
+    // init
+    setLinks();
+    refreshAll();
 
-    render();
+    document.getElementById("btnRefresh").addEventListener("click", refreshAll);
+    document.getElementById("timeSel").addEventListener("change", refreshAll);
+    document.getElementById("crowdSel").addEventListener("change", refreshAll);
+
+    // auto update every 60 minutes (auto crowd + timestamp)
+    setInterval(refreshAll, 60 * 60 * 1000);
   </script>
 </body>
 </html>
